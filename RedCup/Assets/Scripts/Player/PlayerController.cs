@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
+    private PlayerAnimation playerAnimation;
 
     private ICommand currentCommand;
 
@@ -11,10 +12,14 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     private void Update()
     {
+        // Logica de animacion
+        playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
+
         Vector2 moveInput = playerInput.MoveInput;
 
         if (playerInput.IsRunning)

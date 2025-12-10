@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
 
+    private ICommand currentCommand;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -13,18 +15,21 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        Vector2 moveInput = playerInput.MoveInput;
+
         if (playerInput.IsRunning)
         {
-            playerMovement.SetStrategy(new RunMovement());
+            currentCommand = new RunCommand(playerMovement, moveInput);
         }
         else
         {
-            playerMovement.SetStrategy(new WalkMovement());
+            currentCommand = new MoveCommand(playerMovement, moveInput);
         }
     }
 
     private void FixedUpdate()
     {
-        playerMovement.Move(playerInput.MoveInput);
+        //playerMovement.Move(playerInput.MoveInput);
+        currentCommand?.Execute();
     }
 }

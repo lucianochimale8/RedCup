@@ -7,16 +7,29 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isFacingRight = true;
 
+    // Movement Strategy
+    public IMovementStrategy movementStrategy;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        // Walk por defecto
+        movementStrategy = new WalkMovement();
     }
 
     public void Move(Vector2 input) 
     {
-        rb.linearVelocity = input * moveSpeed;
+        // Velocidad
+        Vector2 finalVelocity = movementStrategy.Move(input, moveSpeed);
+        rb.linearVelocity = finalVelocity;
         Flip(input);
     }
+    // Metodo para cambiar entre estrategias
+    public void SetStrategy(IMovementStrategy newStrategy)
+    {
+        movementStrategy = newStrategy;
+    }
+
     private void Flip(Vector2 input)
     {
         if (input.x != 0)

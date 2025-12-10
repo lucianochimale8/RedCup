@@ -11,6 +11,18 @@ public class PlayerController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
     }
 
+    private void Update()
+    {
+        if (playerInput.IsRunning)
+        {
+            playerMovement.SetStrategy(new RunMovement());
+        }
+        else
+        {
+            playerMovement.SetStrategy(new WalkMovement());
+        }
+    }
+
     private void FixedUpdate()
     {
         playerMovement.Move(playerInput.MoveInput);

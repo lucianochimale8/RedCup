@@ -13,7 +13,6 @@ public class PlayerAim : MonoBehaviour
         cam = Camera.main;
     }
 
-    
     private void Update()
     {
         // el aim sigue al player

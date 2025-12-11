@@ -7,12 +7,17 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimation playerAnimation;
 
     private ICommand currentCommand;
+    private ICommand shootCommand;
+
+    [SerializeField] private Wand wand;
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
+
+        shootCommand = new ShootCommand(wand);
     }
 
     private void Update()
@@ -20,6 +25,7 @@ public class PlayerController : MonoBehaviour
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
 
+        // movimiento
         Vector2 moveInput = playerInput.MoveInput;
 
         if (playerInput.IsRunning)
@@ -29,6 +35,14 @@ public class PlayerController : MonoBehaviour
         else
         {
             currentCommand = new MoveCommand(playerMovement, moveInput);
+        }
+
+        // disparo
+        if (playerInput.ShootPressed)
+        {
+            shootCommand.Execute();
+            playerInput.ResetShoot();
+            Debug.Log("PlayerController ejecuta ShootCommand");
         }
     }
 

@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 794521339}
   - component: {fileID: 794521338}
   - component: {fileID: 794521341}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -857,7 +857,8 @@ GameObject:
   - component: {fileID: 1289859161}
   - component: {fileID: 1289859160}
   - component: {fileID: 1289859165}
-  m_Layer: 0
+  - component: {fileID: 1289859166}
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -902,7 +903,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.625, y: 2.375}
+    oldSize: {x: 1.5625, y: 2.4375}
     newSize: {x: 0.25, y: 0.39}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1042,6 +1043,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+--- !u!114 &1289859166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289859159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dfe6f832bcd0864db7476992a7a36a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  knockbackForce: 5
+  hurtDuration: 0.2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

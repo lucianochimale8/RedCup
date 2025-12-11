@@ -3,9 +3,24 @@ using UnityEngine;
 public class Wand : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
+    [SerializeField] private ProjectilePool pool;
 
     public void Shoot()
     {
+        Debug.Log("WAND SHOOT LLAMADO");
 
+        GameObject p = pool.GetProjectile();
+        if (p != null)
+        {
+            p.transform.position = firePoint.position;
+            p.transform.rotation = firePoint.rotation;
+            p.SetActive(true);
+
+            p.GetComponent<Projectile>().Initialize(firePoint.right);
+        }
+        else
+        {
+            Debug.Log("No hay proyectiles disponibles");
+        }
     }
 }

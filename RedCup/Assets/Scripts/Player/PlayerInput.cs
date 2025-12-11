@@ -5,6 +5,9 @@ public class PlayerInput : MonoBehaviour
     public Vector2 MoveInput { get; private set; }
     // Para reconocer cuando se esta corriendo
     public bool IsRunning { get; private set; }
+
+    public bool ShootPressed { get; private set; }
+
     private void Update()
     {
         float x = Input.GetAxisRaw("Horizontal");
@@ -13,5 +16,13 @@ public class PlayerInput : MonoBehaviour
         MoveInput = new Vector2(x, y).normalized;
         // Shift para correr
         IsRunning = Input.GetKey(KeyCode.LeftShift);
+        // click derecho
+        if (Input.GetMouseButtonDown(1))
+            ShootPressed = true;
     }
+    public void ResetShoot()
+    {
+        ShootPressed = false;
+    }
+
 }

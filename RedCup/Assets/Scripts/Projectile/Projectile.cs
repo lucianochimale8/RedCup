@@ -11,6 +11,10 @@ public class Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
+    private void OnEnable()
+    {
+        timer = lifeTime;
+    }
 
     private void Update()
     {
@@ -25,7 +29,5 @@ public class Projectile : MonoBehaviour
     public void Initialize(Vector2 direction)
     {
         rb.linearVelocity = direction.normalized * speed;
-        timer = lifeTime;
-        gameObject.SetActive(true);
     }
 }

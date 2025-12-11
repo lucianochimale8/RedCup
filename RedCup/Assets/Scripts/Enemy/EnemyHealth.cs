@@ -10,7 +10,6 @@ public class EnemyHealth : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private bool isHurt = false;
-    private bool isDead = false;
 
     private void Awake()
     {
@@ -20,7 +19,6 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isDead) return;
 
         Projectile projectile = collision.gameObject.GetComponent<Projectile>();
         if (projectile != null && !isHurt)
@@ -32,14 +30,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (isDead) return;
-
         health--;
 
         if (health <= 0)
         {
-            isDead = true;
             Destroy(gameObject);
+            GameManager.Instance.DecreaseEnemiesLeft();
             return;
         }
 

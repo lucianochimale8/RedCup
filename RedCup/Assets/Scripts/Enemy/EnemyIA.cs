@@ -55,4 +55,8 @@ public class EnemyIA : MonoBehaviour
 
         lastPosition = transform.position;
     }
+    public void StopMovement()
+    {
+        speed = 0f;
+    }
 }

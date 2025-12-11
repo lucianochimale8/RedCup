@@ -13,11 +13,5 @@ public class PlayerAnimation : MonoBehaviour
         float speed = input.magnitude;
         animator.SetFloat("Speed", speed);
         animator.SetBool("IsRunning", isRunning);
-        /*
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            animator.SetTrigger("Die");
-        }
-        */
     }
 }

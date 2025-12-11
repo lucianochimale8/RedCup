@@ -9,6 +9,8 @@ public class EnemyHealth : MonoBehaviour
     private int health;
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField] private AudioClip enemyDieClip, enemyHitClip;
+
     private bool isHurt = false;
 
     private void Awake()
@@ -24,7 +26,7 @@ public class EnemyHealth : MonoBehaviour
         if (projectile != null && !isHurt)
         {
             TakeDamage();
-            projectile.gameObject.SetActive(false);
+            //projectile.gameObject.SetActive(false);
         }
     }
 
@@ -34,13 +36,16 @@ public class EnemyHealth : MonoBehaviour
 
         if (health <= 0)
         {
-            Destroy(gameObject);
+            AudioManager.Instance.PlaySoundEffect(enemyDieClip, 0.5f);
             GameManager.Instance.DecreaseEnemiesLeft();
-            return;
+            Destroy(gameObject);
         }
-
-        StopAllCoroutines();
-        StartCoroutine(HurtRoutine());
+        else
+        {
+            StopAllCoroutines();
+            StartCoroutine(HurtRoutine());
+            AudioManager.Instance.PlaySoundEffect(enemyHitClip, 0.5f);
+        }
     }
 
     private IEnumerator HurtRoutine()

@@ -4,6 +4,7 @@ public class Wand : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
     [SerializeField] private ProjectilePool pool;
+    [SerializeField] private AudioClip spell;
 
     public void Shoot()
     {
@@ -17,6 +18,7 @@ public class Wand : MonoBehaviour
             p.SetActive(true);
 
             p.GetComponent<Projectile>().Initialize(firePoint.right);
+            AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
         }
         else
         {

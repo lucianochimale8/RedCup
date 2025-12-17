@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        Reset();
         UpdateLivesText();
     }
     private void UpdateLivesText()
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
         Destroy(gameObject);
+        Destroy(AudioManager.Instance.gameObject);
     }
 
     private void Reset()

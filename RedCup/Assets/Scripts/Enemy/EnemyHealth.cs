@@ -9,39 +9,39 @@ public class EnemyHealth : MonoBehaviour
 
     private int health;
     private SpriteRenderer spriteRenderer;
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        health = maxHealth;
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+  private void Awake()
+  {
+    spriteRenderer = GetComponent<SpriteRenderer>();
+    health = maxHealth;
+  }
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
 
-        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-        if (projectile != null)
-        {
-            TakeDamage();
-            projectile.gameObject.SetActive(false);
-        }
-    }
-    public void TakeDamage()
+    Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+    if (projectile != null)
     {
-        health--;
-
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-            GameManager.Instance.DecreaseEnemiesLeft();
-            return;
-        }
-
-        StopAllCoroutines();
-        StartCoroutine(Blink(hurtDuration));
+        TakeDamage();
+        projectile.gameObject.SetActive(false);
     }
-    private IEnumerator Blink(float duration)
+  }
+  public void TakeDamage()
+  {
+    health--;
+
+    if (health <= 0)
     {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(duration);
-        spriteRenderer.color = Color.white;
+        Destroy(gameObject);
+        GameManager.Instance.DecreaseEnemiesLeft();
+        return;
     }
+
+    StopAllCoroutines();
+    StartCoroutine(Blink(hurtDuration));
+  }
+  private IEnumerator Blink(float duration)
+  {
+    spriteRenderer.color = Color.red;
+    yield return new WaitForSeconds(duration);
+    spriteRenderer.color = Color.white;
+  }
 }

@@ -8,40 +8,63 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float hurtDuration = 0.2f;
 
     private int health;
+
     private SpriteRenderer spriteRenderer;
-  private void Awake()
-  {
-    spriteRenderer = GetComponent<SpriteRenderer>();
-    health = maxHealth;
-  }
-  private void OnCollisionEnter2D(Collision2D collision)
-  {
+    private Animator animator;
+    private EnemyIA enemyIA;
 
-    Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-    if (projectile != null)
+    private bool isDead = false;
+
+    private void Awake()
     {
-        TakeDamage();
-        projectile.gameObject.SetActive(false);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        enemyIA = GetComponent<EnemyIA>();
+
+        health = maxHealth;
     }
-  }
-  public void TakeDamage()
-  {
-    health--;
-
-    if (health <= 0)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        if (projectile != null)
+        {
+            TakeDamage();
+            projectile.gameObject.SetActive(false);
+        }
+    }
+    public void TakeDamage()
+    {
+        if (isDead) return;
+
+        health--;
+
+        if (health <= 0)
+        {
+            Die();
+            return;
+        }
+
+        StopAllCoroutines();
+        StartCoroutine(Blink(hurtDuration));
+    }
+
+    private void Die()
+    {
+        isDead = true;
+
+        enemyIA.StopMovement();
+        animator.SetTrigger("Die");
+        GetComponent<Collider2D>().enabled = false;
+
         GameManager.Instance.DecreaseEnemiesLeft();
-        return;
+        Destroy(gameObject, 0.4f);
     }
 
-    StopAllCoroutines();
-    StartCoroutine(Blink(hurtDuration));
-  }
-  private IEnumerator Blink(float duration)
-  {
-    spriteRenderer.color = Color.red;
-    yield return new WaitForSeconds(duration);
-    spriteRenderer.color = Color.white;
-  }
+    private IEnumerator Blink(float duration)
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(duration);
+        spriteRenderer.color = Color.white;
+    }
 }

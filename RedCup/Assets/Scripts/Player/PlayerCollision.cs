@@ -14,7 +14,7 @@ public class PlayerCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             animator.SetTrigger("Die");
-            AudioManager.Instance.PlaySoundEffect(dieClip, 1f);
+            //AudioManager.Instance.PlaySoundEffect(dieClip, 1f);
             GameManager.Instance.Die();
         }
     }

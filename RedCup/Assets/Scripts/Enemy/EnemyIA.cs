@@ -3,9 +3,12 @@ using UnityEngine;
 public class EnemyIA : MonoBehaviour
 {
     [SerializeField] private float speed;
+
     private Transform playerTransform;
     private Animator animator;
+
     private bool isFacingRight = false;
+    private bool isStopped = false;
 
     private Vector2 lastPosition;
 
@@ -19,6 +22,12 @@ public class EnemyIA : MonoBehaviour
 
     private void Update()
     {
+        if(isStopped)
+        {
+            Debug.Log("ENEMIGO DETENIDO: " + gameObject.name);
+            animator.SetFloat("Speed",0f);
+            return;
+        }
         Follow();
         Flip();
         UpdateAnimation();
@@ -33,6 +42,7 @@ public class EnemyIA : MonoBehaviour
     private void Flip()
     {
         bool isPlayerRight = playerTransform.position.x < transform.position.x;
+
         if ((isFacingRight && !isPlayerRight) || (!isFacingRight && isPlayerRight))
         {
             Vector3 scale = transform.localScale; // Variable referenciad de la escala
@@ -46,17 +56,13 @@ public class EnemyIA : MonoBehaviour
     {
         // Calculamos velocidad real
         Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
-        float speedMagnitude = velocity.magnitude;
 
-        if (animator != null)
-        {
-            animator.SetFloat("Speed", speedMagnitude);
-        }
-
+        animator.SetFloat("Speed", velocity.magnitude);
         lastPosition = transform.position;
     }
     public void StopMovement()
     {
+        isStopped = true;
         speed = 0f;
     }
 }

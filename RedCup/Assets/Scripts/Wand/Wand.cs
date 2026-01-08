@@ -18,7 +18,7 @@ public class Wand : MonoBehaviour
             p.SetActive(true);
 
             p.GetComponent<Projectile>().Initialize(firePoint.right);
-            AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
+            //AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
         }
         else
         {

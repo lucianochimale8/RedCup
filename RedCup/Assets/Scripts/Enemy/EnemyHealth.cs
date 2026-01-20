@@ -13,6 +13,8 @@ public class EnemyHealth : MonoBehaviour
     private Animator animator;
     private EnemyIA enemyIA;
 
+    [SerializeField] private Healthbar healthbar;
+
     private bool isDead = false;
 
     private void Awake()
@@ -25,7 +27,6 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         Projectile projectile = collision.gameObject.GetComponent<Projectile>();
         if (projectile != null)
         {
@@ -38,6 +39,7 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         health--;
+        healthbar.UpdateHealthBar(maxHealth, health);
 
         if (health <= 0)
         {

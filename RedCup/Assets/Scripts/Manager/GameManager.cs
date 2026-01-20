@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private int enemiesLeft;
     private bool allWavesSpawned;
 
+    public int Lives => lives;
     public bool IsPlayerDead { get; private set; }
     public static GameManager Instance { get; private set; }
 
@@ -31,44 +32,53 @@ public class GameManager : MonoBehaviour
         Reset();
         UpdateLivesText();
     }
+    /// <summary>
+    /// Actualizacion de Texto de las vidas restantes del jugador
+    /// </summary>
     private void UpdateLivesText()
     {
         livesText.text = "Lives: " + lives.ToString();
     }
-    // logica pasar de escena
-    public void LoadNextScene()
-    {
-        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(nextSceneIndex);
-    }
-
-    // logica si el jugador muere
+   
+    /// <summary>
+    /// Logica de cuamdo el jugador, muere
+    /// </summary>
     public void Die()
     {
         IsPlayerDead = true;
         lives--;
         UpdateLivesText();
-        StopEnemies();
+        StopEnemiesMovement();
         StopEnemiesSpawn();
         StartCoroutine(WaitAndRestart(0.5f));
     }
-
-    // resetear juego
+    #region  Logica de reinicio de ronda y partida
+    public void PlayerHit()
+    {
+        if (IsPlayerDead) return;
+        Die();
+    }
+    /// <summary>
+    /// Reinicio de partida para reiniciar el nivel
+    /// </summary>
     private void ResetGame()
     {
         SceneManager.LoadScene(0);
         Destroy(gameObject);
         Destroy(AudioManager.Instance.gameObject);
     }
-
+    /// <summary>
+    /// Reinicio de estadisticas de cada ronda
+    /// </summary>
     private void Reset()
     {
         enemiesLeft = 0;
         allWavesSpawned = false;
         IsPlayerDead = false;
     }
-
-    // segundos antes de reiniciar cada ronda
+    /// <summary>
+    /// Corrutina para usar unos segundos antes de reiniciar cada ronda
+    /// </summary>
     private IEnumerator WaitAndRestart(float restartTime)
     {
         yield return new WaitForSeconds(restartTime);
@@ -84,15 +94,20 @@ public class GameManager : MonoBehaviour
             ResetGame();
         }
     }
-
-    // reestablecer o parar spawners de enemigos
+    #endregion
+    #region Neutralizar movimiento de los enemigos y su reaparicion
+    /// <summary>
+    /// Metodo para parar la reaparicion de los enemigos
+    /// </summary>
     private void StopEnemiesSpawn()
     {
         Spawner spawner = FindFirstObjectByType<Spawner>();
         spawner.StopAllCoroutines();
     }
-
-    private void StopEnemies()
+    /// <summary>
+    /// Metodo para parar el movimiento de cada enemigo en partida
+    /// </summary>
+    private void StopEnemiesMovement()
     {
         EnemyIA[] enemies = FindObjectsByType<EnemyIA>(FindObjectsSortMode.None);
 
@@ -101,12 +116,18 @@ public class GameManager : MonoBehaviour
             enemy.StopMovement();
         }
     }
-    // incremento o decremento en lista restantes de enemigos
+    #endregion
+    #region Sistema de conteo de los enemigos restantes
+    /// <summary>
+    /// Incrementacion en el contador de enemigos restantes
+    /// </summary>
     public void IncreaseEnemiesLeft()
     {
         enemiesLeft++;
     }
-
+    /// <summary>
+    /// Decrementacion en el contador de enemigos restantes
+    /// </summary>
     public void DecreaseEnemiesLeft()
     {
         enemiesLeft--;
@@ -122,4 +143,13 @@ public class GameManager : MonoBehaviour
     {
         allWavesSpawned = true;
     }
+    /// <summary>
+    /// Metodo con la logica para pasar de scene
+    /// </summary>
+    public void LoadNextScene()
+    {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+    #endregion
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyIA : MonoBehaviour
 {
+    [Header("Velocidad del enenmigo")]
     [SerializeField] private float speed;
 
     private Transform playerTransform;

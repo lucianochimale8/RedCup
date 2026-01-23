@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Wand : MonoBehaviour
 {
+    [Header("Disparo")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private ProjectilePool pool;
+    [Header("Audio")]
     [SerializeField] private AudioClip spell;
 
     public void Shoot()

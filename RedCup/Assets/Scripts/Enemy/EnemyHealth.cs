@@ -6,15 +6,14 @@ public class EnemyHealth : MonoBehaviour
     [Header("Vida Enemigo")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float hurtDuration = 0.2f;
-
     private int health;
-
+    [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private EnemyIA enemyIA;
-
+    [Header("Healthbar")]
     [SerializeField] private Healthbar healthbar;
-
+    [Header("Si el enemigo esta muerto")]
     private bool isDead = false;
 
     private void Awake()
@@ -25,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
 
         health = maxHealth;
     }
+    #region Collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Projectile projectile = collision.gameObject.GetComponent<Projectile>();
@@ -34,6 +34,8 @@ public class EnemyHealth : MonoBehaviour
             projectile.gameObject.SetActive(false);
         }
     }
+    #endregion
+    #region Tomar daño
     public void TakeDamage()
     {
         if (isDead) return;
@@ -50,7 +52,8 @@ public class EnemyHealth : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(Blink(hurtDuration));
     }
-
+    #endregion
+    #region Die y Blink
     private void Die()
     {
         isDead = true;
@@ -62,11 +65,11 @@ public class EnemyHealth : MonoBehaviour
         GameManager.Instance.DecreaseEnemiesLeft();
         Destroy(gameObject, 0.4f);
     }
-
     private IEnumerator Blink(float duration)
     {
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(duration);
         spriteRenderer.color = Color.white;
     }
+    #endregion
 }

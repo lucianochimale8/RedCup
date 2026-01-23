@@ -3,14 +3,17 @@ using System.Collections;
 
 public class PlayerCollision : MonoBehaviour
 {
+    [Header("Audio")]
     [SerializeField] private AudioClip dieClip;
+    [Header("Referencias")]
     private Animator animator;
+    [Header("Si puede atacar")]
     private bool canTakeDamage = true;
     void Start()
     {
         animator = GetComponent<Animator>();
     }
-
+    #region Collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!canTakeDamage) return;
@@ -27,12 +30,13 @@ public class PlayerCollision : MonoBehaviour
             GameManager.Instance.PlayerHit();
         }
     }
-
+    #endregion
+    #region Damage
     private IEnumerator DamageCooldown(float time)
     {
         canTakeDamage = false;
         yield return new WaitForSeconds(time);
         canTakeDamage = true;
     }
-
+    #endregion
 }

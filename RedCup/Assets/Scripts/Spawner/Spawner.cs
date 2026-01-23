@@ -3,9 +3,13 @@ using System.Collections;
 
 public class Spawner : MonoBehaviour
 {
+    [Header("Enemigo")]
     [SerializeField] private GameObject enemyPrefab;
+    [Header("Spawn Points")]
     [SerializeField] private Transform[] spawnPoints;
+    [Header("Waves")]
     [SerializeField] private int enemiesPrewave, waves;
+    [Header("Times")]
     [SerializeField] private float timeBetweenSpawns, timeBetweenWaves;
     void Start()
     {

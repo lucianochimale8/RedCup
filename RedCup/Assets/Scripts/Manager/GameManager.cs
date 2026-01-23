@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        Reset();
+        ResetWaves();
         UpdateLivesText();
     }
     /// <summary>
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Reinicio de estadisticas de cada ronda
     /// </summary>
-    private void Reset()
+    private void ResetWaves()
     {
         enemiesLeft = 0;
         allWavesSpawned = false;
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitAndRestart(float restartTime)
     {
         yield return new WaitForSeconds(restartTime);
-        Reset();
+        ResetWaves();
 
         if (lives > 0)
         {

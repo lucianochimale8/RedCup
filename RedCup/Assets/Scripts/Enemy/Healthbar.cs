@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
 {
+    [Header("Healthbar")]
     [SerializeField] private Image healthbar;
 
     public void UpdateHealthBar(int maxHealth, int health)

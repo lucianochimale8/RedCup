@@ -30,4 +30,9 @@ public class Projectile : MonoBehaviour
     {
         rb.linearVelocity = direction.normalized * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameObject.SetActive(false);
+    }
 }

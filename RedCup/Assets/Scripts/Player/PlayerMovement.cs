@@ -19,9 +19,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector2 input) 
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsPlayerDead)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
         // Velocidad
         Vector2 finalVelocity = movementStrategy.Move(input, moveSpeed);
-        rb.linearVelocity = finalVelocity;
+        rb.velocity = finalVelocity;
         Flip(input);
     }
     // Metodo para cambiar entre estrategias

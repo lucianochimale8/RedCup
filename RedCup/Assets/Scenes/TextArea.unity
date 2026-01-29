@@ -505,7 +505,7 @@ Transform:
   m_GameObject: {fileID: 269989322}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.93, y: -0.009370061, z: -10}
+  m_LocalPosition: {x: 1.52, y: -0.68937004, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -598,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.93, y: -0.009370061, z: -10}
+  m_LocalPosition: {x: 1.52, y: -0.68937004, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -786,11 +786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3032680589296081339, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.93
+      value: 1.52
       objectReference: {fileID: 0}
     - target: {fileID: 3032680589296081339, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: -0.65
       objectReference: {fileID: 0}
     - target: {fileID: 3032680589296081339, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1001,9 +1001,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7051618063607726515, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+      propertyPath: m_Size.x
+      value: 3.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051618063607726515, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+      propertyPath: m_Size.y
+      value: 4.875
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051618063607726515, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7145198348311737387, guid: 670e379e478a3354e8a53c5cb4730541, type: 3}
+    - target: {fileID: 7051618063607726515, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7487664737721890170, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: enemiesPrewave
       value: 0

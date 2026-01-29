@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wand: {fileID: 323863091246899387}
+  weaponController: {fileID: 0}
 --- !u!114 &4802335326432593253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wand: {fileID: 323863091246899387}
   wandPickupPrefab: {fileID: 4952399339133603844, guid: 773d552959bfbf54281b2f01fa3ac279, type: 3}
+  dropPoint: {fileID: 9192591442328588734}
 --- !u!1 &9121720865821978135
 GameObject:
   m_ObjectHideFlags: 0

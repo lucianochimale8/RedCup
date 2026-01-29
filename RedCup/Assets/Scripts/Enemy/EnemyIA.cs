@@ -4,13 +4,13 @@ public class EnemyIA : MonoBehaviour
 {
     [Header("Velocidad del enenmigo")]
     [SerializeField] private float speed;
-
+    [Header("Referencias")]
     private Transform playerTransform;
     private Animator animator;
-
+    [Header("Banderas")]
     private bool isFacingRight = false;
     private bool isStopped = false;
-
+    [Header("Ultima posicion del jugador")]
     private Vector2 lastPosition;
 
     private void Start()
@@ -33,13 +33,20 @@ public class EnemyIA : MonoBehaviour
         Flip();
         UpdateAnimation();
     }
+    private void UpdateAnimation()
+    {
+        // Calculamos velocidad real
+        Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
 
+        animator.SetFloat("Speed", velocity.magnitude);
+        lastPosition = transform.position;
+    }
+    #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
         Vector2 playerDirection = (playerTransform.position - transform.position).normalized;
         transform.Translate(playerDirection * speed * Time.deltaTime);
     }
-
     private void Flip()
     {
         bool isPlayerRight = playerTransform.position.x < transform.position.x;
@@ -52,18 +59,10 @@ public class EnemyIA : MonoBehaviour
             isFacingRight = !isFacingRight; // invertir si se ha dado vuelta
         }
     }
-
-    private void UpdateAnimation()
-    {
-        // Calculamos velocidad real
-        Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
-
-        animator.SetFloat("Speed", velocity.magnitude);
-        lastPosition = transform.position;
-    }
     public void StopMovement()
     {
         isStopped = true;
         speed = 0f;
     }
+    #endregion
 }

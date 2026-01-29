@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ShootCommand : ICommand
 {
+    [Header("Weapon")]
     private Wand wand;
     public ShootCommand(Wand wand)
     {

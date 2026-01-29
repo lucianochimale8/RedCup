@@ -19,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector2 input) 
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsPlayerDead)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
         // Velocidad
         Vector2 finalVelocity = movementStrategy.Move(input, moveSpeed);
         rb.linearVelocity = finalVelocity;

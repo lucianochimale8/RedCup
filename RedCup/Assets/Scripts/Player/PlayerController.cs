@@ -9,8 +9,12 @@ public class PlayerController : MonoBehaviour
     [Header("Command")]
     private ICommand currentCommand;
     private ICommand shootCommand;
+    private ICommand dropCommand;
     [Header("Weapon")]
     [SerializeField] private Wand wand;
+    [SerializeField] private PlayerWeaponController weaponController;
+
+    
 
     private void Awake()
     {
@@ -19,6 +23,7 @@ public class PlayerController : MonoBehaviour
         playerAnimation = GetComponent<PlayerAnimation>();
 
         shootCommand = new ShootCommand(wand);
+        dropCommand = new DropWeaponCommand(weaponController);
     }
     private void Update()
     {
@@ -26,6 +31,7 @@ public class PlayerController : MonoBehaviour
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
         Movimiento();
         Disparo();
+        Drop();
     }
     private void FixedUpdate()
     {
@@ -48,12 +54,24 @@ public class PlayerController : MonoBehaviour
     }
     private void Disparo()
     {
-        // disparo
-        if (playerInput.ShootPressed)
+        if (!playerInput.ShootPressed)
+            return;
+
+        if (!weaponController.HasWand)
         {
-            shootCommand.Execute();
             playerInput.ResetShoot();
-            Debug.Log("PlayerController ejecuta ShootCommand");
+            return;
+        }
+
+        shootCommand.Execute();
+        playerInput.ResetShoot();
+    }
+    private void Drop()
+    {
+        if (playerInput.DropPressed)
+        {
+            dropCommand.Execute();
+            playerInput.ResetDrop();
         }
     }
     #endregion

@@ -11,6 +11,7 @@ public class Wand : MonoBehaviour
     /// Identificar si el arma esta equipada
     /// </summary>
     public bool IsEquipped { get; private set; }
+
     #region Equip and Unequip
     public void Equip()
     {
@@ -29,7 +30,7 @@ public class Wand : MonoBehaviour
     {
         Debug.Log("WAND SHOOT LLAMADO");
         // Si no hay arma equipada, no poder disparar
-        //if (!IsEquipped) return;
+        if (!IsEquipped) return;
 
         GameObject p = pool.GetProjectile();
         if (p != null)

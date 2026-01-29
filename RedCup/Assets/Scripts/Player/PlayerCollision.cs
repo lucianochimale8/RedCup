@@ -53,10 +53,10 @@ public class PlayerCollision : MonoBehaviour
     {
         isDead = true;
 
-        animator.SetTrigger("Die");
-
         if (movementScript != null)
             movementScript.enabled = false;
+
+        animator.SetTrigger("Die");
 
         yield return new WaitForSeconds(0.5f);
 

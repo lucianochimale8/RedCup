@@ -21,12 +21,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.IsPlayerDead)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             return;
         }
         // Velocidad
         Vector2 finalVelocity = movementStrategy.Move(input, moveSpeed);
-        rb.velocity = finalVelocity;
+        rb.linearVelocity = finalVelocity;
         Flip(input);
     }
     // Metodo para cambiar entre estrategias

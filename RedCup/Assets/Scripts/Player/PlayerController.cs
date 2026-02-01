@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Wand wand;
     [SerializeField] private PlayerWeaponController weaponController;
 
-    
-
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -75,4 +73,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+    public void StopPlayer()
+    {
+        enabled = false;
+    }
 }

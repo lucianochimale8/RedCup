@@ -1,18 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour , IDamageable
 {
     [Header("Vida Enemigo")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float hurtDuration = 0.2f;
-    private int health;
+
+    private int currentHealth;
     private bool isDead = false;
+
     [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private EnemyIA enemyIA;
-    [Header("Healthbar")]
+
+    [Header("UI")]
     [SerializeField] private Healthbar healthbar;
 
     private void Awake()
@@ -21,35 +24,25 @@ public class EnemyHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         enemyIA = GetComponent<EnemyIA>();
 
-        health = maxHealth;
+        currentHealth = maxHealth;
     }
-    #region Collision
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-        if (projectile != null)
-        {
-            TakeDamage();
-            projectile.gameObject.SetActive(false);
-        }
-    }
-    #endregion
+
     #region Tomar daño
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
         if (isDead) return;
 
-        health--;
-        healthbar.UpdateHealthBar(maxHealth, health);
+        currentHealth -= damage;
+        healthbar.UpdateHealthBar(maxHealth, currentHealth);
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             Die();
             return;
         }
 
         StopAllCoroutines();
-        StartCoroutine(Blink(hurtDuration));
+        StartCoroutine(Blink());
     }
     #endregion
     #region Die y Blink
@@ -63,14 +56,14 @@ public class EnemyHealth : MonoBehaviour
 
         GetComponent<Collider2D>().enabled = false;
 
-        GameManager.Instance.DecreaseEnemiesLeft();
+        GameEvents.OnEnemyKilled?.Invoke();
 
         Destroy(gameObject, 0.4f);
     }
-    private IEnumerator Blink(float duration)
+    private IEnumerator Blink()
     {
         spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(hurtDuration);
         spriteRenderer.color = Color.white;
     }
     #endregion

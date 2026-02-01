@@ -59,13 +59,13 @@ GameObject:
   - component: {fileID: 9192591442328588734}
   - component: {fileID: 3807610730063845709}
   - component: {fileID: 8807481093431545083}
-  - component: {fileID: 9035305371267024141}
   - component: {fileID: 1888203903975209947}
+  - component: {fileID: 9035305371267024141}
   - component: {fileID: 3179595532864666990}
   - component: {fileID: 4802335326432593253}
   - component: {fileID: 3878950874321435869}
   - component: {fileID: 3298763503048843037}
-  - component: {fileID: 4472805687064932952}
+  - component: {fileID: 137677601231689470}
   m_Layer: 6
   m_Name: Character
   m_TagString: Untagged
@@ -165,6 +165,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &1888203903975209947
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3606116567028866560}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!70 &9035305371267024141
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -202,33 +229,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1.125, y: 1.875}
   m_Direction: 0
---- !u!50 &1888203903975209947
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3606116567028866560}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!114 &3179595532864666990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f4dd02c01a8be4f8f46efcb70b777f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4472805687064932952
+--- !u!114 &137677601231689470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,10 +289,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3606116567028866560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6955ced508801438a721682fb15d4e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6239a287187ce864eba995a0e3da7675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dieClip: {fileID: 0}
+  damageCooldown: 0.5
 --- !u!1 &6297515372331106032
 GameObject:
   m_ObjectHideFlags: 0

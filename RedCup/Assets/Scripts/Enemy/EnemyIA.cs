@@ -25,7 +25,6 @@ public class EnemyIA : MonoBehaviour
     {
         if(isStopped)
         {
-            Debug.Log("ENEMIGO DETENIDO: " + gameObject.name);
             animator.SetFloat("Speed",0f);
             return;
         }

@@ -7,14 +7,13 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float hurtDuration = 0.2f;
     private int health;
+    private bool isDead = false;
     [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private EnemyIA enemyIA;
     [Header("Healthbar")]
     [SerializeField] private Healthbar healthbar;
-    [Header("Si el enemigo esta muerto")]
-    private bool isDead = false;
 
     private void Awake()
     {
@@ -59,10 +58,13 @@ public class EnemyHealth : MonoBehaviour
         isDead = true;
 
         enemyIA.StopMovement();
+
         animator.SetTrigger("Die");
+
         GetComponent<Collider2D>().enabled = false;
 
         GameManager.Instance.DecreaseEnemiesLeft();
+
         Destroy(gameObject, 0.4f);
     }
     private IEnumerator Blink(float duration)

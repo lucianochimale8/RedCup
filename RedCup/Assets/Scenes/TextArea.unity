@@ -357,11 +357,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &229809492 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1439047130727946576, guid: 773d552959bfbf54281b2f01fa3ac279, type: 3}
-  m_PrefabInstance: {fileID: 2810146191355246059}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &265867348
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,7 +851,7 @@ PrefabInstance:
     - target: {fileID: 5149112609271958257, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: icon
       value: 
-      objectReference: {fileID: 229809492}
+      objectReference: {fileID: 0}
     - target: {fileID: 6412332509729791143, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_SortingOrder
       value: 10
@@ -1044,7 +1039,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7487664737721890170, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: enemiesPrewave
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7487664737721890170, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: spawnPoints.Array.size

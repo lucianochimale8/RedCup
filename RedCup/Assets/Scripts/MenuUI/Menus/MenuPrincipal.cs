@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class MenuPrincipal : UIPanel
@@ -9,6 +10,17 @@ public class MenuPrincipal : UIPanel
     [SerializeField] private Button btnCreditos;
     [SerializeField] private Button btnSalir;
     [SerializeField] private GestorUI gestorUI;
+
+    private void Awake()
+    {
+        gestorUI = FindFirstObjectByType<GestorUI>();
+
+        btnPlay.onClick.AddListener(() => SceneManager.LoadScene(1));
+        btnOpciones.onClick.AddListener(() => gestorUI.MostrarPaneles(1));
+        btnCreditos.onClick.AddListener(() => gestorUI.MostrarPaneles(2));
+        btnSalir.onClick.AddListener(gestorUI.Salir);
+    }
+
     public override void Mostrar()
     {
         gameObject.SetActive(true);
@@ -17,18 +29,6 @@ public class MenuPrincipal : UIPanel
             Debug.Log("error: gestor incompatible");
             return;
         }
-
-        btnPlay.onClick.RemoveAllListeners();
-        btnPlay.onClick.AddListener(() => gestorUI.MostrarPaneles(0));
-
-        btnOpciones.onClick.RemoveAllListeners();
-        btnOpciones.onClick.AddListener(()=>gestorUI.MostrarPaneles(1));
-
-        btnCreditos.onClick.RemoveAllListeners();
-        btnCreditos.onClick.AddListener(()=>gestorUI.MostrarPaneles(2));
-
-        btnSalir.onClick.RemoveAllListeners();
-        btnSalir.onClick.AddListener(()=>gestorUI.Salir());
     }
 
     public override void Ocultar()

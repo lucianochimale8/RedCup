@@ -8,8 +8,11 @@ public class PlayerInput : MonoBehaviour
 
     public bool ShootPressed { get; private set; }
 
+    public bool DropPressed { get; private set; }
+
     private void Update()
     {
+        // ejes verticales y horizontales
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         // solo este script puede escribir el movimiento
@@ -19,10 +22,15 @@ public class PlayerInput : MonoBehaviour
         // click derecho
         if (Input.GetMouseButtonDown(1))
             ShootPressed = true;
+        if (Input.GetKeyDown(KeyCode.G))
+            DropPressed = true;
     }
     public void ResetShoot()
     {
         ShootPressed = false;
     }
-
+    public void ResetDrop()
+    {
+        DropPressed = false;
+    }
 }

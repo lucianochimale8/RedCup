@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    [Header("Referencias")]
     private Animator animator;
-
     private void Awake()
     {
         animator = GetComponent<Animator>();

@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Referencias")]
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
-
+    [Header("Command")]
     private ICommand currentCommand;
     private ICommand shootCommand;
-
+    private ICommand dropCommand;
+    [Header("Weapon")]
     [SerializeField] private Wand wand;
+    [SerializeField] private PlayerWeaponController weaponController;
 
     private void Awake()
     {
@@ -18,13 +21,23 @@ public class PlayerController : MonoBehaviour
         playerAnimation = GetComponent<PlayerAnimation>();
 
         shootCommand = new ShootCommand(wand);
+        dropCommand = new DropWeaponCommand(weaponController);
     }
-
     private void Update()
     {
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
-
+        Movimiento();
+        Disparo();
+        Drop();
+    }
+    private void FixedUpdate()
+    {
+        currentCommand?.Execute();
+    }
+    #region Movimiento y Disparo del jugador
+    private void Movimiento()
+    {
         // movimiento
         Vector2 moveInput = playerInput.MoveInput;
 
@@ -36,19 +49,32 @@ public class PlayerController : MonoBehaviour
         {
             currentCommand = new MoveCommand(playerMovement, moveInput);
         }
+    }
+    private void Disparo()
+    {
+        if (!playerInput.ShootPressed)
+            return;
 
-        // disparo
-        if (playerInput.ShootPressed)
+        if (!weaponController.HasWand)
         {
-            shootCommand.Execute();
             playerInput.ResetShoot();
-            Debug.Log("PlayerController ejecuta ShootCommand");
+            return;
+        }
+
+        shootCommand.Execute();
+        playerInput.ResetShoot();
+    }
+    private void Drop()
+    {
+        if (playerInput.DropPressed)
+        {
+            dropCommand.Execute();
+            playerInput.ResetDrop();
         }
     }
-
-    private void FixedUpdate()
+    #endregion
+    public void StopPlayer()
     {
-        //playerMovement.Move(playerInput.MoveInput);
-        currentCommand?.Execute();
+        enabled = false;
     }
 }

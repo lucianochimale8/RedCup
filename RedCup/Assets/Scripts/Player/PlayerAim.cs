@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class PlayerAim : MonoBehaviour
 {
+    [Header("Aim")]
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float aimSpeed = 10f;
-
+    [Header("Camera")]
     private Camera cam;
+    [Header("Posicion del mouse")]
     private Vector2 mousePos;
 
     private void Start()

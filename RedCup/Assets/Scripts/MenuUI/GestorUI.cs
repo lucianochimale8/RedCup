@@ -11,6 +11,17 @@ public class GestorUI : MonoBehaviour
         OcultarPaneles();
         MostrarPaneles(0);
     }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // si no hay panel o no está en pausa ? pausar
+            if (Time.timeScale == 1)
+                MostrarPaneles(1); // MenuPausa
+            else
+                MostrarPaneles(0); // volver al juego
+        }
+    }
 
     public void MostrarPaneles(int index)
     {

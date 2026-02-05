@@ -1,13 +1,19 @@
-
 using UnityEngine;
+using UnityEngine.UI;
 
-public class MenuInicio : UIPanel
+public class MenuCreditos : UIPanel
 {
+    [SerializeField] private Button btnVolver;
     private GestorUI gestorUI;
 
     private void Awake()
     {
         gestorUI = FindFirstObjectByType<GestorUI>();
+
+        btnVolver.onClick.AddListener(() =>
+        {
+            gestorUI.MostrarPanel(PanelType.MenuPrincipal);
+        });
     }
 
     public override void Mostrar()
@@ -18,14 +24,5 @@ public class MenuInicio : UIPanel
     public override void Ocultar()
     {
         gameObject.SetActive(false);
-    }
-    private void Update()
-    {
-        if (!gameObject.activeSelf) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            gestorUI.MostrarPanel(PanelType.MenuPrincipal);
-        }
     }
 }

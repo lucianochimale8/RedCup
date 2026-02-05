@@ -1,44 +1,84 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GestorUI : MonoBehaviour
 {
-    [Header("Colocar paneles en orden")]
-    public UIPanel[] paneles;
+    [System.Serializable]
+    public class PanelEntry
+    {
+        public PanelType type;
+        public UIPanel panel;
+    }
+
+    [Header("Paneles registrados")]
+    [SerializeField] private List<PanelEntry> paneles;
+
+    private Dictionary<PanelType, UIPanel> panelDict;
     private UIPanel currentPanel;
+
+    private void Awake()
+    {
+        panelDict = new Dictionary<PanelType, UIPanel>();
+
+        foreach (var entry in paneles)
+        {
+            if (!panelDict.ContainsKey(entry.type))
+                panelDict.Add(entry.type, entry.panel);
+        }
+    }
 
     public void Start()
     {
-        OcultarPaneles();
-        MostrarPaneles(0);
-    }
+        Time.timeScale = 1f;
+        OcultarTodos();
 
-    public void MostrarPaneles(int index)
-    { 
-        if (index < 0 || index >= paneles.Length) 
-        { 
-            Debug.Log("error: incorrect index");
-        } 
-        if (currentPanel != null)
+        // SOLO para la escena de menú
+        if (panelDict.ContainsKey(PanelType.MenuInicio))
         {
-            currentPanel.Ocultar();
-        } 
-        paneles[index].Mostrar();
-        currentPanel = paneles[index];
+            MostrarPanel(MenuStartup.panelInicial);
+        }
+
+        //MenuStartup.panelInicial = PanelType.MenuInicio;
     }
-    public void OcultarPaneles()
+    private void Update()
     {
-        for (int i = 0; i < paneles.Length; i++)
+        // SOLO para escenas con pausa
+        if (!panelDict.ContainsKey(PanelType.Pausa)) return;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            paneles[i].Ocultar();
+            if (Time.timeScale == 1)
+                MostrarPanel(PanelType.Pausa);
+            else
+                MostrarPanel(PanelType.HUD);
         }
     }
-    public void Salir()
+
+    public void MostrarPanel(PanelType type)
     {
+        if (!panelDict.ContainsKey(type))
+        {
+            Debug.LogError("Panel no registrado: " + type);
+            return;
+        }
+
+        if (currentPanel != null)
+            currentPanel.Ocultar();
+
+        currentPanel = panelDict[type];
+        currentPanel.Mostrar();
+    }
+    public void OcultarTodos()
+    {
+        foreach (var panel in panelDict.Values)
+            panel.Ocultar();
+    }
+    public void Salir()
+    { 
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else
         Application.Quit();
         #endif
-        //Application.Quit();
     }
 }

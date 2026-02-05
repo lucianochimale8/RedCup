@@ -15,7 +15,7 @@ public class MenuPrincipal : UIPanel
     {
         gestorUI = FindFirstObjectByType<GestorUI>();
 
-        btnPlay.onClick.AddListener(() => SceneManager.LoadScene(1));
+        btnPlay.onClick.AddListener(() => SceneManager.LoadScene("TextArea"));
         btnOpciones.onClick.AddListener(() => gestorUI.MostrarPaneles(1));
         btnCreditos.onClick.AddListener(() => gestorUI.MostrarPaneles(2));
         btnSalir.onClick.AddListener(gestorUI.Salir);

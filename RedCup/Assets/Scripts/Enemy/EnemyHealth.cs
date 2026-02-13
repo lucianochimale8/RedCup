@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyHealth : MonoBehaviour , IDamageable
+public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Vida Enemigo")]
     [SerializeField] private int maxHealth = 3;

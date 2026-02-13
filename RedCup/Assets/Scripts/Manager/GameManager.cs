@@ -8,12 +8,24 @@ public class GameManager : MonoBehaviour
     [Header("Vidas")]
     [SerializeField] private int startingLives = 3;
     [SerializeField] private TMP_Text livesText;
-    private int lives;
+    private int lives; 
 
+    [Header("Niveles")]
+    [SerializeField] private string escenaFinal = "Win";
+
+    [Header("Enemigos restantes y Waves")]
     private int enemiesLeft;
     private bool allWavesSpawned;
 
+    [Header("Collect Key y Altar destruido")]
+    private bool altarDestroyed;
+    private bool keyCollected;
+
+    [Header("UI Nivel")]
+    [SerializeField] private GameObject levelCompleteText;
+
     public int Lives => lives;
+    public bool AllEnemiesDead => altarDestroyed && keyCollected && enemiesLeft <= 0 && allWavesSpawned;
     public bool IsPlayerDead { get; private set; }
 
     public static GameManager Instance { get; private set; }
@@ -34,6 +46,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         lives = startingLives;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnEnable()
@@ -43,6 +61,8 @@ public class GameManager : MonoBehaviour
         GameEvents.OnPlayerHit += OnPlayerHit;
         GameEvents.OnPlayerDied += OnPlayerDied;
         GameEvents.OnEnemyKilled += OnEnemyKilled;
+        GameEvents.OnKeyCollected += OnKeyColleted;
+
     }
 
     private void OnDisable()
@@ -50,12 +70,92 @@ public class GameManager : MonoBehaviour
         GameEvents.OnPlayerHit -= OnPlayerHit;
         GameEvents.OnPlayerDied -= OnPlayerDied;
         GameEvents.OnEnemyKilled -= OnEnemyKilled;
+        GameEvents.OnKeyCollected -= OnKeyColleted;
     }
 
     private void Start()
     {
         ResetWaves();
         UpdateLivesText();
+    }
+
+    #endregion
+
+    #region Scene Loaded
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        TMP_Text[] texts = FindObjectsByType<TMP_Text>(FindObjectsSortMode.None);
+
+        foreach (TMP_Text txt in texts)
+        {
+            if (txt.name == "LivesText")
+            {
+                livesText = txt;
+                break;
+            }
+        }
+
+        ResetLevelState();
+        UpdateLivesText();
+    }
+
+    #endregion
+
+    #region Level State
+
+    public void TryExitLevel()
+    {
+        Debug.Log("Intentando salir del nivel...");
+
+        if (AllEnemiesDead)
+        {
+            Debug.Log("Nivel completado!");
+            LoadNextLevel();
+        }
+        else
+        {
+            Debug.Log("No podés salir todavía. faltan:" + enemiesLeft);
+        }
+    }
+
+    private void CheckIfLevelCanBeCompleted()
+    {
+        if (keyCollected && enemiesLeft <= 0 && allWavesSpawned)
+        {
+            if (levelCompleteText != null)
+                levelCompleteText.SetActive(true);
+        }
+    }
+
+    public void OnAltarDestroyed()
+    {
+        Debug.Log("Altar destruido! - enemigos cercanos eliminados");
+
+        StopEnemiesSpawn();
+
+        enemiesLeft = 0;
+
+        altarDestroyed = true;
+        allWavesSpawned = true;
+    }
+
+    private void OnKeyColleted()
+    {
+        Debug.Log("Llave recolecatada!");
+        keyCollected = true;
+        CheckIfLevelCanBeCompleted();
+    }
+
+    private void ResetLevelState()
+    {
+        Debug.Log("Se reseteo el level state");
+
+        altarDestroyed = false;
+        keyCollected = false;
+
+        if (levelCompleteText != null)
+            levelCompleteText.SetActive(false);
     }
 
     #endregion
@@ -110,10 +210,7 @@ public class GameManager : MonoBehaviour
 
         enemiesLeft--;
 
-        if (enemiesLeft <= 0 && allWavesSpawned)
-        {
-            LoadNextScene();
-        }
+        CheckIfLevelCanBeCompleted();
     }
 
     public void IncreaseEnemiesLeft()
@@ -145,22 +242,26 @@ public class GameManager : MonoBehaviour
 
         if (lives > 0)
         {
+            ResetWaves();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
         {
-            lives = startingLives;
-            ResetGame();
+            StartCoroutine(GameOverRoutine());
         }
     }
-
-    private void ResetGame()
+    private IEnumerator GameOverRoutine()
     {
-        SceneManager.LoadScene(0);
-        Destroy(gameObject);
+        yield return new WaitForSeconds(1f);
 
-        if (AudioManager.Instance != null)
-            Destroy(AudioManager.Instance.gameObject);
+        lives = startingLives;
+
+        IsPlayerDead = false;
+
+        ResetWaves();
+        ResetLevelState();
+
+        SceneManager.LoadScene(0); // Menu principal
     }
 
     #endregion
@@ -196,12 +297,21 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Scene Management
+    #region Level Progression
 
-    private void LoadNextScene()
+    private void LoadNextLevel()
     {
-        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(nextScene);
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextIndex = currentIndex + 1;
+
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene(escenaFinal);
+        }
     }
 
     #endregion

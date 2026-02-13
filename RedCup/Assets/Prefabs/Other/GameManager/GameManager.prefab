@@ -285,3 +285,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingLives: 3
   livesText: {fileID: 9120470032568572328}
+  escenaFinal: Win

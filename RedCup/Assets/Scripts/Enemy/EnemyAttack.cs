@@ -6,8 +6,11 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Solo dañar al Player
-        // if (!collision.gameObject.CompareTag("Player")) return;
+        // Para solo reconocer al player
+        // que no los enemigos no dañen los altares ya q comparten interfaz
+        
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+
 
         Debug.Log("Enemy colisionó con: " + collision.gameObject.name);
 
@@ -16,7 +19,7 @@ public class EnemyAttack : MonoBehaviour
         if (damageable != null)
         {
             Debug.Log("Enemy hizo daño");
-            damageable.TakeDamage(damage);
+            damageable?.TakeDamage(damage);
         }
     }
 }

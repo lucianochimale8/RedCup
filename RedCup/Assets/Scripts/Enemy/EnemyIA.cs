@@ -30,7 +30,6 @@ public class EnemyIA : MonoBehaviour
             animator.SetFloat("Speed",0f);
             return;
         }
-        //Follow();
         Flip();
         UpdateAnimation();
     }
@@ -42,9 +41,6 @@ public class EnemyIA : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        // Calculamos velocidad real
-        //Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
-
         animator.SetFloat("Speed", rb.linearVelocity.magnitude);
         lastPosition = transform.position;
     }
@@ -55,11 +51,6 @@ public class EnemyIA : MonoBehaviour
             ((Vector2)playerTransform.position - rb.position).normalized;
         
         rb.linearVelocity = playerDirection * speed;
-
-       //rb.MovePosition(rb.position + playerDirection * speed * Time.fixedDeltaTime);
-
-        // Translate hacia que los enemigos ignoren las fisicas y traspasen las paredes
-        //transform.Translate(playerDirection * speed * Time.deltaTime);
     }
     private void Flip()
     {

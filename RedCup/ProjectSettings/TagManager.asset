@@ -15,7 +15,7 @@ TagManager:
   - Player
   - Enemy
   - Projectile
-  - 
+  - AltarEnemy
   - 
   - 
   - 
@@ -48,9 +48,6 @@ TagManager:
   - name: Walls
     uniqueID: 2662887311
     locked: 0
-  - name: Characters
-    uniqueID: 4170791981
-    locked: 0
   - name: Objects
     uniqueID: 2560535393
     locked: 0
@@ -59,6 +56,9 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 2932846017
+    locked: 0
+  - name: Characters
+    uniqueID: 4170791981
     locked: 0
   - name: UI_word
     uniqueID: 1461898155

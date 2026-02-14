@@ -7,6 +7,7 @@ public class EnemyIA : MonoBehaviour
     [Header("Referencias")]
     private Transform playerTransform;
     private Animator animator;
+    private Rigidbody2D rb;
     [Header("Banderas")]
     private bool isFacingRight = false;
     private bool isStopped = false;
@@ -17,6 +18,7 @@ public class EnemyIA : MonoBehaviour
     {
         playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
 
         lastPosition = transform.position;
     }
@@ -28,23 +30,36 @@ public class EnemyIA : MonoBehaviour
             animator.SetFloat("Speed",0f);
             return;
         }
-        Follow();
+        //Follow();
         Flip();
         UpdateAnimation();
     }
+    // para control de fisicas FixedUpdate
+    private void FixedUpdate()
+    {
+        Follow();
+    }
+
     private void UpdateAnimation()
     {
         // Calculamos velocidad real
-        Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
+        //Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
 
-        animator.SetFloat("Speed", velocity.magnitude);
+        animator.SetFloat("Speed", rb.linearVelocity.magnitude);
         lastPosition = transform.position;
     }
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
-        Vector2 playerDirection = (playerTransform.position - transform.position).normalized;
-        transform.Translate(playerDirection * speed * Time.deltaTime);
+        Vector2 playerDirection =
+            ((Vector2)playerTransform.position - rb.position).normalized;
+        
+        rb.linearVelocity = playerDirection * speed;
+
+       //rb.MovePosition(rb.position + playerDirection * speed * Time.fixedDeltaTime);
+
+        // Translate hacia que los enemigos ignoren las fisicas y traspasen las paredes
+        //transform.Translate(playerDirection * speed * Time.deltaTime);
     }
     private void Flip()
     {

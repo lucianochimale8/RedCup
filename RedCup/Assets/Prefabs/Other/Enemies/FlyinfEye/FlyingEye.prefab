@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4874648550343568514}
   - component: {fileID: 993048906059189667}
   - component: {fileID: 627108519955492744}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlyingEye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,14 +124,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5421031188515179836}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

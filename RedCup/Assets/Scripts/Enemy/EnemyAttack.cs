@@ -6,17 +6,17 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Solo dañar al Player
+        // if (!collision.gameObject.CompareTag("Player")) return;
+
         Debug.Log("Enemy colisionó con: " + collision.gameObject.name);
+
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
 
         if (damageable != null)
         {
             Debug.Log("Enemy hizo daño");
             damageable.TakeDamage(damage);
-        }
-        else
-        {
-            Debug.Log("NO encontró IDamageable");
         }
     }
 }

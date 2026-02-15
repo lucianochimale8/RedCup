@@ -7,6 +7,7 @@ public class LevelKey : MonoBehaviour
         if (!collision.CompareTag("Player")) return;
         
         GameEvents.OnKeyCollected?.Invoke();
+        LevelObjectiveManager.Instance.OnKeyCollected();
         Destroy(gameObject);
         
     }

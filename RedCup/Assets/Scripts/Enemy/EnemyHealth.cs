@@ -69,6 +69,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         GameEvents.OnEnemyKilled?.Invoke();
 
+        LevelObjectiveManager.Instance.RegisterEnemyDeath();
+
         if (gameObject.CompareTag("EnemyAfk"))
             gameObject.SetActive(false);
 

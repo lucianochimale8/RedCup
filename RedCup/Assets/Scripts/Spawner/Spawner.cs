@@ -50,8 +50,9 @@ public class Spawner : MonoBehaviour
                 enemy.SetActive(true);
 
                 enemy.GetComponent<EnemyHealth>().SetSpawner(this);
-                
-                GameManager.Instance.IncreaseEnemiesLeft();
+
+                //GameManager.Instance.IncreaseEnemiesLeft();
+                LevelObjectiveManager.Instance.RegisterEnemySpawn();
             }
 
             if (i < waves - 1)
@@ -59,7 +60,8 @@ public class Spawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
-        GameManager.Instance.SetAllWavesSpawned();
+        //GameManager.Instance.SetAllWavesSpawned();
+        LevelObjectiveManager.Instance.SetAllWavesSpawned();
     }
 
     private GameObject GetEnemyFromPool()

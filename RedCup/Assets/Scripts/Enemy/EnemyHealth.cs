@@ -18,6 +18,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
 
+    private Spawner spawner;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,6 +27,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         enemyIA = GetComponent<EnemyIA>();
 
         currentHealth = maxHealth;
+    }
+
+    private void OnEnable()
+    {
+        ResetEnemy();
+    }
+    public void SetSpawner(Spawner owner)
+    {
+        spawner = owner;
     }
 
     #region Tomar daño
@@ -58,7 +69,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         GameEvents.OnEnemyKilled?.Invoke();
 
-        Destroy(gameObject, 0.4f);
+        if (gameObject.CompareTag("EnemyAfk"))
+            gameObject.SetActive(false);
+
+        if (gameObject.CompareTag("Enemy"))
+            spawner.ReturnEnemyToPool(gameObject);
     }
     private IEnumerator Blink()
     {
@@ -66,5 +81,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(hurtDuration);
         spriteRenderer.color = Color.white;
     }
+    #endregion
+    #region Reset del enemigo
+
+    public void ResetEnemy()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
+    }
+
     #endregion
 }

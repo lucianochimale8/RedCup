@@ -1,16 +1,32 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     [Header("Enemigo")]
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private Transform enemiesParent;
     [Header("Spawn Points")]
     [SerializeField] private Transform[] spawnPoints;
     [Header("Waves")]
     [SerializeField] private int enemiesPrewave, waves;
     [Header("Times")]
     [SerializeField] private float timeBetweenSpawns, timeBetweenWaves;
+    [Header("Pool")]
+    [SerializeField] private int initialPoolSize = 10;
+
+    private Queue<GameObject> pool = new Queue<GameObject>();
+
+    private void Awake()
+    {
+        for (int i = 0; i < initialPoolSize; i++)
+        {
+            GameObject enemy = Instantiate(enemyPrefab, enemiesParent);
+            enemy.SetActive(false);
+            pool.Enqueue(enemy);
+        }
+    }
     void Start()
     {
         StartCoroutine(Spawn());
@@ -24,8 +40,17 @@ public class Spawner : MonoBehaviour
             for (int j = 0; j < enemiesPrewave; j++)
             {
                 yield return new WaitForSeconds(timeBetweenSpawns);
-                int randomIndex = Random.Range(0, spawnPoints.Length);
-                Instantiate(enemyPrefab, spawnPoints[randomIndex].position, Quaternion.identity);
+
+                int index = j % spawnPoints.Length;
+
+                // agregar enemy pool
+                GameObject enemy = GetEnemyFromPool();
+                enemy.transform.position = spawnPoints[index].position;
+                enemy.transform.SetParent(enemiesParent);
+                enemy.SetActive(true);
+
+                enemy.GetComponent<EnemyHealth>().SetSpawner(this);
+                
                 GameManager.Instance.IncreaseEnemiesLeft();
             }
 
@@ -35,5 +60,24 @@ public class Spawner : MonoBehaviour
             }
         }
         GameManager.Instance.SetAllWavesSpawned();
+    }
+
+    private GameObject GetEnemyFromPool()
+    {
+        if (pool.Count > 0)
+        {
+            return pool.Dequeue();
+        }
+        else
+        {
+            GameObject enemy = Instantiate(enemyPrefab, transform);
+            return enemy;
+        }
+    }
+
+    public void ReturnEnemyToPool(GameObject enemy)
+    {
+        enemy.SetActive(false);
+        pool.Enqueue(enemy);
     }
 }

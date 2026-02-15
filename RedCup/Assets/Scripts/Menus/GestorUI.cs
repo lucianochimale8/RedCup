@@ -43,7 +43,7 @@ public class GestorUI : MonoBehaviour
     private void Update()
     {
         // SOLO para escenas con pausa
-        if (!panelDict.ContainsKey(PanelType.Pausa)) return;
+        //if (!panelDict.ContainsKey(PanelType.Pausa)) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

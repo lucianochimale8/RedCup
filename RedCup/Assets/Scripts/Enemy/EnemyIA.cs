@@ -11,16 +11,12 @@ public class EnemyIA : MonoBehaviour
     [Header("Banderas")]
     private bool isFacingRight = false;
     private bool isStopped = false;
-    [Header("Ultima posicion del jugador")]
-    private Vector2 lastPosition;
 
     private void Start()
     {
         playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
-        lastPosition = transform.position;
     }
 
     private void Update()
@@ -42,8 +38,8 @@ public class EnemyIA : MonoBehaviour
     private void UpdateAnimation()
     {
         animator.SetFloat("Speed", rb.linearVelocity.magnitude);
-        lastPosition = transform.position;
     }
+
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {

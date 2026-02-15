@@ -12,11 +12,13 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     [Header("Referencias")]
     private Animator animator;
     private PlayerMovement movement;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
+        rb = GetComponent<Rigidbody2D>();
     }   
     #region Damage and Die
     public void TakeDamage(int amount)
@@ -51,6 +53,13 @@ public class PlayerHealth : MonoBehaviour , IDamageable
 
         if (movement != null)
             movement.enabled = false;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero; // frena movimiento
+            rb.angularVelocity = 0f;
+            rb.bodyType = RigidbodyType2D.Kinematic; // opcional, lo congela totalmente
+        }
 
         animator.SetTrigger("Die");
         GameEvents.RaisePlayerDied();

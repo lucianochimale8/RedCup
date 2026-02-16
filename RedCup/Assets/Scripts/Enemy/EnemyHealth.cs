@@ -67,9 +67,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         GetComponent<Collider2D>().enabled = false;
 
-        GameEvents.OnEnemyKilled?.Invoke();
-
-        LevelObjectiveManager.Instance.RegisterEnemyDeath();
+        GameEvents.RaiseEnemyKilled();
 
         if (gameObject.CompareTag("EnemyAfk"))
             gameObject.SetActive(false);

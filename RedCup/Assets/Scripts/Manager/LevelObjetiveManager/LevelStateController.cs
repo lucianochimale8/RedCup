@@ -2,45 +2,61 @@ using UnityEngine;
 
 public class LevelStateController : MonoBehaviour
 {
+    // Singleton
     public static LevelStateController Instance { get; private set; }
+    // Para parar a los enemigos
+    private bool isStopped;
 
+    #region Unity Lifecycle
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnLevelStopped += StopLevel;
     }
 
+    private void OnDisable()
+    {
+        GameEvents.OnLevelStopped -= StopLevel;
+    }
+    #endregion
+
+    #region Stop & Resume Enemies
+    /// <summary>
+    /// Metodo para frenar a todos los enemigos
+    /// </summary>
     public void StopLevel()
     {
-        StopEnemiesMovement();
-        StopSpawners();
-        StopPlayer();
-    }
+        isStopped = true;
 
-    private void StopEnemiesMovement()
-    {
+        GameEvents.LevelStopped();
+
         EnemyIA[] enemies = FindObjectsByType<EnemyIA>(FindObjectsSortMode.None);
 
-        foreach (EnemyIA enemy in enemies)
-        {
+        foreach (var enemy in enemies)
             enemy.StopMovement();
-        }
     }
-
-    private void StopSpawners()
+    /// <summary>
+    /// Funcionamiento normal
+    /// </summary>
+    public void ResumeLevel()
     {
-        Spawner[] spawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+        isStopped = false;
 
-        foreach (Spawner spawner in spawners)
-        {
-            spawner.StopAllCoroutines();
-        }
+        GameEvents.LevelResumed();
+
+        EnemyIA[] enemies = FindObjectsByType<EnemyIA>(FindObjectsSortMode.None);
+
+        foreach (var enemy in enemies)
+            enemy.ResumeMovement();
     }
 
-    private void StopPlayer()
-    {
-        PlayerController player = FindFirstObjectByType<PlayerController>();
+    public bool IsStopped => isStopped;
 
-        if (player != null)
-            player.StopPlayer();
-    }
+    #endregion
 }

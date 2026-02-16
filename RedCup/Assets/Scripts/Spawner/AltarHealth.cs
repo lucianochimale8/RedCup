@@ -16,18 +16,22 @@ public class AltarHealth : MonoBehaviour , IDamageable
     [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
 
+    private bool isDead;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-
         currentHealth = maxHealth;
     }
 
     public void TakeDamage(int amount)
     {
-        currentHealth -= amount;
+        if (isDead) return;
 
-        healthbar.UpdateHealthBar(maxHealth, currentHealth);
+        currentHealth -= amount;
+        
+        if (healthbar != null)
+            healthbar.UpdateHealthBar(maxHealth, currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -41,14 +45,14 @@ public class AltarHealth : MonoBehaviour , IDamageable
 
     private void Die()
     {
+        isDead = true;
+
         if (dropPrefab != null)
         {
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
         }
 
-        GameEvents.OnAltarDestroyed?.Invoke();
-
-        GameManager.Instance.OnAltarDestroyed();
+        GameEvents.RaiseAltarDestroyed();
 
         Destroy(transform.parent.gameObject);
     }

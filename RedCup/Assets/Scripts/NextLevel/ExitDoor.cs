@@ -1,14 +1,21 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ExitDoor : MonoBehaviour
 {
+    [SerializeField] private int nextSceneIndex = 1;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Entraste en rango de la Exit Door");
+        if (!collision.CompareTag("Player")) return;
 
-        if (collision.CompareTag("Player"))
+        if (LevelObjectiveManager.Instance != null &&
+            LevelObjectiveManager.Instance.CanExitLevel())
         {
-            GameManager.Instance.TryExitLevel();
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.Log("No cumpliste los objetivos del nivel.");
         }
     }
 }

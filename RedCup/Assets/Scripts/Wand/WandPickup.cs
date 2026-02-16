@@ -3,6 +3,10 @@ using UnityEngine;
 public class WandPickup : MonoBehaviour
 {
     /// <summary>
+    /// Referencia al weapon controller del jugador
+    /// </summary>
+    private PlayerWeaponController playerWeapon;
+    /// <summary>
     /// Referencia al Player Interact UI
     /// </summary>
     private PlayerInteractUI interactUI;
@@ -26,6 +30,7 @@ public class WandPickup : MonoBehaviour
         {
             canPick = true;
             interactUI?.Show();
+            playerWeapon = col.GetComponentInParent<PlayerWeaponController>();
         }     
     }
     /// <summary>
@@ -38,6 +43,7 @@ public class WandPickup : MonoBehaviour
         {
             canPick = false;
             interactUI?.Hide();
+            playerWeapon = null;
         }
             
     }
@@ -48,7 +54,7 @@ public class WandPickup : MonoBehaviour
     {
         if (canPick && Input.GetKeyDown(KeyCode.E))
         {
-            FindAnyObjectByType<PlayerWeaponController>().EquipWand();
+            playerWeapon?.EquipWand();
             Destroy(gameObject);
         }
     }

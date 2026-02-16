@@ -35,7 +35,7 @@ public class Spawner : MonoBehaviour
         // este bucle for exterior hace esa accion de instanciar 3 enemigos se instancie por oleadas
         for (int i = 0; i < waves; i++)
         {
-            // este bucle for interno, instancia 3 enemios
+            // este bucle for interno, instancia 3 enemigos
             for (int j = 0; j < enemiesPrewave; j++)
             {
                 yield return new WaitForSeconds(timeBetweenSpawns);

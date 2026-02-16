@@ -25,11 +25,30 @@ public class PlayerController : MonoBehaviour
         shootCommand = new ShootCommand(wand);
         dropCommand = new DropWeaponCommand(weaponController);
     }
+    #region Event Stop Movement
     private void OnEnable()
     {
-        GameEvents.OnLevelStopped += () => isStopped = true;
-        GameEvents.OnLevelResumed += () => isStopped = false;
+        GameEvents.OnLevelStopped += HandleLevelStopped;
+        GameEvents.OnLevelResumed += HandleLevelResumed;
     }
+
+    private void OnDisable()
+    {
+        GameEvents.OnLevelStopped -= HandleLevelStopped;
+        GameEvents.OnLevelResumed -= HandleLevelResumed;
+    }
+
+    private void HandleLevelStopped()
+    {
+        isStopped = true;
+    }
+
+    private void HandleLevelResumed()
+    {
+        isStopped = false;
+    }
+
+    #endregion
     private void Update()
     {
         if (Time.timeScale == 0) return;
@@ -65,7 +84,7 @@ public class PlayerController : MonoBehaviour
         if (!playerInput.ShootPressed)
             return;
 
-        if (!weaponController.HasWand)
+        if (!GameManager.Instance.HasWand)
         {
             playerInput.ResetShoot();
             return;

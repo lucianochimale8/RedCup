@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     // Propiedades
     public int Lives => currentLives;
     public bool IsPlayerDead => isPlayerDead;
+    // Estado del arma
+    public bool HasWand { get; private set; }
+    // Para definir en que nivel ya empieza con el arma
+    [SerializeField] private bool startWithWand;
 
     #region Unity Lifecycle
 
@@ -34,6 +38,8 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        HasWand = startWithWand;
     }
     /// <summary>
     /// Eventos
@@ -64,7 +70,7 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
 
-        Debug.Log("se quito una vida");
+        Debug.Log("Jugador se quito una vida");
 
         currentLives--;
         UpdateLivesUI();
@@ -90,7 +96,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private IEnumerator RestartLevel()
     {
-        Debug.Log("Restart");
+        Debug.Log("Restart de level");
 
         GameEvents.LevelStopped();
 
@@ -130,6 +136,7 @@ public class GameManager : MonoBehaviour
         currentLives = startingLives;
         isGameOver = false;
         isPlayerDead = false;
+        HasWand = false;
     }
     #endregion
 
@@ -142,5 +149,13 @@ public class GameManager : MonoBehaviour
         if (livesText != null)
             livesText.text = $"Lives: {currentLives}";
     }
+    #endregion
+
+    #region Wand
+    public void SetWand(bool value)
+    {
+        HasWand = value;
+    }
+
     #endregion
 }

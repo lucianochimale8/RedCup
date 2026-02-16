@@ -8,18 +8,18 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject wandPickupPrefab;
     [Header("Punto del drop")]
     [SerializeField] private Transform dropPoint;
-    /// <summary>
-    /// Referencia para saber si tiene o no el arma
-    /// </summary>
-    public bool HasWand { get; private set; }
     private void Start()
     {
         wand.gameObject.SetActive(false);
-        HasWand = false;
+        // Si el GameManager dice que tiene arma, la equipa
+        if (GameManager.Instance.HasWand)
+        {
+            EquipVisual();
+        }
     }
     private void Update()
     {
-        if (HasWand && Input.GetKeyDown(KeyCode.G))
+        if (GameManager.Instance.HasWand && Input.GetKeyDown(KeyCode.G))
         {
             DropWand();
         }
@@ -27,24 +27,34 @@ public class PlayerWeaponController : MonoBehaviour
     /// <summary>
     /// Equip
     /// </summary>
+    // Metodo para equipar el arma y avisar que fue recogida
     public void EquipWand()
     {
-        if (HasWand) return;
+        if (GameManager.Instance.HasWand) return;
 
-        HasWand = true;
+        GameManager.Instance.SetWand(true);
+        EquipVisual();
+    }
+    // Metodo para lo visual
+    private void EquipVisual()
+    {
         wand.Equip();
     }
     /// <summary>
     /// Drop
     /// </summary>
     public void DropWand()
-    { 
+    {
+        // Si no tiene un arma el jugador, retornar
+        if (!GameManager.Instance.HasWand) return;
+
         Instantiate(
             wandPickupPrefab,
             dropPoint.position,
             Quaternion.identity
         );
+
         wand.Unequip();
-        HasWand = false;
+        GameManager.Instance.SetWand(false);
     }
 }

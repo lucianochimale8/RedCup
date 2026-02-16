@@ -49,21 +49,25 @@ public class LevelObjectiveManager : MonoBehaviour
     #region Register Events
     private void RegisterEnemyKilled()
     {
+        Debug.Log("regristramos un enemigo muerto");
         enemiesKilled++;
         CheckCompletion();
     }
     private void RegisterAllWavesSpawned()
     {
+        Debug.Log("Registramos all wave spawned");
         allWavesSpawned = true;
         CheckCompletion();
     }
     private void RegisterKeyCollected()
     {
+        Debug.Log("haz obtenido una llave");
         keyCollected = true;
         CheckCompletion();
     }
     private void RegisterAltarDestroyed()
     {
+        Debug.Log("haz destruido un altar");
         altarDestroyed = true;
         CheckCompletion();
     }

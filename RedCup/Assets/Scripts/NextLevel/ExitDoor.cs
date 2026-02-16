@@ -11,6 +11,7 @@ public class ExitDoor : MonoBehaviour
         if (LevelObjectiveManager.Instance != null &&
             LevelObjectiveManager.Instance.CanExitLevel())
         {
+            nextSceneIndex++;
             SceneManager.LoadScene(nextSceneIndex);
         }
         else

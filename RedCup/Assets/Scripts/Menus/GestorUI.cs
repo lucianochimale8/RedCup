@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GestorUI : MonoBehaviour
 {
@@ -32,13 +33,14 @@ public class GestorUI : MonoBehaviour
         Time.timeScale = 1f;
         OcultarTodos();
 
+        string sceneName = SceneManager.GetActiveScene().name;
+        Debug.Log("Escena actual: " + sceneName);
+
         // SOLO para la escena de menú
         if (panelDict.ContainsKey(PanelType.MenuInicio))
         {
             MostrarPanel(MenuStartup.panelInicial);
         }
-
-        //MenuStartup.panelInicial = PanelType.MenuInicio;
     }
     private void Update()
     {

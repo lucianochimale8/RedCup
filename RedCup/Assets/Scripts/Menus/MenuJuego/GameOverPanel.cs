@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameOverPanel : UIPanel
 {
     [SerializeField] private Button volverInicio;
+    public static string MENU_SCENE = "MenuUI";
 
     private void Awake()
     {
@@ -12,26 +13,30 @@ public class GameOverPanel : UIPanel
 
         if (volverInicio != null)
             volverInicio.onClick.AddListener(VolverAlMenu);
-        else
-            Debug.LogError("Botón VolverInicio no asignado en GameOverPanel");
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnPlayerDied += Mostrar;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnPlayerDied -= Mostrar;
     }
 
     public override void Mostrar()
     {
-        //Time.timeScale = 0f; // Pausa el juego cuando aparece
         gameObject.SetActive(true);
     }
 
     public override void Ocultar()
     { 
-        //Time.timeScale = 1f; // Reanuda si se oculta
         gameObject.SetActive(false);
     }
 
     // Botón Volver al Menú
     public void VolverAlMenu()
     {
-        //Time.timeScale = 1f;
-        SceneManager.LoadScene("MenuUI");
+        SceneManager.LoadScene(MENU_SCENE);
     }
 }

@@ -4,9 +4,10 @@ using System;
 public class GameEvents : MonoBehaviour
 {
     // PLAYER
-    public static Action OnPlayerDied;
     public static Action OnPlayerHit;
-    
+    public static Action<int> OnLivesChanged;
+    public static Action OnPlayerDied;
+
     // ENEMY
     public static Action OnEnemyKilled;
     public static Action OnAllWavesSpawned;
@@ -33,5 +34,6 @@ public class GameEvents : MonoBehaviour
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
     public static void LevelStopped() => OnLevelStopped?.Invoke();
     public static void LevelResumed() => OnLevelResumed?.Invoke();
+    public static void RaiseLivesChanged(int lives) => OnLivesChanged?.Invoke(lives);
     #endregion
 }

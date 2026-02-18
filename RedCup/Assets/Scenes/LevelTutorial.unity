@@ -27776,9 +27776,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1586542727432147063}
-  - component: {fileID: 8563359702211988042}
   m_Layer: 0
-  m_Name: GestorUI
+  m_Name: LevelUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29190,25 +29189,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &8563359702211988042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2344782056850278494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c27abf00db8bd2e4ea39334442d53bd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paneles:
-  - type: 4
-    panel: {fileID: 184590734720311692}
-  - type: 5
-    panel: {fileID: 6832818933054803406}
-  - type: 6
-    panel: {fileID: 9101542145013280117}
 --- !u!1 &8778155024685735023
 GameObject:
   m_ObjectHideFlags: 0

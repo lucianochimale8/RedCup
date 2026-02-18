@@ -2,16 +2,11 @@
 
 public class LevelObjectiveManager : MonoBehaviour
 {
-    // Singleton
-    public static LevelObjectiveManager Instance { get; private set; }
-
     [Header("Objetivos del Nivel")]
     // Cuantos enemigos se requieren para completar el nivel
     [SerializeField] private int enemiesRequired;
     [SerializeField] private bool requireKey = true;
     [SerializeField] private bool requireAltar = true;
-    // Texto de nivel completado
-    [SerializeField] private GameObject levelCompleteUI;
     // Cuantos enemigos fueron destruido
     private int enemiesKilled;
     // Si la llave fue recogida
@@ -20,15 +15,9 @@ public class LevelObjectiveManager : MonoBehaviour
     private bool allWavesSpawned;
     // Si los altares fueron destruidos
     private bool altarDestroyed;
+    private bool levelAlreadyCompleted;
 
     #region Unity Lifecycle
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
     private void OnEnable()
     {
         GameEvents.OnEnemyKilled += RegisterEnemyKilled;
@@ -79,6 +68,9 @@ public class LevelObjectiveManager : MonoBehaviour
     /// </summary>
     private void CheckCompletion()
     {
+        if (levelAlreadyCompleted)
+            return;
+
         if (CanExitLevel())
         {
             LevelCompleted();
@@ -102,8 +94,7 @@ public class LevelObjectiveManager : MonoBehaviour
     {
         Debug.Log("Nivel Completado");
 
-        if (levelCompleteUI != null)
-            levelCompleteUI.SetActive(true);
+        levelAlreadyCompleted = true;
 
         GameEvents.RaiseLevelCompleted();
     }

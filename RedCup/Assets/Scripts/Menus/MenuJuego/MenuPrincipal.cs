@@ -10,6 +10,8 @@ public class MenuPrincipal : UIPanel
     [SerializeField] private Button btnSalir;
     [SerializeField] private Button btnInicio;
 
+    public static string TUTORIAL_SCENE = "LevelTutorial";
+
     private GestorUI gestorUI;
 
     private void Awake()
@@ -43,7 +45,7 @@ public class MenuPrincipal : UIPanel
     {
         MenuStartup.panelInicial = PanelType.HUD;
         
-        SceneManager.LoadScene("LevelTutorial");
+        SceneManager.LoadScene(TUTORIAL_SCENE);
 
         GameManager.Instance.ResetGame();
     }

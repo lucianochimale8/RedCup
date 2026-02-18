@@ -3,16 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class ExitDoor : MonoBehaviour
 {
-    [SerializeField] private int nextSceneIndex = 1;
+    [SerializeField] private LevelObjectiveManager objectiveManager;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player")) return;
+        if (!collision.CompareTag("Player"))
+            return;
 
-        if (LevelObjectiveManager.Instance != null &&
-            LevelObjectiveManager.Instance.CanExitLevel())
+        if (objectiveManager != null && objectiveManager.CanExitLevel())
         {
-            nextSceneIndex++;
-            SceneManager.LoadScene(nextSceneIndex);
+            GameEvents.RaiseLevelCompleted();
         }
         else
         {

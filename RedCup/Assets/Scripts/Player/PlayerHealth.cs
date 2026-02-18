@@ -20,16 +20,9 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
     }   
-    #region Damage and Die
+    #region Damage & Die
     public void TakeDamage(int amount)
     {
-        Debug.Log("TakeDamage llamado");
-
-        if (!canTakeDamage)
-            Debug.Log("NO puede recibir daño (cooldown)");
-
-        if (isDead)
-            Debug.Log("Player ya está muerto");
 
         if (!canTakeDamage || isDead) return;
 
@@ -59,10 +52,11 @@ public class PlayerHealth : MonoBehaviour , IDamageable
             rb.linearVelocity = Vector2.zero; // frena movimiento
             rb.angularVelocity = 0f;
             rb.bodyType = RigidbodyType2D.Kinematic; // opcional, lo congela totalmente
+            rb.simulated = false;
         }
 
         animator.SetTrigger("Die");
-        GameEvents.RaisePlayerDied();
+        GameEvents.RaisePlayerHit();
     }
 
     private IEnumerator DamageCooldown()

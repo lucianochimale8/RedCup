@@ -10,13 +10,25 @@ public class EnemyIA : MonoBehaviour
     private Rigidbody2D rb;
     [Header("Banderas")]
     private bool isFacingRight = false;
-    private bool isStopped = false;
+    private bool isStopped;
 
+    #region Unity Lifecycle
     private void Start()
     {
         playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnLevelStopped += StopMovement;
+        GameEvents.OnLevelResumed += ResumeMovement;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnLevelStopped -= StopMovement;
+        GameEvents.OnLevelResumed -= ResumeMovement;
     }
 
     private void Update()
@@ -34,12 +46,14 @@ public class EnemyIA : MonoBehaviour
     {
         Follow();
     }
+    #endregion
 
+    #region Animation
     private void UpdateAnimation()
     {
         animator.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
-
+    #endregion
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
@@ -60,10 +74,17 @@ public class EnemyIA : MonoBehaviour
             isFacingRight = !isFacingRight; // invertir si se ha dado vuelta
         }
     }
+    #endregion
+
+    #region Stop & Resume
     public void StopMovement()
     {
         isStopped = true;
         speed = 0f;
+    }
+    public void ResumeMovement()
+    {
+        isStopped = false;
     }
     #endregion
 }

@@ -42,7 +42,10 @@ public class MenuPrincipal : UIPanel
     private void Jugar()
     {
         MenuStartup.panelInicial = PanelType.HUD;
+        
         SceneManager.LoadScene("LevelTutorial");
+
+        GameManager.Instance.ResetGame();
     }
     private void VolverAlInicio()
     {

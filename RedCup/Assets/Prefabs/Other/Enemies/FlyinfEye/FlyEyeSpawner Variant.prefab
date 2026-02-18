@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6337046764436493875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6610417148859428884}
+  m_Layer: 0
+  m_Name: FlyingEyePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6610417148859428884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337046764436493875}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.709408, y: -14.202435, z: -0.110900566}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8189650650556307150}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8237098378003148975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,7 +125,10 @@ PrefabInstance:
       objectReference: {fileID: 4506226117421120759}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 285827623071147617, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6610417148859428884}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
 --- !u!4 &3392202124608849058 stripped
@@ -110,5 +144,10 @@ Transform:
 --- !u!4 &4506226117421120759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5537555702285585496, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+  m_PrefabInstance: {fileID: 8237098378003148975}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8189650650556307150 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 285827623071147617, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
   m_PrefabInstance: {fileID: 8237098378003148975}
   m_PrefabAsset: {fileID: 0}

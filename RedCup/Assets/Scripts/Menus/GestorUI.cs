@@ -17,36 +17,40 @@ public class GestorUI : MonoBehaviour
     private Dictionary<PanelType, UIPanel> panelDict;
     private UIPanel currentPanel;
 
+    public static GestorUI Instance { get; private set; }
+
     private void Awake()
     {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         panelDict = new Dictionary<PanelType, UIPanel>();
 
         foreach (var entry in paneles)
         {
-            if (!panelDict.ContainsKey(entry.type))
-                panelDict.Add(entry.type, entry.panel);
+            if (entry.panel == null)
+            {
+                Debug.LogError("Panel no asignado: " + entry.type);
+                continue;
+            }
+            panelDict.Add(entry.type, entry.panel);
+            entry.panel.gameObject.SetActive(false);
         }
     }
 
     public void Start()
     {
-        Time.timeScale = 1f;
-        OcultarTodos();
-
         string sceneName = SceneManager.GetActiveScene().name;
         Debug.Log("Escena actual: " + sceneName);
-
-        // SOLO para la escena de menú
-        if (panelDict.ContainsKey(PanelType.MenuInicio))
-        {
-            MostrarPanel(MenuStartup.panelInicial);
-        }
     }
     private void Update()
-    {
-        // SOLO para escenas con pausa
-        //if (!panelDict.ContainsKey(PanelType.Pausa)) return;
-
+    { 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Time.timeScale == 1)
@@ -58,17 +62,11 @@ public class GestorUI : MonoBehaviour
 
     public void MostrarPanel(PanelType type)
     {
-        if (!panelDict.ContainsKey(type))
-        {
-            Debug.LogError("Panel no registrado: " + type);
-            return;
-        }
+        foreach (var panel in panelDict.Values)
+            panel.gameObject.SetActive(false);
 
-        if (currentPanel != null)
-            currentPanel.Ocultar();
-
-        currentPanel = panelDict[type];
-        currentPanel.Mostrar();
+        if (panelDict.ContainsKey(type))
+            panelDict[type].gameObject.SetActive(true);
     }
     public void OcultarTodos()
     {
@@ -82,5 +80,9 @@ public class GestorUI : MonoBehaviour
         #else
         Application.Quit();
         #endif
+    }
+    public bool HasPanel(PanelType type)
+    {
+        return panelDict.ContainsKey(type);
     }
 }

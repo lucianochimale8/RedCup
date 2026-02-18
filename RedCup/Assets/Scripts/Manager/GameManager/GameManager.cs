@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     public bool HasWand { get; private set; }
     // Para definir en que nivel ya empieza con el arma
     [SerializeField] private bool startWithWand;
+    // Referencia al gestorUI
+    private GestorUI gestorUI;
 
     #region Unity Lifecycle
 
@@ -40,24 +42,56 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         HasWand = startWithWand;
+        currentLives = startingLives;
     }
     /// <summary>
     /// Eventos
     /// </summary>
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         GameEvents.OnPlayerHit += HandlePlayerHit;
         GameEvents.OnPlayerDied += HandlePlayerDeath;
     }
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         GameEvents.OnPlayerHit -= HandlePlayerHit;
         GameEvents.OnPlayerDied -= HandlePlayerDeath;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        gestorUI = GestorUI.Instance;
+
+        // Reiniciar HUD y paneles al cargar la escena
+        if (gestorUI != null)
+        {
+            gestorUI.OcultarTodos();
+            // Mostrar panel de inicio si es MenuUI
+            if (scene.name == "MenuUI")
+            {
+                if (gestorUI.HasPanel(PanelType.MenuInicio))
+                    gestorUI.MostrarPanel(PanelType.MenuInicio);
+                else
+                    Debug.LogError("MenuInicio no asignado en GestorUI de MenuUI");
+            }
+            else if (gestorUI.HasPanel(PanelType.HUD))
+            {
+                gestorUI.MostrarPanel(PanelType.HUD);
+            }
+        }
+        // Resetear GameManager
+        isGameOver = false;
+
+        // Resetear HUD de vidas
+        if (livesText != null)
+            livesText.gameObject.SetActive(true);
     }
 
     private void Start()
     {
-        currentLives = startingLives;
         UpdateLivesUI();
     }
     #endregion
@@ -86,6 +120,7 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerDeath()
     {
         Debug.Log("GameManager detectó muerte");
+        if (isGameOver) return;
         StartCoroutine(GameOverRoutine());
     }
     #endregion
@@ -100,7 +135,7 @@ public class GameManager : MonoBehaviour
 
         GameEvents.LevelStopped();
 
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSecondsRealtime(0.6f);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -115,18 +150,17 @@ public class GameManager : MonoBehaviour
 
         GameEvents.LevelStopped();
 
-        yield return new WaitForSeconds(1f);
-
-        ResetGame();
+        yield return new WaitForSecondsRealtime(1f);
         
-        currentLives = startingLives;
-        UpdateLivesUI();
+        while (GestorUI.Instance == null)
+            yield return null;
 
-        isGameOver = false;
+        Debug.Log("Intentando mostrar GameOver");
 
-        Debug.Log("Cargando menú");
+        GestorUI.Instance.MostrarPanel(PanelType.GameOver);
 
-        SceneManager.LoadScene("MenuUI");
+        if (livesText != null)
+            livesText.gameObject.SetActive(false);
     }
     /// <summary>
     /// Resetear las estadisticas por nivel
@@ -134,9 +168,13 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         currentLives = startingLives;
-        isGameOver = false;
-        isPlayerDead = false;
-        HasWand = false;
+        HasWand = startWithWand;
+
+        UpdateLivesUI();
+
+        if (livesText != null)
+            livesText.gameObject.SetActive(true);
+
     }
     #endregion
 
@@ -148,6 +186,15 @@ public class GameManager : MonoBehaviour
     {
         if (livesText != null)
             livesText.text = $"Lives: {currentLives}";
+    }
+
+    public void VolverAlMenu()
+    {
+        Time.timeScale = 1f;
+
+        ResetGame();
+
+        SceneManager.LoadScene("MenuUI");
     }
     #endregion
 

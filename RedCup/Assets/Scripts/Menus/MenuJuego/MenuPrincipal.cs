@@ -16,7 +16,7 @@ public class MenuPrincipal : UIPanel
 
     private void Awake()
     {
-        gestorUI = FindFirstObjectByType<GestorUI>();
+        gestorUI = GestorUI.Instance;
 
         btnPlay.onClick.AddListener(() =>
         {

@@ -9,19 +9,8 @@ public class GameOverPanel : UIPanel
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-
         if (volverInicio != null)
             volverInicio.onClick.AddListener(VolverAlMenu);
-    }
-    private void OnEnable()
-    {
-        GameEvents.OnPlayerDied += Mostrar;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnPlayerDied -= Mostrar;
     }
 
     public override void Mostrar()
@@ -37,6 +26,7 @@ public class GameOverPanel : UIPanel
     // Botón Volver al Menú
     public void VolverAlMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(MENU_SCENE);
     }
 }

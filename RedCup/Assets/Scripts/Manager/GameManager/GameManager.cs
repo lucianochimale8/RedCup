@@ -5,7 +5,6 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton del GameManager
     public static GameManager Instance { get; private set; }
     // Sistema de vida
     [Header("Vidas")]
@@ -30,7 +29,10 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        GameEvents.ClearAll();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnEnable()
@@ -42,10 +44,21 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.OnPlayerHit -= HandlePlayerHit;
     }
+    private void OnDestroy()
+    {
+        GameEvents.OnPlayerHit -= HandlePlayerHit;
+    }
 
     private void Start()
     {
         ResetGame();
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Tutorial")
+        {
+            ResetGame();
+        }
     }
     #endregion
 
@@ -56,7 +69,7 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerHit()
     {
 
-        Debug.Log("Jugador se quito una vida");
+        Debug.Log("Jugador se quito una vida: " + currentLives);
 
         currentLives--;
 
@@ -64,16 +77,14 @@ public class GameManager : MonoBehaviour
 
         if (currentLives <= 0)
         {
+            currentLives = 0;
+            Debug.Log("PLAYER DIED EVENT");
             GameEvents.RaisePlayerDied();
         }
     }
     #endregion
 
     #region Restart
-    public void StartNewGame()
-    {
-        ResetGame();
-    }
     /// <summary>
     /// Resetear las estadisticas por nivel
     /// </summary>

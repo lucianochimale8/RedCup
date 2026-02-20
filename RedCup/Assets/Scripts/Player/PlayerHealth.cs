@@ -13,12 +13,14 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     private Animator animator;
     private PlayerMovement movement;
     private Rigidbody2D rb;
+    private PlayerInput playerInput;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
+        playerInput = GetComponent<PlayerInput>();
     }   
     #region Damage & Die
     public void TakeDamage(int amount)
@@ -28,40 +30,41 @@ public class PlayerHealth : MonoBehaviour , IDamageable
 
         canTakeDamage = false;
 
-        if (GameManager.Instance.Lives > 1)
+        GameEvents.RaisePlayerHit();
+
+        if (GameManager.Instance.Lives <= 1)
         {
-            animator.SetTrigger("Hurt");
-            GameEvents.RaisePlayerHit();
-            StartCoroutine(DamageCooldown());
+            Die();
         }
         else
         {
-            Die();
+            animator.SetTrigger("Hurt");
+            StartCoroutine(DamageCooldown());
         }
     }
 
     private void Die()
     {
+        if (isDead) return;
+
         isDead = true;
 
         if (movement != null)
             movement.enabled = false;
 
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero; // frena movimiento
-            rb.angularVelocity = 0f;
-            rb.bodyType = RigidbodyType2D.Kinematic; // opcional, lo congela totalmente
-            rb.simulated = false;
-        }
+        if (playerInput != null)
+            playerInput.enabled = false;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
 
         animator.SetTrigger("Die");
-        GameEvents.RaisePlayerHit();
+
+        Debug.Log("DIE()");
     }
 
     private IEnumerator DamageCooldown()
     {
-        canTakeDamage = false;
         yield return new WaitForSeconds(damageCooldown);
         canTakeDamage = true;
     }

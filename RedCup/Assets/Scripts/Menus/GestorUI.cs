@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GestorUI : MonoBehaviour
 {
+    public PanelType PanelActual { get; private set; }
+
     [System.Serializable]
     public class PanelEntry
     {
@@ -15,7 +17,6 @@ public class GestorUI : MonoBehaviour
     [SerializeField] private List<PanelEntry> paneles;
 
     private Dictionary<PanelType, UIPanel> panelDict;
-    private UIPanel currentPanel;
 
     public static GestorUI Instance { get; private set; }
 
@@ -39,8 +40,8 @@ public class GestorUI : MonoBehaviour
                 Debug.LogError("Panel no asignado: " + entry.type);
                 continue;
             }
-            panelDict.Add(entry.type, entry.panel);
-            entry.panel.gameObject.SetActive(false);
+            panelDict[entry.type] = entry.panel;
+            entry.panel.Ocultar();
         }
     }
 
@@ -49,29 +50,23 @@ public class GestorUI : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         Debug.Log("Escena actual: " + sceneName);
     }
-    private void Update()
-    { 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (Time.timeScale == 1)
-                MostrarPanel(PanelType.Pausa);
-            else
-                MostrarPanel(PanelType.HUD);
-        }
-    }
 
     public void MostrarPanel(PanelType type)
     {
-        foreach (var panel in panelDict.Values)
-            panel.gameObject.SetActive(false);
+        if (!panelDict.ContainsKey(type))
+        {
+            Debug.LogWarning("Panel no registrado: " + type);
+            return;
+        }
 
-        if (panelDict.ContainsKey(type))
-            panelDict[type].gameObject.SetActive(true);
-    }
-    public void OcultarTodos()
-    {
         foreach (var panel in panelDict.Values)
             panel.Ocultar();
+
+        panelDict[type].Mostrar();
+
+        PanelActual = type;
+
+        Debug.Log("Panel actual: " + PanelActual);
     }
     public void Salir()
     { 

@@ -30,17 +30,24 @@ public class PlayerController : MonoBehaviour
     {
         GameEvents.OnLevelStopped += HandleLevelStopped;
         GameEvents.OnLevelResumed += HandleLevelResumed;
+        GameEvents.OnPlayerDied += HandlePlayerDied;
     }
 
     private void OnDisable()
     {
         GameEvents.OnLevelStopped -= HandleLevelStopped;
         GameEvents.OnLevelResumed -= HandleLevelResumed;
+        GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
 
     private void HandleLevelStopped()
     {
-        isStopped = true;
+        StopPlayer();
+    }
+
+    private void HandlePlayerDied()
+    {
+        StopPlayer();
     }
 
     private void HandleLevelResumed()
@@ -48,11 +55,17 @@ public class PlayerController : MonoBehaviour
         isStopped = false;
     }
 
+    private void StopPlayer()
+    {
+        isStopped = true;
+        currentCommand = null;
+    }
+
     #endregion
     private void Update()
     {
-        if (Time.timeScale == 0) return;
         if (isStopped) return;
+
 
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
@@ -62,6 +75,9 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (isStopped)
+            return;
+
         currentCommand?.Execute();
     }
     #region Movimiento y Disparo del jugador
@@ -102,8 +118,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-    public void StopPlayer()
-    {
-        enabled = false;
-    }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class GameEvents : MonoBehaviour
+public static class GameEvents
 {
     // PLAYER
     public static Action OnPlayerHit;
@@ -25,15 +25,35 @@ public class GameEvents : MonoBehaviour
 
 
     #region Raise Methods
+    // Player
     public static void RaisePlayerHit() => OnPlayerHit?.Invoke();
+    public static void RaiseLivesChanged(int lives) => OnLivesChanged?.Invoke(lives);
     public static void RaisePlayerDied() => OnPlayerDied?.Invoke();
+    // Enemy
     public static void RaiseEnemyKilled() => OnEnemyKilled?.Invoke();
     public static void RaiseAllWavesSpawned() => OnAllWavesSpawned?.Invoke();
+    // Altar
     public static void RaiseAltarDestroyed() => OnAltarDestroyed?.Invoke();
+    // Key
     public static void RaiseKeyCollected() => OnKeyCollected?.Invoke();
+    // Level
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
-    public static void LevelStopped() => OnLevelStopped?.Invoke();
-    public static void LevelResumed() => OnLevelResumed?.Invoke();
-    public static void RaiseLivesChanged(int lives) => OnLivesChanged?.Invoke(lives);
+    public static void RaiseLevelStopped() => OnLevelStopped?.Invoke();
+    public static void RaiseLevelResumed() => OnLevelResumed?.Invoke();
+
     #endregion
+
+    public static void ClearAll()
+    {
+        OnPlayerHit = null;
+        OnLivesChanged = null;
+        OnPlayerDied = null;
+        OnEnemyKilled = null;
+        OnAllWavesSpawned = null;
+        OnAltarDestroyed = null;
+        OnKeyCollected = null;
+        OnLevelCompleted = null;
+        OnLevelStopped = null;
+        OnLevelResumed = null;
+    }
 }

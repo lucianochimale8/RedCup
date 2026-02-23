@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +16,7 @@ public class GameManager : MonoBehaviour
     public bool HasWand { get; private set; }
     // Para definir en que nivel ya empieza con el arma
     [SerializeField] private bool startWithWand;
+    public GameState CurrentState { get; private set; }
 
     #region Unity Lifecycle
 
@@ -29,8 +29,11 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
-        GameEvents.ClearAll();
+        currentLives = startingLives;
+
+        CurrentState = GameState.None;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -52,12 +55,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ResetGame();
+        ChangeState(GameState.Playing);
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Tutorial")
+        if (scene.name == "LevelTutorial")
         {
             ResetGame();
+            ChangeState(GameState.Playing);
         }
     }
     #endregion
@@ -90,6 +95,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ResetGame()
     {
+        Time.timeScale = 1f;
+
         currentLives = startingLives;
         HasWand = false;
 
@@ -103,4 +110,29 @@ public class GameManager : MonoBehaviour
         HasWand = value;
     }
     #endregion
+    public void ChangeState(GameState newState)
+    {
+        bool isSameState = CurrentState == newState;
+
+        CurrentState = newState;
+
+        switch (newState)
+        {
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                if (!isSameState)
+                    GameEvents.RaiseLevelResumed();
+                break;
+
+            case GameState.Paused:
+                Time.timeScale = 0f;
+                if (!isSameState)
+                    GameEvents.RaiseLevelStopped();
+                break;
+
+            case GameState.GameOver:
+                Time.timeScale = 0f;
+                break;
+        }
+    }
 }

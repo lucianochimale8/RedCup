@@ -17,20 +17,10 @@ public class GestorUI : MonoBehaviour
     [SerializeField] private List<PanelEntry> paneles;
 
     private Dictionary<PanelType, UIPanel> panelDict;
-
-    public static GestorUI Instance { get; private set; }
-
+    public static string MENU_SCENE = "MenuUI";
+    #region Unity Lifecycle
     private void Awake()
     {
-
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
         panelDict = new Dictionary<PanelType, UIPanel>();
 
         foreach (var entry in paneles)
@@ -41,16 +31,32 @@ public class GestorUI : MonoBehaviour
                 continue;
             }
             panelDict[entry.type] = entry.panel;
-            entry.panel.Ocultar();
         }
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        foreach (var panel in panelDict.Values)
+            panel.Ocultar();
 
+        if (scene.name == MENU_SCENE)
+        {
+            MostrarPanel(PanelType.MenuInicio);
+        }
+    }
     public void Start()
     {
         string sceneName = SceneManager.GetActiveScene().name;
         Debug.Log("Escena actual: " + sceneName);
     }
-
+    #endregion
     public void MostrarPanel(PanelType type)
     {
         if (!panelDict.ContainsKey(type))

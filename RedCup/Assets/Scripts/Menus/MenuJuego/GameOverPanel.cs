@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class GameOverPanel : UIPanel
 {
     [SerializeField] private Button volverInicio;
-    public static string MENU_SCENE = "MenuUI";
 
     private void Awake()
     {
@@ -27,6 +26,7 @@ public class GameOverPanel : UIPanel
     public void VolverAlMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(MENU_SCENE);
+        GameManager.Instance.ChangeState(GameState.Playing);
+        SceneManager.LoadScene(GestorUI.MENU_SCENE);
     }
 }

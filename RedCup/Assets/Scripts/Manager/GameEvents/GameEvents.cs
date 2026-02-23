@@ -42,18 +42,4 @@ public static class GameEvents
     public static void RaiseLevelResumed() => OnLevelResumed?.Invoke();
 
     #endregion
-
-    public static void ClearAll()
-    {
-        OnPlayerHit = null;
-        OnLivesChanged = null;
-        OnPlayerDied = null;
-        OnEnemyKilled = null;
-        OnAllWavesSpawned = null;
-        OnAltarDestroyed = null;
-        OnKeyCollected = null;
-        OnLevelCompleted = null;
-        OnLevelStopped = null;
-        OnLevelResumed = null;
-    }
 }

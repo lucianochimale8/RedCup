@@ -6,11 +6,10 @@ public class MenuPausa : UIPanel
 {
     [SerializeField] private Button btnReanudar;
     [SerializeField] private Button btnMenu;
+    [SerializeField] private GestorUI gestorUI;
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-
         btnReanudar.onClick.AddListener(Continuar);
         btnMenu.onClick.AddListener(SalirAlMenu);
     }
@@ -18,21 +17,27 @@ public class MenuPausa : UIPanel
     public override void Mostrar()
     {
         gameObject.SetActive(true);
-        Time.timeScale = 0f;
     }
 
     public override void Ocultar()
     {
         gameObject.SetActive(false);
-        Time.timeScale = 1f;
     }
-
+    /// <summary>
+    /// Boton para Reanudar la partida
+    /// </summary>
     private void Continuar()
     {
-        GameEvents.OnLevelResumed();
+        GameManager.Instance.ChangeState(GameState.Playing);
+        gestorUI.MostrarPanel(PanelType.HUD);
     }
+    /// <summary>
+    /// Para salir al Menu Inicio
+    /// </summary>
     private void SalirAlMenu()
     {
-        SceneManager.LoadScene("MenuUI");
+        Time.timeScale = 1f;
+        GameManager.Instance.ChangeState(GameState.Playing);
+        SceneManager.LoadScene(GestorUI.MENU_SCENE);
     }
 }

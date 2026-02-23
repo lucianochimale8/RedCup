@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
@@ -9,7 +10,6 @@ public class PlayerInput : MonoBehaviour
     public bool ShootPressed { get; private set; }
 
     public bool DropPressed { get; private set; }
-
     private void Update()
     {
         // ejes verticales y horizontales
@@ -24,6 +24,7 @@ public class PlayerInput : MonoBehaviour
             ShootPressed = true;
         if (Input.GetKeyDown(KeyCode.G))
             DropPressed = true;
+
     }
     public void ResetShoot()
     {

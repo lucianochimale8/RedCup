@@ -4,26 +4,44 @@ public class LevelObjectiveManager : MonoBehaviour
 {
     [Header("Objetivos del Nivel")]
     // Cuantos enemigos se requieren para completar el nivel
-    [SerializeField] private int enemiesRequired;
-    [SerializeField] private bool requireKey = true;
-    [SerializeField] private bool requireAltar = true;
+    private int enemiesRequired;
     // Cuantos enemigos fueron destruido
     private int enemiesKilled;
-    // Si la llave fue recogida
-    private bool keyCollected;
+    // total de Llaves requieridas
+    private int totalKeysRequired;
+    private int keysCollected;
     // Si todos las waves fueron spawneadas
     private bool allWavesSpawned;
-    // Si los altares fueron destruidos
-    private bool altarDestroyed;
     private bool levelAlreadyCompleted;
 
+    public int EnemiesKilled => enemiesKilled;
+    public int EnemiesRequired => enemiesRequired;
+
+    public int KeysCollected => keysCollected;
+    public int TotalKeysRequired => totalKeysRequired;
+
     #region Unity Lifecycle
+    private void Awake()
+    {
+        // Llaves
+        AltarHealth[] altars = FindObjectsByType<AltarHealth>(FindObjectsSortMode.None);
+        totalKeysRequired = altars.Length;
+
+        // Enemigos
+        Spawner[] spawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+
+        enemiesRequired = 0;
+
+        foreach (var spawner in spawners)
+        {
+            enemiesRequired += spawner.TotalEnemiesToSpawn;
+        }
+    }
     private void OnEnable()
     {
         GameEvents.OnEnemyKilled += RegisterEnemyKilled;
         GameEvents.OnKeyCollected += RegisterKeyCollected;
         GameEvents.OnAllWavesSpawned += RegisterAllWavesSpawned;
-        GameEvents.OnAltarDestroyed += RegisterAltarDestroyed;
     }
 
     private void OnDisable()
@@ -31,7 +49,14 @@ public class LevelObjectiveManager : MonoBehaviour
         GameEvents.OnEnemyKilled -= RegisterEnemyKilled;
         GameEvents.OnKeyCollected -= RegisterKeyCollected;
         GameEvents.OnAllWavesSpawned -= RegisterAllWavesSpawned;
-        GameEvents.OnAltarDestroyed -= RegisterAltarDestroyed;
+    }
+    private void Start()
+    {
+        Debug.Log("Enemigos requeridos: " + enemiesRequired);
+        Debug.Log("Llaves requeridas: " + totalKeysRequired);
+        // iniciar UI
+        GameEvents.RaiseEnemiesUpdated(enemiesKilled, enemiesRequired);
+        GameEvents.RaiseKeysUpdated(keysCollected, totalKeysRequired);
     }
     #endregion
 
@@ -40,6 +65,7 @@ public class LevelObjectiveManager : MonoBehaviour
     {
         Debug.Log("regristramos un enemigo muerto");
         enemiesKilled++;
+        GameEvents.RaiseEnemiesUpdated(enemiesKilled, enemiesRequired);
         CheckCompletion();
     }
     private void RegisterAllWavesSpawned()
@@ -51,13 +77,9 @@ public class LevelObjectiveManager : MonoBehaviour
     private void RegisterKeyCollected()
     {
         Debug.Log("haz obtenido una llave");
-        keyCollected = true;
-        CheckCompletion();
-    }
-    private void RegisterAltarDestroyed()
-    {
-        Debug.Log("haz destruido un altar");
-        altarDestroyed = true;
+        keysCollected++;
+        Debug.Log("LLaves obtenidas: " + keysCollected);
+        GameEvents.RaiseKeysUpdated(keysCollected, totalKeysRequired);
         CheckCompletion();
     }
     #endregion
@@ -82,10 +104,9 @@ public class LevelObjectiveManager : MonoBehaviour
     public bool CanExitLevel()
     {
         bool enemiesDone = enemiesKilled >= enemiesRequired && allWavesSpawned;
-        bool keyDone = !requireKey || keyCollected;
-        bool altarDone = !requireAltar || altarDestroyed;
+        bool keyDone = keysCollected >= totalKeysRequired;
 
-        return enemiesDone && keyDone && altarDone;
+        return enemiesDone && keyDone;
     }
     /// <summary>
     /// Metodo de nivel completado

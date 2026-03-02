@@ -52,8 +52,6 @@ public class AltarHealth : MonoBehaviour , IDamageable
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
         }
 
-        GameEvents.RaiseAltarDestroyed();
-
         Destroy(transform.parent.gameObject);
     }
 

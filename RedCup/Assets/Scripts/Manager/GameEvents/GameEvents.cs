@@ -11,12 +11,11 @@ public static class GameEvents
     // ENEMY
     public static Action OnEnemyKilled;
     public static Action OnAllWavesSpawned;
-
-    // ALTAR
-    public static Action OnAltarDestroyed;
+    public static Action<int, int> OnEnemiesUpdated;
 
     // KEY
     public static Action OnKeyCollected;
+    public static Action<int, int> OnKeysUpdated;
 
     // LEVEL
     public static Action OnLevelCompleted;
@@ -32,10 +31,12 @@ public static class GameEvents
     // Enemy
     public static void RaiseEnemyKilled() => OnEnemyKilled?.Invoke();
     public static void RaiseAllWavesSpawned() => OnAllWavesSpawned?.Invoke();
-    // Altar
-    public static void RaiseAltarDestroyed() => OnAltarDestroyed?.Invoke();
+    public static void RaiseEnemiesUpdated(int current, int total)
+    => OnEnemiesUpdated?.Invoke(current, total);
     // Key
     public static void RaiseKeyCollected() => OnKeyCollected?.Invoke();
+    public static void RaiseKeysUpdated(int current, int total)
+    => OnKeysUpdated?.Invoke(current, total);
     // Level
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
     public static void RaiseLevelStopped() => OnLevelStopped?.Invoke();

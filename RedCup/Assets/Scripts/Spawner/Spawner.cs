@@ -15,6 +15,8 @@ public class Spawner : MonoBehaviour
     [Header("Pool")]
     [SerializeField] private int initialPoolSize = 10;
 
+    public int TotalEnemiesToSpawn => waves * enemiesPrewave;
+
     private Queue<GameObject> pool = new Queue<GameObject>();
 
     private void Awake()

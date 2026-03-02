@@ -10,12 +10,14 @@ public static class GameEvents
 
     // ENEMY
     public static Action OnEnemyKilled;
-    public static Action OnAllWavesSpawned;
     public static Action<int, int> OnEnemiesUpdated;
 
     // KEY
     public static Action OnKeyCollected;
     public static Action<int, int> OnKeysUpdated;
+
+    // WAND
+    public static Action<bool> OnWandStateChanged;
 
     // LEVEL
     public static Action OnLevelCompleted;
@@ -30,13 +32,15 @@ public static class GameEvents
     public static void RaisePlayerDied() => OnPlayerDied?.Invoke();
     // Enemy
     public static void RaiseEnemyKilled() => OnEnemyKilled?.Invoke();
-    public static void RaiseAllWavesSpawned() => OnAllWavesSpawned?.Invoke();
     public static void RaiseEnemiesUpdated(int current, int total)
     => OnEnemiesUpdated?.Invoke(current, total);
     // Key
     public static void RaiseKeyCollected() => OnKeyCollected?.Invoke();
     public static void RaiseKeysUpdated(int current, int total)
     => OnKeysUpdated?.Invoke(current, total);
+    // Wand
+    public static void RaiseWandStateChanged(bool hasWand)
+        => OnWandStateChanged?.Invoke(hasWand);
     // Level
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
     public static void RaiseLevelStopped() => OnLevelStopped?.Invoke();

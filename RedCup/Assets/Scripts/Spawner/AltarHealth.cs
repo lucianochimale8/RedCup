@@ -23,7 +23,14 @@ public class AltarHealth : MonoBehaviour , IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
     }
-
+    private void Start()
+    {
+        LevelObjectiveManager manager = FindFirstObjectByType<LevelObjectiveManager>();
+        if (manager != null)
+        {
+            manager.RegisterKeyRequirement();
+        }
+    }
     public void TakeDamage(int amount)
     {
         if (isDead) return;
@@ -52,7 +59,8 @@ public class AltarHealth : MonoBehaviour , IDamageable
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
         }
 
-        Destroy(transform.parent.gameObject);
+        //Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     private IEnumerator Blink()

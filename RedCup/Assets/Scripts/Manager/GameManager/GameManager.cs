@@ -59,11 +59,8 @@ public class GameManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "LevelTutorial")
-        {
-            ResetGame();
-            ChangeState(GameState.Playing);
-        }
+        ResetGame();
+        ChangeState(GameState.Playing);
     }
     #endregion
 
@@ -108,6 +105,7 @@ public class GameManager : MonoBehaviour
     public void SetWand(bool value)
     {
         HasWand = value;
+        GameEvents.RaiseWandStateChanged(value);
     }
     #endregion
     public void ChangeState(GameState newState)

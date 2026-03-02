@@ -58,8 +58,6 @@ public class Spawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
-
-        GameEvents.RaiseAllWavesSpawned();
     }
 
     private GameObject GetEnemyFromPool()

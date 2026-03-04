@@ -15,6 +15,8 @@ public class Spawner : MonoBehaviour
     [Header("Pool")]
     [SerializeField] private int initialPoolSize = 10;
 
+    public int TotalEnemiesToSpawn => waves * enemiesPrewave;
+
     private Queue<GameObject> pool = new Queue<GameObject>();
 
     private void Awake()
@@ -26,7 +28,7 @@ public class Spawner : MonoBehaviour
             pool.Enqueue(enemy);
         }
     }
-    void Start()
+    private void Start()
     {
         StartCoroutine(Spawn());
     }
@@ -56,8 +58,6 @@ public class Spawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
-
-        GameEvents.RaiseAllWavesSpawned();
     }
 
     private GameObject GetEnemyFromPool()

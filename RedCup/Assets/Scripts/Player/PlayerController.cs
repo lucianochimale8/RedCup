@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Wand wand;
     [SerializeField] private PlayerWeaponController weaponController;
 
-    private bool isStopped;
-
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -25,34 +23,10 @@ public class PlayerController : MonoBehaviour
         shootCommand = new ShootCommand(wand);
         dropCommand = new DropWeaponCommand(weaponController);
     }
-    #region Event Stop Movement
-    private void OnEnable()
-    {
-        GameEvents.OnLevelStopped += HandleLevelStopped;
-        GameEvents.OnLevelResumed += HandleLevelResumed;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnLevelStopped -= HandleLevelStopped;
-        GameEvents.OnLevelResumed -= HandleLevelResumed;
-    }
-
-    private void HandleLevelStopped()
-    {
-        isStopped = true;
-    }
-
-    private void HandleLevelResumed()
-    {
-        isStopped = false;
-    }
-
-    #endregion
     private void Update()
     {
-        if (Time.timeScale == 0) return;
-        if (isStopped) return;
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+            return;
 
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
@@ -62,6 +36,9 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+            return;
+
         currentCommand?.Execute();
     }
     #region Movimiento y Disparo del jugador
@@ -102,8 +79,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-    public void StopPlayer()
-    {
-        enabled = false;
-    }
 }

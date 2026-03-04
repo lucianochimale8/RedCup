@@ -34,7 +34,7 @@ public class LevelStateController : MonoBehaviour
     {
         isStopped = true;
 
-        GameEvents.LevelStopped();
+        GameEvents.RaiseLevelStopped();
 
         EnemyIA[] enemies = FindObjectsByType<EnemyIA>(FindObjectsSortMode.None);
 
@@ -48,14 +48,13 @@ public class LevelStateController : MonoBehaviour
     {
         isStopped = false;
 
-        GameEvents.LevelResumed();
+        GameEvents.RaiseLevelResumed();
 
         EnemyIA[] enemies = FindObjectsByType<EnemyIA>(FindObjectsSortMode.None);
 
         foreach (var enemy in enemies)
             enemy.ResumeMovement();
     }
-
     public bool IsStopped => isStopped;
 
     #endregion

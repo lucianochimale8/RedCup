@@ -55,7 +55,6 @@ public class LevelStateController : MonoBehaviour
         foreach (var enemy in enemies)
             enemy.ResumeMovement();
     }
-
     public bool IsStopped => isStopped;
 
     #endregion

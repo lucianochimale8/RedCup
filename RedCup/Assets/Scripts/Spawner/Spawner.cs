@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour
             pool.Enqueue(enemy);
         }
     }
-    void Start()
+    private void Start()
     {
         StartCoroutine(Spawn());
     }

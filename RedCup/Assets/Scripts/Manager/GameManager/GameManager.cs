@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         currentLives = startingLives;
-        HasWand = false;
 
         GameEvents.RaiseLivesChanged(currentLives);
     }

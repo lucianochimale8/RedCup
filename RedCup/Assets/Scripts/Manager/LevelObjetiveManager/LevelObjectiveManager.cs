@@ -77,17 +77,6 @@ public class LevelObjectiveManager : MonoBehaviour
 
     #region Level Check & Completed
     /// <summary>
-    /// Check que permite pasar de nivel
-    /// </summary>
-    private void CheckCompletion()
-    {
-        if (levelAlreadyCompleted)
-            return;
-
-        if (CanExitLevel())
-            LevelCompleted();
-    }
-    /// <summary>
     /// Comprobar si se puede completar el nivel
     /// </summary>
     public bool CanExitLevel()
@@ -105,6 +94,17 @@ public class LevelObjectiveManager : MonoBehaviour
         Debug.Log("Nivel Completado");
         levelAlreadyCompleted = true;
         GameEvents.RaiseLevelCompleted();
+    }
+    /// <summary>
+    /// Check que permite pasar de nivel
+    /// </summary>
+    private void CheckCompletion()
+    {
+        if (levelAlreadyCompleted)
+            return;
+
+        if (CanExitLevel())
+            LevelCompleted();
     }
     #endregion
 }

@@ -8,53 +8,76 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject wandPickupPrefab;
     [Header("Punto del drop")]
     [SerializeField] private Transform dropPoint;
+
+    #region Unity Lifecycle
+    private void OnEnable()
+    {
+        GameEvents.OnWandStateChanged += HandleWandChanged;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnWandStateChanged -= HandleWandChanged;
+    }
     private void Start()
     {
         wand.gameObject.SetActive(false);
-        // Si el GameManager dice que tiene arma, la equipa
-        if (GameManager.Instance.HasWand)
+
+        if (GameManager.Instance != null)
         {
-            EquipVisual();
+            HandleWandChanged(GameManager.Instance.HasWand);
         }
     }
     private void Update()
     {
+        if (GameManager.Instance == null)
+            return;
+
         if (GameManager.Instance.HasWand && Input.GetKeyDown(KeyCode.G))
         {
             DropWand();
         }
     }
-    /// <summary>
-    /// Equip
-    /// </summary>
-    // Metodo para equipar el arma y avisar que fue recogida
+    #endregion
+
+    #region Event Handling
+    private void HandleWandChanged(bool hasWand)
+    {
+        if (hasWand)
+            wand.Equip();
+        else
+            wand.Unequip();
+    }
+
+    #endregion
+
+    #region Equip
     public void EquipWand()
     {
-        if (GameManager.Instance.HasWand) return;
+        if (GameManager.Instance == null)
+            return;
+
+        if (GameManager.Instance.HasWand)
+            return;
 
         GameManager.Instance.SetWand(true);
-        EquipVisual();
     }
-    // Metodo para lo visual
-    private void EquipVisual()
-    {
-        wand.Equip();
-    }
-    /// <summary>
-    /// Drop
-    /// </summary>
+    #endregion
+
+    #region Drop
     public void DropWand()
     {
-        // Si no tiene un arma el jugador, retornar
-        if (!GameManager.Instance.HasWand) return;
+        if (GameManager.Instance == null)
+            return;
+
+        if (!GameManager.Instance.HasWand)
+            return;
 
         Instantiate(
             wandPickupPrefab,
             dropPoint.position,
             Quaternion.identity
         );
-
-        wand.Unequip();
         GameManager.Instance.SetWand(false);
     }
+    #endregion
 }

@@ -50140,6 +50140,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2902265043260611749, guid: c69bbcfe434fd0043ae7375189868f24, type: 3}
+      propertyPath: startWithWand
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902265043260611749, guid: c69bbcfe434fd0043ae7375189868f24, type: 3}
+      propertyPath: startingLives
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902265043260611749, guid: c69bbcfe434fd0043ae7375189868f24, type: 3}
+      propertyPath: m_EditorClassIdentifier
+      value: Assembly-CSharp::GameManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -50595,9 +50607,9 @@ SceneRoots:
   - {fileID: 940578221986003128}
   - {fileID: 6557381249335698434}
   - {fileID: 7609544692305572313}
-  - {fileID: 1748640580}
   - {fileID: 1378826141}
   - {fileID: 164796025}
   - {fileID: 646471097}
   - {fileID: 1747517806}
   - {fileID: 1991361559}
+  - {fileID: 1748640580}

@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wand: {fileID: 323863091246899387}
-  weaponController: {fileID: 0}
+  weaponController: {fileID: 3807381358644260662}
 --- !u!114 &4802335326432593253
 MonoBehaviour:
   m_ObjectHideFlags: 0

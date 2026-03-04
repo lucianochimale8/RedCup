@@ -8,43 +8,76 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject wandPickupPrefab;
     [Header("Punto del drop")]
     [SerializeField] private Transform dropPoint;
-    /// <summary>
-    /// Referencia para saber si tiene o no el arma
-    /// </summary>
-    public bool HasWand { get; private set; }
+
+    #region Unity Lifecycle
+    private void OnEnable()
+    {
+        GameEvents.OnWandStateChanged += HandleWandChanged;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnWandStateChanged -= HandleWandChanged;
+    }
     private void Start()
     {
         wand.gameObject.SetActive(false);
-        HasWand = false;
+
+        if (GameManager.Instance != null)
+        {
+            HandleWandChanged(GameManager.Instance.HasWand);
+        }
     }
     private void Update()
     {
-        if (HasWand && Input.GetKeyDown(KeyCode.G))
+        if (GameManager.Instance == null)
+            return;
+
+        if (GameManager.Instance.HasWand && Input.GetKeyDown(KeyCode.G))
         {
             DropWand();
         }
     }
-    /// <summary>
-    /// Equip
-    /// </summary>
+    #endregion
+
+    #region Event Handling
+    private void HandleWandChanged(bool hasWand)
+    {
+        if (hasWand)
+            wand.Equip();
+        else
+            wand.Unequip();
+    }
+
+    #endregion
+
+    #region Equip
     public void EquipWand()
     {
-        if (HasWand) return;
+        if (GameManager.Instance == null)
+            return;
 
-        HasWand = true;
-        wand.Equip();
+        if (GameManager.Instance.HasWand)
+            return;
+
+        GameManager.Instance.SetWand(true);
     }
-    /// <summary>
-    /// Drop
-    /// </summary>
+    #endregion
+
+    #region Drop
     public void DropWand()
-    { 
+    {
+        if (GameManager.Instance == null)
+            return;
+
+        if (!GameManager.Instance.HasWand)
+            return;
+
         Instantiate(
             wandPickupPrefab,
             dropPoint.position,
             Quaternion.identity
         );
-        wand.Unequip();
-        HasWand = false;
+        GameManager.Instance.SetWand(false);
     }
+    #endregion
 }

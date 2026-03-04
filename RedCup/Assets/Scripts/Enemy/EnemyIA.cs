@@ -7,18 +7,28 @@ public class EnemyIA : MonoBehaviour
     [Header("Referencias")]
     private Transform playerTransform;
     private Animator animator;
+    private Rigidbody2D rb;
     [Header("Banderas")]
     private bool isFacingRight = false;
-    private bool isStopped = false;
-    [Header("Ultima posicion del jugador")]
-    private Vector2 lastPosition;
+    private bool isStopped;
 
+    #region Unity Lifecycle
     private void Start()
     {
         playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnLevelStopped += StopMovement;
+        GameEvents.OnLevelResumed += ResumeMovement;
+    }
 
-        lastPosition = transform.position;
+    private void OnDisable()
+    {
+        GameEvents.OnLevelStopped -= StopMovement;
+        GameEvents.OnLevelResumed -= ResumeMovement;
     }
 
     private void Update()
@@ -28,23 +38,29 @@ public class EnemyIA : MonoBehaviour
             animator.SetFloat("Speed",0f);
             return;
         }
-        Follow();
         Flip();
         UpdateAnimation();
     }
+    // para control de fisicas FixedUpdate
+    private void FixedUpdate()
+    {
+        Follow();
+    }
+    #endregion
+
+    #region Animation
     private void UpdateAnimation()
     {
-        // Calculamos velocidad real
-        Vector2 velocity = ((Vector2)transform.position - lastPosition) / Time.deltaTime;
-
-        animator.SetFloat("Speed", velocity.magnitude);
-        lastPosition = transform.position;
+        animator.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
+    #endregion
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
-        Vector2 playerDirection = (playerTransform.position - transform.position).normalized;
-        transform.Translate(playerDirection * speed * Time.deltaTime);
+        Vector2 playerDirection =
+            ((Vector2)playerTransform.position - rb.position).normalized;
+        
+        rb.linearVelocity = playerDirection * speed;
     }
     private void Flip()
     {
@@ -58,10 +74,17 @@ public class EnemyIA : MonoBehaviour
             isFacingRight = !isFacingRight; // invertir si se ha dado vuelta
         }
     }
+    #endregion
+
+    #region Stop & Resume
     public void StopMovement()
     {
         isStopped = true;
         speed = 0f;
+    }
+    public void ResumeMovement()
+    {
+        isStopped = false;
     }
     #endregion
 }

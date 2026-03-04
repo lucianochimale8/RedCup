@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (Time.timeScale == 0) return;
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+            return;
 
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
@@ -35,6 +36,9 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+            return;
+
         currentCommand?.Execute();
     }
     #region Movimiento y Disparo del jugador
@@ -57,7 +61,7 @@ public class PlayerController : MonoBehaviour
         if (!playerInput.ShootPressed)
             return;
 
-        if (!weaponController.HasWand)
+        if (!GameManager.Instance.HasWand)
         {
             playerInput.ResetShoot();
             return;
@@ -75,8 +79,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-    public void StopPlayer()
-    {
-        enabled = false;
-    }
 }

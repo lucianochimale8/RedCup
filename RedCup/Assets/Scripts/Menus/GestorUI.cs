@@ -1,8 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GestorUI : MonoBehaviour
 {
+    public PanelType PanelActual { get; private set; }
+
     [System.Serializable]
     public class PanelEntry
     {
@@ -14,64 +17,67 @@ public class GestorUI : MonoBehaviour
     [SerializeField] private List<PanelEntry> paneles;
 
     private Dictionary<PanelType, UIPanel> panelDict;
-    private UIPanel currentPanel;
-
+    public static string MENU_SCENE = "MenuUI";
+    public static string MENU_WIN = "Win";
+    #region Unity Lifecycle
     private void Awake()
     {
         panelDict = new Dictionary<PanelType, UIPanel>();
 
         foreach (var entry in paneles)
         {
-            if (!panelDict.ContainsKey(entry.type))
-                panelDict.Add(entry.type, entry.panel);
+            if (entry.panel == null)
+            {
+                Debug.LogError("Panel no asignado: " + entry.type);
+                continue;
+            }
+            panelDict[entry.type] = entry.panel;
         }
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        foreach (var panel in panelDict.Values)
+            panel.Ocultar();
 
+        if (scene.name == MENU_SCENE)
+        {
+            MostrarPanel(PanelType.MenuInicio);
+        }
+        if (scene.name == MENU_WIN)
+        {
+            MostrarPanel(PanelType.Win);
+        }
+    }
     public void Start()
     {
-        Time.timeScale = 1f;
-        OcultarTodos();
-
-        // SOLO para la escena de menú
-        if (panelDict.ContainsKey(PanelType.MenuInicio))
-        {
-            MostrarPanel(MenuStartup.panelInicial);
-        }
-
-        //MenuStartup.panelInicial = PanelType.MenuInicio;
+        string sceneName = SceneManager.GetActiveScene().name;
+        Debug.Log("Escena actual: " + sceneName);
     }
-    private void Update()
-    {
-        // SOLO para escenas con pausa
-        if (!panelDict.ContainsKey(PanelType.Pausa)) return;
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (Time.timeScale == 1)
-                MostrarPanel(PanelType.Pausa);
-            else
-                MostrarPanel(PanelType.HUD);
-        }
-    }
-
+    #endregion
     public void MostrarPanel(PanelType type)
     {
         if (!panelDict.ContainsKey(type))
         {
-            Debug.LogError("Panel no registrado: " + type);
+            Debug.LogWarning("Panel no registrado: " + type);
             return;
         }
 
-        if (currentPanel != null)
-            currentPanel.Ocultar();
-
-        currentPanel = panelDict[type];
-        currentPanel.Mostrar();
-    }
-    public void OcultarTodos()
-    {
         foreach (var panel in panelDict.Values)
             panel.Ocultar();
+
+        panelDict[type].Mostrar();
+
+        PanelActual = type;
+
+        Debug.Log("Panel actual: " + PanelActual);
     }
     public void Salir()
     { 
@@ -80,5 +86,9 @@ public class GestorUI : MonoBehaviour
         #else
         Application.Quit();
         #endif
+    }
+    public bool HasPanel(PanelType type)
+    {
+        return panelDict.ContainsKey(type);
     }
 }

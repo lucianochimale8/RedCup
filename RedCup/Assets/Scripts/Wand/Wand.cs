@@ -28,7 +28,7 @@ public class Wand : MonoBehaviour
     #region Disparo
     public void Shoot()
     {
-        Debug.Log("WAND SHOOT LLAMADO");
+        // Debug.Log("WAND SHOOT LLAMADO");
         // Si no hay arma equipada, no poder disparar
         if (!IsEquipped) return;
 
@@ -44,7 +44,7 @@ public class Wand : MonoBehaviour
         }
         else
         {
-            Debug.Log("No hay proyectiles disponibles");
+            Debug.Log("No hay proyectiles disponibles en el arma");
         }
     }
     #endregion

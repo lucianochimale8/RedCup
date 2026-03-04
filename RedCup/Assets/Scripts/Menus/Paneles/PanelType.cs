@@ -4,6 +4,9 @@ public enum PanelType
     MenuPrincipal,
     MenuOpciones,
     MenuCreditos,
+
     HUD,
-    Pausa
+    Pausa,
+    GameOver,
+    Win
 }

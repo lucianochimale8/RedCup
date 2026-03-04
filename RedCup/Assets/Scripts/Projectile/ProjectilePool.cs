@@ -26,12 +26,12 @@ public class ProjectilePool : MonoBehaviour
         {
             if (!p.activeInHierarchy)
             {
-                Debug.Log("PROYECTIL DADO DESDE EL POOL");
+                //Debug.Log("PROYECTIL DADO DESDE EL POOL");
                 return p;
             }
         }
         // Si todos están activos, no crear más, solo devolver null
-        Debug.Log("NO HAY PROYECTILES DISPONIBLES");
+        Debug.Log("NO HAY PROYECTILES DISPONIBLES EN EL POOL");
         return null;
     }
 }

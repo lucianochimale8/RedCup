@@ -18,6 +18,7 @@ public class GestorUI : MonoBehaviour
 
     private Dictionary<PanelType, UIPanel> panelDict;
     public static string MENU_SCENE = "MenuUI";
+    public static string MENU_WIN = "Win";
     #region Unity Lifecycle
     private void Awake()
     {
@@ -49,6 +50,10 @@ public class GestorUI : MonoBehaviour
         if (scene.name == MENU_SCENE)
         {
             MostrarPanel(PanelType.MenuInicio);
+        }
+        if (scene.name == MENU_WIN)
+        {
+            MostrarPanel(PanelType.Win);
         }
     }
     public void Start()

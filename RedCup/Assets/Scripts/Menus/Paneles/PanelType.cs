@@ -7,5 +7,6 @@ public enum PanelType
 
     HUD,
     Pausa,
-    GameOver
+    GameOver,
+    Win
 }

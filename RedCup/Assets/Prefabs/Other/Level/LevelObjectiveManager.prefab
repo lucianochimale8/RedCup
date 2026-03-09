@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70adde8d46e66042a4b37faaab3ce04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesRequired: 2
+  enemiesRequired: 0
+  totalKeysRequired: 0
+  levelAlreadyCompleted: 0

@@ -42,10 +42,12 @@ public class Wand : MonoBehaviour
             p.GetComponent<Projectile>().Initialize(firePoint.right);
             //AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
         }
+        /*
         else
         {
             Debug.Log("No hay proyectiles disponibles en el arma");
         }
+        */
     }
     #endregion
 }

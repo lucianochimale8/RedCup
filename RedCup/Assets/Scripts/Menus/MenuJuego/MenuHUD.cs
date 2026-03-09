@@ -44,11 +44,11 @@ public class MenuHUD : UIPanel
     // Para actualizar los enemigos restantes
     private void UpdateEnemies(int current, int total)
     {
-        enemiesText.text = $"Enemigos: {current}/{total}";
+        enemiesText.text = $": {current}/{total}";
     }
     // Para actualizar las llaves obtenidas
     private void UpdateKeys(int current, int total)
     {
-        keysText.text = $"Llaves: {current}/{total}";
+        keysText.text = $": {current}/{total}";
     }
 }

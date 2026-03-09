@@ -37,10 +37,12 @@ public class GestorUI : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        GameEvents.OnPlayerDied += HandlePlayerDied;
     }
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -90,5 +92,9 @@ public class GestorUI : MonoBehaviour
     public bool HasPanel(PanelType type)
     {
         return panelDict.ContainsKey(type);
+    }
+    private void HandlePlayerDied()
+    {
+        MostrarPanel(PanelType.GameOver);
     }
 }

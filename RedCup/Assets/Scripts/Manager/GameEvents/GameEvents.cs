@@ -24,7 +24,6 @@ public static class GameEvents
     public static Action OnLevelStopped;
     public static Action OnLevelResumed;
 
-
     #region Raise Methods
     // Player
     public static void RaisePlayerHit() => OnPlayerHit?.Invoke();
@@ -45,6 +44,5 @@ public static class GameEvents
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
     public static void RaiseLevelStopped() => OnLevelStopped?.Invoke();
     public static void RaiseLevelResumed() => OnLevelResumed?.Invoke();
-
     #endregion
 }

@@ -3,7 +3,7 @@ using TMPro;
 
 public class LivesUI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text livesText;
+    [SerializeField] private GameObject[] hearts;
     private void OnEnable()
     {
         GameEvents.OnLivesChanged += UpdateLives;
@@ -19,7 +19,12 @@ public class LivesUI : MonoBehaviour
     }
     private void UpdateLives(int lives)
     {
-        livesText.text = "Lifes: " + lives;
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < lives)
+                hearts[i].SetActive(true);
+            else
+                hearts[i].SetActive(false);
+        }
     }
-
 }

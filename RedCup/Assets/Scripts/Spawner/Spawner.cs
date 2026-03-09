@@ -19,6 +19,8 @@ public class Spawner : MonoBehaviour
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
+    private bool isStopped;
+
     private void Awake()
     {
         for (int i = 0; i < initialPoolSize; i++)
@@ -27,6 +29,17 @@ public class Spawner : MonoBehaviour
             enemy.SetActive(false);
             pool.Enqueue(enemy);
         }
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnLevelStopped += StopSpawner;
+        GameEvents.OnLevelResumed += ResumeSpawner;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnLevelStopped -= StopSpawner;
+        GameEvents.OnLevelResumed -= ResumeSpawner;
     }
     private void Start()
     {
@@ -38,19 +51,19 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < waves; i++)
         {
             // este bucle for interno, instancia 3 enemigos
-            for (int j = 0; j < enemiesPrewave; j++)
+            for (int j = 0; j < spawnPoints.Length; j++)
             {
-                yield return new WaitForSeconds(timeBetweenSpawns);
+                while (isStopped)
+                    yield return null;
+                Transform spawnPoint = spawnPoints[j];
 
-                int index = Random.Range(0, spawnPoints.Length);
-
-                // agregar enemy pool
                 GameObject enemy = GetEnemyFromPool();
-                enemy.transform.position = spawnPoints[index].position;
+                enemy.transform.position = spawnPoint.position;
                 enemy.transform.SetParent(enemiesParent);
-                
+
                 enemy.GetComponent<EnemyHealth>().SetSpawner(this);
                 enemy.SetActive(true);
+                yield return new WaitForSeconds(timeBetweenSpawns);
             }
 
             if (i < waves - 1)
@@ -74,5 +87,14 @@ public class Spawner : MonoBehaviour
     {
         enemy.SetActive(false);
         pool.Enqueue(enemy);
+    }
+    private void StopSpawner()
+    {
+        isStopped = true;
+    }
+
+    private void ResumeSpawner()
+    {
+        isStopped = false;
     }
 }

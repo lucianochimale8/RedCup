@@ -31,7 +31,7 @@ public class ProjectilePool : MonoBehaviour
             }
         }
         // Si todos están activos, no crear más, solo devolver null
-        Debug.Log("NO HAY PROYECTILES DISPONIBLES EN EL POOL");
+        //Debug.Log("NO HAY PROYECTILES DISPONIBLES EN EL POOL");
         return null;
     }
 }

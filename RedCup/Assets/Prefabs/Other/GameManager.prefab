@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3940f7aab7f20734aae3f2b469f7e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLives: 1
-  startWithWand: 1
+  startingLives: 3
+  startWithWand: 0

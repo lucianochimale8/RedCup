@@ -13,10 +13,12 @@ public class PlayerWeaponController : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnWandStateChanged += HandleWandChanged;
+        GameEvents.OnPlayerDied += HandlePlayerDied;
     }
     private void OnDisable()
     {
         GameEvents.OnWandStateChanged -= HandleWandChanged;
+        GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
     private void Start()
     {
@@ -47,7 +49,10 @@ public class PlayerWeaponController : MonoBehaviour
         else
             wand.Unequip();
     }
-
+    private void HandlePlayerDied()
+    {
+        wand.gameObject.SetActive(false);
+    }
     #endregion
 
     #region Equip

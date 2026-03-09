@@ -23,14 +23,7 @@ public class AltarHealth : MonoBehaviour , IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
     }
-    private void Start()
-    {
-        LevelObjectiveManager manager = FindFirstObjectByType<LevelObjectiveManager>();
-        if (manager != null)
-        {
-            manager.RegisterKeyRequirement();
-        }
-    }
+
     public void TakeDamage(int amount)
     {
         if (isDead) return;

@@ -2,21 +2,24 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Velocidad")]
     [SerializeField] private float moveSpeed = 5f;
+    [Header("Referencias")]
     private Rigidbody2D rb;
-
     private bool isFacingRight = true;
-
-    // Movement Strategy
+    [Header("MovementStrategy")]
     public IMovementStrategy movementStrategy;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         // Walk por defecto
         movementStrategy = new WalkMovement();
     }
+    #endregion
 
+    #region Move, Flip
     public void Move(Vector2 input) 
     {
         // Velocidad
@@ -24,12 +27,6 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = finalVelocity;
         Flip(input);
     }
-    // Metodo para cambiar entre estrategias
-    public void SetStrategy(IMovementStrategy newStrategy)
-    {
-        movementStrategy = newStrategy;
-    }
-
     private void Flip(Vector2 input)
     {
         if (input.x != 0)
@@ -43,4 +40,13 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region SetStrategy
+    // Metodo para cambiar entre estrategias
+    public void SetStrategy(IMovementStrategy newStrategy)
+    {
+        movementStrategy = newStrategy;
+    }
+    #endregion
 }

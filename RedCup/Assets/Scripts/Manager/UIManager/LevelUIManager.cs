@@ -8,14 +8,10 @@ public class LevelUIManager : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnPlayerDied += OnGameOver;
-        GameEvents.OnLevelCompleted += ResumeGame;
-        
     }
     private void OnDisable()
     {
         GameEvents.OnPlayerDied -= OnGameOver;
-        GameEvents.OnLevelCompleted -= ResumeGame;
-        
     }
     #endregion
     #region Unity Lifecycle
@@ -34,12 +30,11 @@ public class LevelUIManager : MonoBehaviour
             return;
 
         if (GameManager.Instance.CurrentState == GameState.Playing)
-        { 
+        {
             PauseGame();
             Debug.Log("Pausa");
-        }
-
-        else if (GameManager.Instance.CurrentState == GameState.Paused)
+        } else 
+            if (GameManager.Instance.CurrentState == GameState.Paused)
             ResumeGame();
     }
     #endregion

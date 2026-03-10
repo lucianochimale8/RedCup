@@ -6,6 +6,7 @@ public class MenuInicio : UIPanel
 
     [Header("Audio")]
     [SerializeField] private AudioClip introMusic;
+    [SerializeField] private float volumen;
 
     private bool canContinue;
 
@@ -14,7 +15,7 @@ public class MenuInicio : UIPanel
         gameObject.SetActive(true);
 
         // Reproduce la música de intro
-        AudioManager.Instance.PlayMusic(introMusic);
+        AudioManager.Instance.PlayMusic(introMusic, volumen);
 
         canContinue = false;
         Invoke(nameof(HabilitarContinuar), 7f); // espera 10 segundos

@@ -1,12 +1,15 @@
-using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource sfxAudioSource, musicAudioSource;
     [SerializeField] private TMP_Text musicText, sfxText;
+    [SerializeField] private float sfxVolumen = 1f, musicVolumen = 0.3f;
     public static AudioManager Instance { get; private set; }
 
+    #region Unity Lifecycle
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -18,20 +21,33 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        musicAudioSource.volume = musicVolumen;
+        sfxAudioSource.volume = sfxVolumen;
     }
-    public void PlaySoundEffect(AudioClip audioClip, float volume)
+    #endregion
+
+    #region Metodos Play
+    public void PlaySoundEffect(AudioClip audioClip, float volume = 1f)
     {
-        sfxAudioSource.PlayOneShot(audioClip, volume);
+        sfxAudioSource.PlayOneShot(audioClip, sfxVolumen * volume);
     }
-    public void PlayMusic(AudioClip musicClip)
+    public void PlayMusic(AudioClip musicClip, float volume = 1f)
     {
         musicAudioSource.clip = musicClip;
+        musicAudioSource.volume = musicVolumen * volume;
         musicAudioSource.Play();
     }
+    #endregion
+
+    #region Metodos Stop
     public void StopMusic()
     {
         musicAudioSource.Stop();
     }
+    #endregion
+
+    #region Activar-Desactivar en UI
     public void ToggleMusic()
     {
         musicAudioSource.mute = !musicAudioSource.mute;
@@ -56,4 +72,5 @@ public class AudioManager : MonoBehaviour
             sfxText.text = "SFX: on";
         }
     }
+    #endregion
 }

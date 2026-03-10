@@ -519,7 +519,7 @@ MonoBehaviour:
   firePoint: {fileID: 4125661274855803718}
   pool: {fileID: 792367701148820}
   spell: {fileID: 8300000, guid: 8fba25e61f1e0ee408760e755e66a8df, type: 3}
-  volumen: 0.2
+  volumen: 0.3
 --- !u!114 &792367701148820
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class MenuPrincipal : UIPanel
 
     [Header("AudioClip")]
     [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private float volumen;
 
     private void Awake()
     {
@@ -59,7 +60,7 @@ public class MenuPrincipal : UIPanel
     {
         gameObject.SetActive(true);
         // Cambia la música
-        AudioManager.Instance.PlayMusic(menuMusic);
+        AudioManager.Instance.PlayMusic(menuMusic, volumen);
     }
 
     public override void Ocultar()

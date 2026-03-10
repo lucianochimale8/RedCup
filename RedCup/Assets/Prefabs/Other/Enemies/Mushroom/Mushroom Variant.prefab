@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4106801426943972140, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
       propertyPath: volumen
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4106801426943972140, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
       propertyPath: deathClip

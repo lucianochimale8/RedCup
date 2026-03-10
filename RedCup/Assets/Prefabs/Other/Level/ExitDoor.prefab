@@ -141,6 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelCompletedUI
   levelCompletedText: {fileID: 2476283320617827492}
   nextLevelClip: {fileID: 8300000, guid: f628f0d5119e39242a3ee5c811395510, type: 3}
+  volumen: 0.5
 --- !u!1001 &4456481937274560021
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour , IDamageable
 {
@@ -15,6 +16,8 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     private Rigidbody2D rb;
     private PlayerInput playerInput;
 
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip dieClip;
     private void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
@@ -71,6 +74,8 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         rb.simulated = false;
 
         playerAnimation.PlayDie();
+
+        AudioManager.Instance.PlaySoundEffect(dieClip, 1f);
 
         Debug.Log("DIE()");
     }

@@ -23,7 +23,11 @@ public class AudioManager : MonoBehaviour
     {
         sfxAudioSource.PlayOneShot(audioClip, volume);
     }
-
+    public void PlayMusic(AudioClip musicClip)
+    {
+        musicAudioSource.clip = musicClip;
+        musicAudioSource.Play();
+    }
     public void ToggleMusic()
     {
         musicAudioSource.mute = !musicAudioSource.mute;

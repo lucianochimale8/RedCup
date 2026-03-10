@@ -234,6 +234,8 @@ MonoBehaviour:
   maxHealth: 3
   hurtDuration: 0.2
   healthbar: {fileID: 7242105327769651124}
+  deathClip: {fileID: 8300000, guid: 979b20f1de61bde4fb12d9c7a19d4eff, type: 3}
+  volumen: 1
 --- !u!1001 &370277733043760427
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,15 +4,18 @@ using UnityEngine.SceneManagement;
 
 public class MenuPrincipal : UIPanel
 {
+    [Header("Botones")]
     [SerializeField] private Button btnPlay;
     [SerializeField] private Button btnOpciones;
     [SerializeField] private Button btnCreditos;
     [SerializeField] private Button btnSalir;
     [SerializeField] private Button btnInicio;
 
+    [Header("Nivel Tutorial")]
     public static string TUTORIAL_SCENE = "LevelTutorial";
 
-    [SerializeField] private GestorUI gestorUI;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip menuMusic;
 
     private void Awake()
     {
@@ -23,17 +26,17 @@ public class MenuPrincipal : UIPanel
 
         btnOpciones.onClick.AddListener(() =>
         {
-            gestorUI.MostrarPanel(PanelType.MenuOpciones);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuOpciones);
         });
 
         btnCreditos.onClick.AddListener(() =>
         {
-            gestorUI.MostrarPanel(PanelType.MenuCreditos);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuCreditos);
         });
 
         btnSalir.onClick.AddListener(() =>
         {
-            gestorUI.Salir();
+            GestorUI.Instance.Salir();
         });
 
         btnInicio.onClick.AddListener(VolverAlInicio);
@@ -49,12 +52,14 @@ public class MenuPrincipal : UIPanel
     }
     private void VolverAlInicio()
     {
-        gestorUI.MostrarPanel(PanelType.MenuInicio);
+        GestorUI.Instance.MostrarPanel(PanelType.MenuInicio);
     }
 
     public override void Mostrar()
     {
         gameObject.SetActive(true);
+        // Cambia la música
+        AudioManager.Instance.PlayMusic(menuMusic);
     }
 
     public override void Ocultar()

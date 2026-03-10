@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.GameOver:
                 //Time.timeScale = 0f;
+                AudioManager.Instance.StopMusic();
                 break;
         }
     }

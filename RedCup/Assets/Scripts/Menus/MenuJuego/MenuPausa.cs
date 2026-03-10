@@ -6,7 +6,6 @@ public class MenuPausa : UIPanel
 {
     [SerializeField] private Button btnReanudar;
     [SerializeField] private Button btnMenu;
-    [SerializeField] private GestorUI gestorUI;
 
     private void Awake()
     {
@@ -29,7 +28,7 @@ public class MenuPausa : UIPanel
     private void Continuar()
     {
         GameManager.Instance.ChangeState(GameState.Playing);
-        gestorUI.MostrarPanel(PanelType.HUD);
+        GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
     /// <summary>
     /// Para salir al Menu Inicio
@@ -38,6 +37,7 @@ public class MenuPausa : UIPanel
     {
         Time.timeScale = 1f;
         GameManager.Instance.ChangeState(GameState.Playing);
+        GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
         SceneManager.LoadScene(GestorUI.MENU_SCENE);
     }
 }

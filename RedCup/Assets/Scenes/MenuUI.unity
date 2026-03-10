@@ -1197,7 +1197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introMusic: {fileID: 8300000, guid: f59ee0ae527a06047aba321641198a97, type: 3}
-  menuMusic: {fileID: 8300000, guid: fd65b1451caef594d93cbb858d3041e9, type: 3}
 --- !u!1 &633891145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,7 +1719,7 @@ MonoBehaviour:
   btnCreditos: {fileID: 1110403826}
   btnSalir: {fileID: 1783423853}
   btnInicio: {fileID: 2010740527}
-  gestorUI: {fileID: 604651398}
+  menuMusic: {fileID: 8300000, guid: fd65b1451caef594d93cbb858d3041e9, type: 3}
 --- !u!1 &996588721
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class LevelUIManager : MonoBehaviour
 {
-    // Gestor
-    [SerializeField] private GestorUI gestorUI;
     #region Eventos
     private void OnEnable()
     {
@@ -17,8 +15,8 @@ public class LevelUIManager : MonoBehaviour
     #region Unity Lifecycle
     private void Start()
     {
-        if (gestorUI.HasPanel(PanelType.HUD))
-            gestorUI.MostrarPanel(PanelType.HUD);
+        if (GestorUI.Instance.HasPanel(PanelType.HUD))
+            GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
     private void Update()
     {
@@ -42,18 +40,18 @@ public class LevelUIManager : MonoBehaviour
     private void PauseGame()
     {
         GameManager.Instance.ChangeState(GameState.Paused);
-        gestorUI.MostrarPanel(PanelType.Pausa);
+        GestorUI.Instance.MostrarPanel(PanelType.Pausa);
     }
     public void ResumeGame()
     {
         GameManager.Instance.ChangeState(GameState.Playing);
-        gestorUI.MostrarPanel(PanelType.HUD);
+        GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
     private void OnGameOver()
     {  
         Debug.Log("GAME OVER MOSTRADO");
         GameManager.Instance.ChangeState(GameState.GameOver);
-        gestorUI.MostrarPanel(PanelType.GameOver);
+        GestorUI.Instance.MostrarPanel(PanelType.GameOver);
     }
     #endregion
 }

@@ -17,6 +17,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private float volumen;
+
 
     private Spawner spawner;
 
@@ -67,7 +71,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         enemyIA.StopMovement();
 
         GetComponent<Collider2D>().enabled = false;
+        
         animator.SetTrigger("Die");
+
+        AudioManager.Instance.PlaySoundEffect(deathClip, volumen);
 
         GameEvents.RaiseEnemyKilled();
 

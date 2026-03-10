@@ -28,6 +28,10 @@ public class AudioManager : MonoBehaviour
         musicAudioSource.clip = musicClip;
         musicAudioSource.Play();
     }
+    public void StopMusic()
+    {
+        musicAudioSource.Stop();
+    }
     public void ToggleMusic()
     {
         musicAudioSource.mute = !musicAudioSource.mute;

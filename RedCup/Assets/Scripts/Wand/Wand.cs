@@ -7,6 +7,7 @@ public class Wand : MonoBehaviour
     [SerializeField] private ProjectilePool pool;
     [Header("Audio")]
     [SerializeField] private AudioClip spell;
+    [SerializeField] private float volumen;
     /// <summary>
     /// Identificar si el arma esta equipada
     /// </summary>
@@ -40,7 +41,7 @@ public class Wand : MonoBehaviour
             p.SetActive(true);
 
             p.GetComponent<Projectile>().Initialize(firePoint.right);
-            AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
+            AudioManager.Instance.PlaySoundEffect(spell, volumen);
         }
         /*
         else

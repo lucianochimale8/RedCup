@@ -4,15 +4,12 @@ using UnityEngine.UI;
 public class MenuOpciones : UIPanel
 {
     [SerializeField] private Button btnVolver;
-    private GestorUI gestorUI;
 
     private void Awake()
     {
-        gestorUI = FindFirstObjectByType<GestorUI>();
-
         btnVolver.onClick.AddListener(() =>
         {
-            gestorUI.MostrarPanel(PanelType.MenuPrincipal);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuPrincipal);
         });
     }
 

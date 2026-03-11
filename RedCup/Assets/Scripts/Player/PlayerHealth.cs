@@ -16,8 +16,9 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     private PlayerInput playerInput;
 
     [Header("AudioClip")]
-    [SerializeField] private AudioClip dieClip;
-    [SerializeField] private float volumen;
+    [SerializeField] private AudioClip hurtClip, dieClip;
+    [Header("Volumen")]
+    [SerializeField] private float hurtVolume, dieVolume;
     #region Unity Lifecycle
     private void Awake()
     {
@@ -49,6 +50,7 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         if (GameManager.Instance.Lives > 0)
         {
             playerAnimation.PlayHurt();
+            AudioManager.Instance.PlaySoundEffect(hurtClip, hurtVolume);
             StartCoroutine(DamageCooldown());
         }
     }
@@ -77,7 +79,7 @@ public class PlayerHealth : MonoBehaviour , IDamageable
 
         playerAnimation.PlayDie();
 
-        AudioManager.Instance.PlaySoundEffect(dieClip, volumen);
+        AudioManager.Instance.PlaySoundEffect(dieClip, dieVolume);
 
         Debug.Log("DIE()");
     }

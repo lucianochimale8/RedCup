@@ -1157,7 +1157,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '
 
-    Gracias por jugar este juego :)'
+    itch.io: lucianochimale8 :)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ed4de664b80f8e46b34fb97c440417e, type: 2}
   m_sharedMaterial: {fileID: 5560178837137120394, guid: 5ed4de664b80f8e46b34fb97c440417e, type: 2}

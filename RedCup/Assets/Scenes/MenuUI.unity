@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introMusic: {fileID: 8300000, guid: f59ee0ae527a06047aba321641198a97, type: 3}
-  introVolume: 0.2
+  introVolume: 0.3
 --- !u!1 &633891145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,7 +1751,7 @@ MonoBehaviour:
   btnSalir: {fileID: 1783423853}
   btnInicio: {fileID: 2010740527}
   menuMusic: {fileID: 8300000, guid: 6bcd6dd124b01d8469c1d82b0794a594, type: 3}
-  menuVolume: 0.3
+  menuVolume: 0.2
 --- !u!1 &996588721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3301,6 +3301,18 @@ PrefabInstance:
     - target: {fileID: 6159728577271530818, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
       propertyPath: m_Name
       value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: sfxText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: musicText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: musicVolumen
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8400882953934851802, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
       propertyPath: m_LocalPosition.x

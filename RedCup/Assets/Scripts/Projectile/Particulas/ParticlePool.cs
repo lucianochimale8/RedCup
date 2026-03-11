@@ -18,7 +18,7 @@ public class ParticlePool : MonoBehaviour
 
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject obj = Instantiate(particlePrefab);
+            GameObject obj = Instantiate(particlePrefab, transform);
             obj.SetActive(false);
             pool.Enqueue(obj);
         }
@@ -39,7 +39,12 @@ public class ParticlePool : MonoBehaviour
             particle = Instantiate(particlePrefab);
         }
 
-        
+        particle.transform.position = position;
+
+        ParticleSystem ps = particle.GetComponent<ParticleSystem>();
+        ps.Clear();
+        ps.Play();
+
         particle.SetActive(true);
 
         return particle;

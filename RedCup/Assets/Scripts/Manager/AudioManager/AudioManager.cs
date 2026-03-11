@@ -30,11 +30,11 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region Metodos Play
-    public void PlaySoundEffect(AudioClip audioClip, float volume = 1f)
+    public void PlaySoundEffect(AudioClip audioClip, float volume)
     {
         sfxAudioSource.PlayOneShot(audioClip, sfxVolumen * volume);
     }
-    public void PlayMusic(AudioClip musicClip, float volume = 1f, bool loop = true)
+    public void PlayMusic(AudioClip musicClip, float volume, bool loop = true)
     {
         if (musicAudioSource.clip == musicClip && musicAudioSource.isPlaying)
             return;

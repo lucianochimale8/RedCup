@@ -297,8 +297,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageCooldown: 0.5
+  hurtClip: {fileID: 8300000, guid: ee61707669c500c489f4bd3b6ff392d2, type: 3}
   dieClip: {fileID: 8300000, guid: ce78e41508f2a514583b412d83b8d4cc, type: 3}
-  volumen: 0.5
+  hurtVolume: 1
+  dieVolume: 1
 --- !u!1 &6297515372331106032
 GameObject:
   m_ObjectHideFlags: 0

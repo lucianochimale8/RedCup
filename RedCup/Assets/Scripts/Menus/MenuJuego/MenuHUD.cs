@@ -3,14 +3,10 @@ using TMPro;
 
 public class MenuHUD : UIPanel
 {
+    [Header("Textos")]
     [SerializeField] private TMP_Text enemiesText;
     [SerializeField] private TMP_Text keysText;
-    /*
-    private void Awake()
-    {
-        gameObject.SetActive(true);
-    }
-    */
+    #region Events
     private void OnEnable()
     {
         GameEvents.OnPlayerDied += Ocultar;
@@ -32,6 +28,9 @@ public class MenuHUD : UIPanel
         GameEvents.OnEnemiesUpdated -= UpdateEnemies;
         GameEvents.OnKeysUpdated -= UpdateKeys;
     }
+    #endregion
+
+    #region Mostrar & Ocultar
     public override void Mostrar()
     {
         gameObject.SetActive(true);
@@ -41,6 +40,9 @@ public class MenuHUD : UIPanel
     {
         gameObject.SetActive(false);
     }
+    #endregion
+
+    #region Updates
     // Para actualizar los enemigos restantes
     private void UpdateEnemies(int current, int total)
     {
@@ -51,4 +53,5 @@ public class MenuHUD : UIPanel
     {
         keysText.text = $": {current}/{total}";
     }
+    #endregion
 }

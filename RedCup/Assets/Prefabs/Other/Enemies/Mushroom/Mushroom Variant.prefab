@@ -10,12 +10,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4106801426943972140, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
       propertyPath: volumen
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4106801426943972140, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
-      propertyPath: deathClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 979b20f1de61bde4fb12d9c7a19d4eff, type: 3}
     - target: {fileID: 4725444497021832439, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
       propertyPath: m_Name
       value: Mushroom Variant

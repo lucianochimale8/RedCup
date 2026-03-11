@@ -32,7 +32,7 @@ public class WinPanel : UIPanel
     #endregion
 
     #region Volver Al Menu
-    public void VolverAlMenu()
+    private void VolverAlMenu()
     {
         GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
         SceneManager.LoadScene(GestorUI.MENU_SCENE);

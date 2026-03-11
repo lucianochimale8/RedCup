@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
     [Header("Timer")]
     private float timer;
+    #region Unity Lifecycle
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,22 +21,26 @@ public class Projectile : MonoBehaviour
     {
         timer = lifeTime;
     }
-
     private void Update()
     {
         timer -= Time.deltaTime;
+
         if (timer <= 0)
         {
-            rb.linearVelocity = Vector2.zero;
-            gameObject.SetActive(false);
+            SpawnImpact();
+            DisableProjectile();
         }
     }
+    #endregion
 
+    #region Inicializar
     public void Initialize(Vector2 direction)
     {
         rb.linearVelocity = direction.normalized * speed;
     }
+    #endregion
 
+    #region Colision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
@@ -44,11 +49,24 @@ public class Projectile : MonoBehaviour
         {
             damageable.TakeDamage(damage);
         }
+
+        SpawnImpact();
         DisableProjectile();
     }
+    #endregion
+
+    #region Disable
     private void DisableProjectile()
     {
         rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
     }
+    #endregion
+
+    #region Spawn Impact
+    private void SpawnImpact()
+    {
+        ParticlePool.Instance.GetParticle(transform.position);
+    }
+    #endregion
 }

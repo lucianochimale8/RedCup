@@ -39,7 +39,7 @@ public class MenuInicio : UIPanel
     }
     #endregion
     #region Habilitar continuacion
-    void HabilitarContinuar()
+    private void HabilitarContinuar()
     {
         canContinue = true;
     }

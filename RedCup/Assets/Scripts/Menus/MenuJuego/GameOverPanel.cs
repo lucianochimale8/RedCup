@@ -28,7 +28,7 @@ public class GameOverPanel : UIPanel
 
     #region Volver Al Menu
     // Botón Volver al Menú
-    public void VolverAlMenu()
+    private void VolverAlMenu()
     {
         GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
         SceneManager.LoadScene(GestorUI.MENU_SCENE);

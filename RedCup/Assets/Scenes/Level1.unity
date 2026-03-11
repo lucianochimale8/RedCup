@@ -22415,6 +22415,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: musicVolumen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8400882953934851802, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
       propertyPath: m_LocalPosition.x
       value: 303.5219
@@ -22739,6 +22743,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 244221dc307682449885c9744873ade2, type: 3}
+--- !u!1001 &1429554105
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989783677774639651, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8085361474950322756, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+      propertyPath: m_Name
+      value: ParticlePool
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
 --- !u!1 &1747517804
 GameObject:
   m_ObjectHideFlags: 0
@@ -79742,7 +79803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
       propertyPath: waves
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
       propertyPath: enemiesPrewave
@@ -79751,6 +79812,14 @@ PrefabInstance:
     - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
       propertyPath: initialPoolSize
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
+      propertyPath: timeBetweenWaves
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
+      propertyPath: timeBetweenSpawns
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 139712040394499760, guid: 5584b031857c6e049866dedeeba2c4d9, type: 3}
       propertyPath: 'spawnPoints.Array.data[2]'
@@ -79950,6 +80019,10 @@ PrefabInstance:
       value: SpawnPoint 4
       objectReference: {fileID: 0}
     - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
+      propertyPath: waves
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 4725444497021832439, guid: d4b2c2dc303e1a244b342e9494328764, type: 3}
@@ -79964,6 +80037,14 @@ PrefabInstance:
     - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
       propertyPath: initialPoolSize
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
+      propertyPath: timeBetweenWaves
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
+      propertyPath: timeBetweenSpawns
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3704501430356348745, guid: 5dccd9656f0bc984cb4990724691d824, type: 3}
       propertyPath: spawnPoints.Array.size
@@ -80102,6 +80183,10 @@ PrefabInstance:
       value: SpawnPoint 7
       objectReference: {fileID: 0}
     - target: {fileID: 1565434341863146965, guid: 83020a963cbbedf4c8d5092e6f34964a, type: 3}
+      propertyPath: waves
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565434341863146965, guid: 83020a963cbbedf4c8d5092e6f34964a, type: 3}
       propertyPath: enemiesParent
       value: 
       objectReference: {fileID: 7609544692305572317}
@@ -80112,6 +80197,10 @@ PrefabInstance:
     - target: {fileID: 1565434341863146965, guid: 83020a963cbbedf4c8d5092e6f34964a, type: 3}
       propertyPath: initialPoolSize
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565434341863146965, guid: 83020a963cbbedf4c8d5092e6f34964a, type: 3}
+      propertyPath: timeBetweenSpawns
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1565434341863146965, guid: 83020a963cbbedf4c8d5092e6f34964a, type: 3}
       propertyPath: spawnPoints.Array.size
@@ -80278,3 +80367,4 @@ SceneRoots:
   - {fileID: 1748640580}
   - {fileID: 270069249}
   - {fileID: 1140403587}
+  - {fileID: 1429554105}

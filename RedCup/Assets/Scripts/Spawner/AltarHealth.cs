@@ -16,14 +16,21 @@ public class AltarHealth : MonoBehaviour , IDamageable
     [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
 
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip altarHurt;
+    [SerializeField] private float altarVolumen;
+
     private bool isDead;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
     }
+    #endregion
 
+    #region Take Damage
     public void TakeDamage(int amount)
     {
         if (isDead) return;
@@ -32,6 +39,8 @@ public class AltarHealth : MonoBehaviour , IDamageable
         
         if (healthbar != null)
             healthbar.UpdateHealthBar(maxHealth, currentHealth);
+
+        AudioManager.Instance.PlaySoundEffect(altarHurt, altarVolumen);
 
         if (currentHealth <= 0)
         {
@@ -42,7 +51,9 @@ public class AltarHealth : MonoBehaviour , IDamageable
         StopAllCoroutines();
         StartCoroutine(Blink());
     }
+    #endregion
 
+    #region Die
     private void Die()
     {
         isDead = true;
@@ -54,11 +65,14 @@ public class AltarHealth : MonoBehaviour , IDamageable
         //Destroy(transform.parent.gameObject);
         Destroy(gameObject);
     }
+    #endregion
 
+    #region Blink
     private IEnumerator Blink()
     {
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.5f);
         spriteRenderer.color = Color.white;
     }
+    #endregion
 }

@@ -15,13 +15,14 @@ public class GameManager : MonoBehaviour
     public int Lives => currentLives;
     // Estado del arma
     public bool HasWand { get; private set; }
+    [Header("Start With Wand")]
     // Para definir en que nivel ya empieza con el arma
     [SerializeField] private bool startWithWand;
     public GameState CurrentState { get; private set; }
+
     private bool gameInitialized = false;
 
     #region Unity Lifecycle
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -116,6 +117,7 @@ public class GameManager : MonoBehaviour
     #region Game Over
     private IEnumerator GameOverRoutine()
     {
+        ChangeState(GameState.GameOver);
         GameEvents.RaisePlayerDied();
         yield return new WaitForSecondsRealtime(1.2f);
     }
@@ -147,8 +149,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.GameOver:
-                //Time.timeScale = 0f;
-                AudioManager.Instance.StopMusic();
+                AudioManager.Instance.PauseMusic();
                 break;
         }
     }

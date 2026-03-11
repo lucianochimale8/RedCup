@@ -380,6 +380,8 @@ MonoBehaviour:
   wand: {fileID: 323863091246899387}
   wandPickupPrefab: {fileID: 4952399339133603844, guid: 773d552959bfbf54281b2f01fa3ac279, type: 3}
   dropPoint: {fileID: 9192591442328588734}
+  dropWand: {fileID: 8300000, guid: 9a2750c961172ca48b9216f5a7d6664f, type: 3}
+  dropVolumen: 1
 --- !u!1 &9121720865821978135
 GameObject:
   m_ObjectHideFlags: 0

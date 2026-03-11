@@ -16,8 +16,10 @@ public class MenuPrincipal : UIPanel
 
     [Header("AudioClip")]
     [SerializeField] private AudioClip menuMusic;
-    [SerializeField] private float volumen;
+    [Header("Volumen")]
+    [SerializeField] private float menuVolume = 0.3f;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         btnPlay.onClick.AddListener(() =>
@@ -42,7 +44,9 @@ public class MenuPrincipal : UIPanel
 
         btnInicio.onClick.AddListener(VolverAlInicio);
     }
+    #endregion
 
+    #region Jugar
     private void Jugar()
     {
         if (GameManager.Instance != null)
@@ -51,20 +55,24 @@ public class MenuPrincipal : UIPanel
         }
         SceneManager.LoadScene(TUTORIAL_SCENE);
     }
+    #endregion
+
+    #region Volver Al Inicio
     private void VolverAlInicio()
     {
         GestorUI.Instance.MostrarPanel(PanelType.MenuInicio);
     }
+    #endregion
 
+    #region Mostrar & Ocultar
     public override void Mostrar()
     {
         gameObject.SetActive(true);
-        // Cambia la música
-        AudioManager.Instance.PlayMusic(menuMusic, volumen);
+        AudioManager.Instance.PlayMusic(menuMusic, menuVolume, true);
     }
-
     public override void Ocultar()
     {
         gameObject.SetActive(false);
     }
+    #endregion
 }

@@ -1,11 +1,13 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [Header("AudioClip")]
     [SerializeField] private AudioSource sfxAudioSource, musicAudioSource;
+    [Header("Textos")]
     [SerializeField] private TMP_Text musicText, sfxText;
+    [Header("Volumen")]
     [SerializeField] private float sfxVolumen = 1f, musicVolumen = 0.3f;
     public static AudioManager Instance { get; private set; }
 
@@ -32,18 +34,28 @@ public class AudioManager : MonoBehaviour
     {
         sfxAudioSource.PlayOneShot(audioClip, sfxVolumen * volume);
     }
-    public void PlayMusic(AudioClip musicClip, float volume = 1f)
+    public void PlayMusic(AudioClip musicClip, float volume = 1f, bool loop = true)
     {
+        if (musicAudioSource.clip == musicClip && musicAudioSource.isPlaying)
+            return;
+
         musicAudioSource.clip = musicClip;
         musicAudioSource.volume = musicVolumen * volume;
+        musicAudioSource.loop = loop;
         musicAudioSource.Play();
     }
     #endregion
 
-    #region Metodos Stop
-    public void StopMusic()
+    #region Metodos Pause & Resume
+    public void PauseMusic()
     {
-        musicAudioSource.Stop();
+        if (musicAudioSource.isPlaying)
+            musicAudioSource.Pause();
+    }
+
+    public void ResumeMusic()
+    {
+        musicAudioSource.UnPause();
     }
     #endregion
 

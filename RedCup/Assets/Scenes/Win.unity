@@ -1318,6 +1318,7 @@ GameObject:
   - component: {fileID: 2096516452}
   - component: {fileID: 2096516451}
   - component: {fileID: 2096516450}
+  - component: {fileID: 2096516453}
   m_Layer: 5
   m_Name: BotonInicio
   m_TagString: Untagged
@@ -1426,6 +1427,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096516448}
   m_CullTransparentMesh: 1
+--- !u!114 &2096516453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096516448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db5aab052271c244ba22c724fd2007ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
+  clickSound: {fileID: 8300000, guid: 4f50b6064d2907a4dac3caf0d67c8964, type: 3}
+  volume: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

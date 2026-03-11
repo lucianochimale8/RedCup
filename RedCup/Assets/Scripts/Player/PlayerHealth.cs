@@ -18,6 +18,7 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     [Header("AudioClip")]
     [SerializeField] private AudioClip dieClip;
     [SerializeField] private float volumen;
+    #region Unity Lifecycle
     private void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
@@ -29,11 +30,12 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     {
         GameEvents.OnPlayerDied += Die;
     }
-
     private void OnDisable()
     {
         GameEvents.OnPlayerDied -= Die;
     }
+    #endregion
+
     #region Damage
     public void TakeDamage(int amount)
     {

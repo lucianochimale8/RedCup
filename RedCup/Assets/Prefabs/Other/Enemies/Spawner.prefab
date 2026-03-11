@@ -227,6 +227,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Altar
       objectReference: {fileID: 0}
+    - target: {fileID: 3908770409445407425, guid: 8cd5a6851575cee46b1c5942b7bc9b2a, type: 3}
+      propertyPath: altarHurt
+      value: 
+      objectReference: {fileID: 8300000, guid: f0b3005d403f9df4ba11a59e23649749, type: 3}
+    - target: {fileID: 3908770409445407425, guid: 8cd5a6851575cee46b1c5942b7bc9b2a, type: 3}
+      propertyPath: altarVolumen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4834604307901812547, guid: 8cd5a6851575cee46b1c5942b7bc9b2a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.0013562501

@@ -47997,9 +47997,17 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
+      propertyPath: dropWand
+      value: 
+      objectReference: {fileID: 8300000, guid: 9a2750c961172ca48b9216f5a7d6664f, type: 3}
+    - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: dropPoint
       value: 
       objectReference: {fileID: 794521334}
+    - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
+      propertyPath: dropVolumen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3807610730063845709, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_SortingLayer
       value: 6
@@ -48363,6 +48371,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -3.84
       objectReference: {fileID: 0}
+    - target: {fileID: 5832102715467854067, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
+      propertyPath: altarVolumen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6720365191553365005, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4
@@ -48413,7 +48425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7487664737721890170, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: initialPoolSize
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7487664737721890170, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
       propertyPath: timeBetweenWaves

@@ -8,6 +8,9 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject wandPickupPrefab;
     [Header("Punto del drop")]
     [SerializeField] private Transform dropPoint;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip dropWand;
+    [SerializeField] private float dropVolumen;
 
     #region Unity Lifecycle
     private void OnEnable()
@@ -82,6 +85,9 @@ public class PlayerWeaponController : MonoBehaviour
             dropPoint.position,
             Quaternion.identity
         );
+
+        AudioSource.PlayClipAtPoint(dropWand, dropPoint.position, dropVolumen);
+
         GameManager.Instance.SetWand(false);
     }
     #endregion

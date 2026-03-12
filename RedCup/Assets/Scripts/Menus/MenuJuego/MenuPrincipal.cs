@@ -4,18 +4,24 @@ using UnityEngine.SceneManagement;
 
 public class MenuPrincipal : UIPanel
 {
+    [Header("Botones")]
     [SerializeField] private Button btnPlay;
     [SerializeField] private Button btnOpciones;
     [SerializeField] private Button btnCreditos;
     [SerializeField] private Button btnSalir;
     [SerializeField] private Button btnInicio;
 
-    private GestorUI gestorUI;
+    [Header("Nivel Tutorial")]
+    public static string TUTORIAL_SCENE = "LevelTutorial";
 
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip menuMusic;
+    [Header("Volumen")]
+    [SerializeField] private float menuVolume = 0.3f;
+
+    #region Unity Lifecycle
     private void Awake()
     {
-        gestorUI = FindFirstObjectByType<GestorUI>();
-
         btnPlay.onClick.AddListener(() =>
         {
             Jugar();
@@ -23,39 +29,56 @@ public class MenuPrincipal : UIPanel
 
         btnOpciones.onClick.AddListener(() =>
         {
-            gestorUI.MostrarPanel(PanelType.MenuOpciones);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuOpciones);
         });
 
         btnCreditos.onClick.AddListener(() =>
         {
-            gestorUI.MostrarPanel(PanelType.MenuCreditos);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuCreditos);
         });
 
         btnSalir.onClick.AddListener(() =>
         {
-            gestorUI.Salir();
+            GestorUI.Instance.Salir();
         });
 
         btnInicio.onClick.AddListener(VolverAlInicio);
     }
+    #endregion
 
+    #region Jugar
     private void Jugar()
     {
-        MenuStartup.panelInicial = PanelType.HUD;
-        SceneManager.LoadScene("TextArea");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResetGame();
+        }
+        if (TimeManager.Instance != null)
+        {
+            TimeManager.Instance.ResetTimer();
+            TimeManager.Instance.StartTimer();
+        }
+
+        SceneManager.LoadScene(TUTORIAL_SCENE);
     }
+    #endregion
+
+    #region Volver Al Inicio
     private void VolverAlInicio()
     {
-        gestorUI.MostrarPanel(PanelType.MenuInicio);
+        GestorUI.Instance.MostrarPanel(PanelType.MenuInicio);
     }
+    #endregion
 
+    #region Mostrar & Ocultar
     public override void Mostrar()
     {
         gameObject.SetActive(true);
+        AudioManager.Instance.PlayMusic(menuMusic, menuVolume, true);
     }
-
     public override void Ocultar()
     {
         gameObject.SetActive(false);
     }
+    #endregion
 }

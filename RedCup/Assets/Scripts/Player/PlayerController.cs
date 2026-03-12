@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
+    private Rigidbody2D rb;
     [Header("Command")]
     private ICommand currentCommand;
     private ICommand shootCommand;
@@ -13,19 +15,41 @@ public class PlayerController : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] private Wand wand;
     [SerializeField] private PlayerWeaponController weaponController;
+    // bloqueo de movimiento
+    private bool canMove = true;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        rb = GetComponent<Rigidbody2D>();
 
         shootCommand = new ShootCommand(wand);
         dropCommand = new DropWeaponCommand(weaponController);
     }
+    private void OnEnable()
+    {
+        GameEvents.OnPlayerHit += StopPlayer;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnPlayerHit -= StopPlayer;
+    }
     private void Update()
     {
-        if (Time.timeScale == 0) return;
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (!canMove)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
@@ -35,9 +59,25 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        currentCommand?.Execute();
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return; 
+        }
+
+        if (!canMove)
+        {
+            Debug.Log("no me puedo mover");
+            currentCommand = null;
+            return;
+        }
+
+        if(canMove)
+            currentCommand?.Execute();
     }
-    #region Movimiento y Disparo del jugador
+    #endregion
+
+    #region Movimiento
     private void Movimiento()
     {
         // movimiento
@@ -52,12 +92,15 @@ public class PlayerController : MonoBehaviour
             currentCommand = new MoveCommand(playerMovement, moveInput);
         }
     }
+    #endregion
+
+    #region Disparo
     private void Disparo()
     {
         if (!playerInput.ShootPressed)
             return;
 
-        if (!weaponController.HasWand)
+        if (!GameManager.Instance.HasWand)
         {
             playerInput.ResetShoot();
             return;
@@ -66,6 +109,9 @@ public class PlayerController : MonoBehaviour
         shootCommand.Execute();
         playerInput.ResetShoot();
     }
+    #endregion
+
+    #region Drop
     private void Drop()
     {
         if (playerInput.DropPressed)
@@ -75,8 +121,15 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-    public void StopPlayer()
+
+    #region Stop
+    private void StopPlayer()
     {
-        enabled = false;
+        canMove = false;
+
+        rb.linearVelocity = Vector2.zero;
+
+        currentCommand = null;
     }
+    #endregion
 }

@@ -1,44 +1,83 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuPausa : UIPanel
 {
     [SerializeField] private Button btnReanudar;
     [SerializeField] private Button btnMenu;
+    [Header("Texts")]
+    [SerializeField] private TMP_Text musicText;
+    [SerializeField] private TMP_Text sfxText;
 
-    private GestorUI gestorUI;
-
+    #region Unity Lifecycle
     private void Awake()
     {
-        gestorUI = FindFirstObjectByType<GestorUI>();
-
-        btnReanudar.onClick.AddListener(() =>
-        {
-            gestorUI.MostrarPanel(PanelType.HUD);
-        });
-
-        btnMenu.onClick.AddListener(() =>
-        {      
-            SalirAlMenu();
-        });
+        btnReanudar.onClick.AddListener(Continuar);
+        btnMenu.onClick.AddListener(SalirAlMenu);
     }
-
+    private void OnEnable()
+    {
+        AudioManager.OnAudioStateChanged += UpdateTexts;
+    }
+    private void OnDisable()
+    {
+        AudioManager.OnAudioStateChanged -= UpdateTexts;
+    }
+    #endregion
+    #region Events
     public override void Mostrar()
     {
-        Time.timeScale = 0f;
         gameObject.SetActive(true);
+        UpdateTexts();
     }
-
     public override void Ocultar()
     {
-        Time.timeScale = 1f;
         gameObject.SetActive(false);
     }
+    #endregion
+
+    #region Continuar
+    /// <summary>
+    /// Boton para Reanudar la partida
+    /// </summary>
+    private void Continuar()
+    {
+        GameManager.Instance.ChangeState(GameState.Playing);
+        GestorUI.Instance.MostrarPanel(PanelType.HUD);
+    }
+    #endregion
+
+    #region Salir Al Menu
+    /// <summary>
+    /// Para salir al Menu Inicio
+    /// </summary>
     private void SalirAlMenu()
     {
+        if (TimeManager.Instance != null)
+            TimeManager.Instance.ResetTimer();
+
         Time.timeScale = 1f;
-        MenuStartup.panelInicial = PanelType.MenuPrincipal;
-        SceneManager.LoadScene("MenuUI");
+        GameManager.Instance.ChangeState(GameState.Playing);
+        GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
+        SceneManager.LoadScene(GestorUI.MENU_SCENE);
     }
+    #endregion
+
+    #region Audio Buttons
+    public void ToggleMusic()
+    {
+        AudioManager.Instance.ToggleMusic();
+    }
+    public void ToggleSFX()
+    {
+        AudioManager.Instance.ToggleSFX();
+    }
+    private void UpdateTexts()
+    {
+        musicText.text = AudioManager.Instance.IsMusicMuted() ? "OFF" : "ON";
+        sfxText.text = AudioManager.Instance.IsSFXMuted() ? "OFF" : "ON";
+    }
+    #endregion
 }

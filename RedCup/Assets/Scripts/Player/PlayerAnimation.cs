@@ -14,4 +14,12 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetFloat("Speed", speed);
         animator.SetBool("IsRunning", isRunning);
     }
+    public void PlayHurt()
+    {
+        animator.SetTrigger("Hurt");
+    }
+    public void PlayDie()
+    {
+        animator.SetTrigger("Die");
+    }
 }

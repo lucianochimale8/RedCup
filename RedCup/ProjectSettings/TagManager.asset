@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - EnemyAfk
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - Player
   - Enemy
   - Projectile
-  - 
-  - 
+  - AltarEnemy
+  - Objects
   - 
   - 
   - 
@@ -51,8 +52,20 @@ TagManager:
   - name: Objects
     uniqueID: 2560535393
     locked: 0
+  - name: Enemy
+    uniqueID: 3168058341
+    locked: 0
+  - name: Projectile
+    uniqueID: 2932846017
+    locked: 0
   - name: Characters
     uniqueID: 4170791981
+    locked: 0
+  - name: UI_word
+    uniqueID: 1461898155
+    locked: 0
+  - name: UI
+    uniqueID: 2333798031
     locked: 0
   m_RenderingLayers:
   - Default

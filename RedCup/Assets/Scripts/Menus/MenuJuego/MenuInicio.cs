@@ -3,29 +3,45 @@ using UnityEngine;
 
 public class MenuInicio : UIPanel
 {
-    private GestorUI gestorUI;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip introMusic;
+    [Header("Volumen")]
+    [SerializeField] private float introVolume = 0.2f;
 
-    private void Awake()
-    {
-        gestorUI = FindFirstObjectByType<GestorUI>();
-    }
+    private bool canContinue;
 
-    public override void Mostrar()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Ocultar()
-    {
-        gameObject.SetActive(false);
-    }
+    #region Unity Lifecycle
     private void Update()
     {
         if (!gameObject.activeSelf) return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canContinue && Input.GetKeyDown(KeyCode.Space))
         {
-            gestorUI.MostrarPanel(PanelType.MenuPrincipal);
+            GestorUI.Instance.MostrarPanel(PanelType.MenuPrincipal);
         }
     }
+    #endregion
+
+    #region Mostrar & Ocultar
+    public override void Mostrar()
+    {
+        gameObject.SetActive(true);
+
+        // Reproduce la música de intro
+        AudioManager.Instance.PlayMusic(introMusic, introVolume, false);
+
+        canContinue = false;
+        Invoke(nameof(HabilitarContinuar), 7f); // espera 10 segundos
+    }
+    public override void Ocultar()
+    {
+        gameObject.SetActive(false);
+    }
+    #endregion
+    #region Habilitar continuacion
+    private void HabilitarContinuar()
+    {
+        canContinue = true;
+    }
+    #endregion
 }

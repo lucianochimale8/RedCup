@@ -7,6 +7,7 @@ public class Wand : MonoBehaviour
     [SerializeField] private ProjectilePool pool;
     [Header("Audio")]
     [SerializeField] private AudioClip spell;
+    [SerializeField] private float volumen;
     /// <summary>
     /// Identificar si el arma esta equipada
     /// </summary>
@@ -28,7 +29,7 @@ public class Wand : MonoBehaviour
     #region Disparo
     public void Shoot()
     {
-        Debug.Log("WAND SHOOT LLAMADO");
+        // Debug.Log("WAND SHOOT LLAMADO");
         // Si no hay arma equipada, no poder disparar
         if (!IsEquipped) return;
 
@@ -40,12 +41,14 @@ public class Wand : MonoBehaviour
             p.SetActive(true);
 
             p.GetComponent<Projectile>().Initialize(firePoint.right);
-            //AudioManager.Instance.PlaySoundEffect(spell, 0.5f);
+            AudioManager.Instance.PlaySoundEffect(spell, volumen);
         }
+        /*
         else
         {
-            Debug.Log("No hay proyectiles disponibles");
+            Debug.Log("No hay proyectiles disponibles en el arma");
         }
+        */
     }
     #endregion
 }

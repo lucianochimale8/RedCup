@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyHealth : MonoBehaviour , IDamageable
+public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Vida Enemigo")]
     [SerializeField] private int maxHealth = 3;
@@ -17,6 +17,12 @@ public class EnemyHealth : MonoBehaviour , IDamageable
 
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private float volumen;
+
+
+    private Spawner spawner;
 
     private void Awake()
     {
@@ -25,6 +31,15 @@ public class EnemyHealth : MonoBehaviour , IDamageable
         enemyIA = GetComponent<EnemyIA>();
 
         currentHealth = maxHealth;
+    }
+
+    private void OnEnable()
+    {
+        ResetEnemy();
+    }
+    public void SetSpawner(Spawner owner)
+    {
+        spawner = owner;
     }
 
     #region Tomar daño
@@ -50,15 +65,20 @@ public class EnemyHealth : MonoBehaviour , IDamageable
     {
         isDead = true;
 
+        if(healthbar != null)
+            healthbar.gameObject.SetActive(false);
+
         enemyIA.StopMovement();
 
+        GetComponent<Collider2D>().enabled = false;
+        
         animator.SetTrigger("Die");
 
-        GetComponent<Collider2D>().enabled = false;
+        AudioManager.Instance.PlaySoundEffect(deathClip, volumen);
 
-        GameEvents.OnEnemyKilled?.Invoke();
+        GameEvents.RaiseEnemyKilled();
 
-        Destroy(gameObject, 0.4f);
+        StartCoroutine(FadeOut());
     }
     private IEnumerator Blink()
     {
@@ -67,4 +87,36 @@ public class EnemyHealth : MonoBehaviour , IDamageable
         spriteRenderer.color = Color.white;
     }
     #endregion
+
+    #region Reset del enemigo
+    public void ResetEnemy()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
+    }
+    #endregion
+    private IEnumerator FadeOut()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+       
+        float time = 1.5f;
+        float elapsed = 0;
+        
+        sr.color = Color.white;
+        Color color = sr.color;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Lerp(1f, 0f, elapsed / time);
+            sr.color = color;
+            yield return null;
+        }
+        StartCoroutine(RemoveBody());
+    }
+    private IEnumerator RemoveBody()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
 }

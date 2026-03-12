@@ -90,6 +90,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3807610730063845709
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,6 +109,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -129,9 +132,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 4334783836991956000, guid: d1f19e58b91709f4caac254c4dfafb42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -141,7 +146,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8807481093431545083
 Animator:
@@ -226,8 +230,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.125, y: 1.875}
+  m_Offset: {x: 0.048235834, y: -0.006345451}
+  m_Size: {x: 0.7966845, y: 1.7270099}
   m_Direction: 0
 --- !u!114 &3179595532864666990
 MonoBehaviour:
@@ -242,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wand: {fileID: 323863091246899387}
-  weaponController: {fileID: 0}
+  weaponController: {fileID: 3807381358644260662}
 --- !u!114 &4802335326432593253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,6 +297,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageCooldown: 0.5
+  hurtClip: {fileID: 8300000, guid: ee61707669c500c489f4bd3b6ff392d2, type: 3}
+  dieClip: {fileID: 8300000, guid: ce78e41508f2a514583b412d83b8d4cc, type: 3}
+  hurtVolume: 1
+  dieVolume: 1
 --- !u!1 &6297515372331106032
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +382,8 @@ MonoBehaviour:
   wand: {fileID: 323863091246899387}
   wandPickupPrefab: {fileID: 4952399339133603844, guid: 773d552959bfbf54281b2f01fa3ac279, type: 3}
   dropPoint: {fileID: 9192591442328588734}
+  dropWand: {fileID: 8300000, guid: 9a2750c961172ca48b9216f5a7d6664f, type: 3}
+  dropVolumen: 1
 --- !u!1 &9121720865821978135
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,6 +451,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7405614774439310187
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -459,6 +470,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -480,9 +493,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -7691939156250662429, guid: 0c59d14b038da314ea9e6ed35bd29462, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -492,7 +507,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &323863091246899387
 MonoBehaviour:
@@ -508,7 +522,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 4125661274855803718}
   pool: {fileID: 792367701148820}
-  spell: {fileID: 0}
+  spell: {fileID: 8300000, guid: 8fba25e61f1e0ee408760e755e66a8df, type: 3}
+  volumen: 0.3
 --- !u!114 &792367701148820
 MonoBehaviour:
   m_ObjectHideFlags: 0

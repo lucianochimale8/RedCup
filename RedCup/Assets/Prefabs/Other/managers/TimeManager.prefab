@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8085361474950322756
+--- !u!1 &5987102108662290284
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6989783677774639651}
-  - component: {fileID: 7330948166991342733}
+  - component: {fileID: 9025374523228931996}
+  - component: {fileID: 1562801681751080884}
   m_Layer: 0
-  m_Name: ParticlePool
+  m_Name: TimeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6989783677774639651
+--- !u!4 &9025374523228931996
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085361474950322756}
+  m_GameObject: {fileID: 5987102108662290284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26.22865, y: -2.89276, z: 0}
+  m_LocalPosition: {x: 382.3978, y: 166.05388, z: 0.00622968}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7330948166991342733
+--- !u!114 &1562801681751080884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085361474950322756}
+  m_GameObject: {fileID: 5987102108662290284}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20d7b6d98892f1144bbf2d471719299c, type: 3}
+  m_Script: {fileID: 11500000, guid: c1e65e27a2edc334a98109d9d91162bb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ParticlePool
-  particlePrefab: {fileID: 9216806470203057367, guid: ff42cf54af849d54daae981cc83eaf9f, type: 3}
-  poolSize: 6
+  m_EditorClassIdentifier: Assembly-CSharp::TimeManager

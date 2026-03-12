@@ -1,4 +1,3 @@
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,25 +17,24 @@ public class MenuPausa : UIPanel
         btnReanudar.onClick.AddListener(Continuar);
         btnMenu.onClick.AddListener(SalirAlMenu);
     }
-
+    private void OnEnable()
+    {
+        AudioManager.OnAudioStateChanged += UpdateTexts;
+    }
+    private void OnDisable()
+    {
+        AudioManager.OnAudioStateChanged -= UpdateTexts;
+    }
+    #endregion
+    #region Events
     public override void Mostrar()
     {
         gameObject.SetActive(true);
         UpdateTexts();
     }
-
     public override void Ocultar()
     {
         gameObject.SetActive(false);
-    }
-    private void OnEnable()
-    {
-        AudioManager.OnAudioStateChanged += UpdateTexts;
-    }
-
-    private void OnDisable()
-    {
-        AudioManager.OnAudioStateChanged -= UpdateTexts;
     }
     #endregion
 
@@ -57,6 +55,9 @@ public class MenuPausa : UIPanel
     /// </summary>
     private void SalirAlMenu()
     {
+        if (TimeManager.Instance != null)
+            TimeManager.Instance.ResetTimer();
+
         Time.timeScale = 1f;
         GameManager.Instance.ChangeState(GameState.Playing);
         GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
@@ -68,12 +69,10 @@ public class MenuPausa : UIPanel
     public void ToggleMusic()
     {
         AudioManager.Instance.ToggleMusic();
-        UpdateTexts();
     }
     public void ToggleSFX()
     {
         AudioManager.Instance.ToggleSFX();
-        UpdateTexts();
     }
     private void UpdateTexts()
     {

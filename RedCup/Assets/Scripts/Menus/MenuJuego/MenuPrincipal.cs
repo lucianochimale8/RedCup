@@ -53,6 +53,11 @@ public class MenuPrincipal : UIPanel
         {
             GameManager.Instance.ResetGame();
         }
+        if (TimeManager.Instance != null)
+        {
+            TimeManager.Instance.ResetTimer();
+            TimeManager.Instance.StartTimer();
+        }
 
         SceneManager.LoadScene(TUTORIAL_SCENE);
     }

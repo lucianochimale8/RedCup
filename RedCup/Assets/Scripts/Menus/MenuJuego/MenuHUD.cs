@@ -6,6 +6,8 @@ public class MenuHUD : UIPanel
     [Header("Textos")]
     [SerializeField] private TMP_Text enemiesText;
     [SerializeField] private TMP_Text keysText;
+    [SerializeField] private TMP_Text timerText;
+
     #region Events
     private void OnEnable()
     {
@@ -30,6 +32,15 @@ public class MenuHUD : UIPanel
     }
     #endregion
 
+    #region Unity Lifecycle
+    private void Update()
+    {
+        if (TimeManager.Instance == null)
+            return;
+
+        timerText.text = TimeManager.Instance.GetFormattedTime();
+    }
+    #endregion
     #region Mostrar & Ocultar
     public override void Mostrar()
     {

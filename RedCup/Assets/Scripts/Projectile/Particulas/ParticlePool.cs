@@ -28,21 +28,16 @@ public class ParticlePool : MonoBehaviour
     #region Getter
     public GameObject GetParticle(Vector3 position)
     {
-        GameObject particle;
+        if (pool.Count == 0)
+            return null;
 
-        if (pool.Count > 0)
-        {
-            particle = pool.Dequeue();
-        }
-        else
-        {
-            particle = Instantiate(particlePrefab);
-        }
+        GameObject particle = pool.Dequeue();
 
         particle.transform.position = position;
 
         ParticleSystem ps = particle.GetComponent<ParticleSystem>();
-        ps.Clear();
+        //ps.Clear();
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         ps.Play();
 
         particle.SetActive(true);
@@ -54,7 +49,7 @@ public class ParticlePool : MonoBehaviour
     #region Return
     public void ReturnParticle(GameObject particle)
     {
-        particle.SetActive(true);
+        particle.SetActive(false);
         pool.Enqueue(particle);
     }
     #endregion

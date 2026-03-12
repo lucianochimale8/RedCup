@@ -3,22 +3,22 @@ using UnityEngine;
 public class ParticleAutoReturn : MonoBehaviour
 {
     private ParticleSystem ps;
-    #region Unity Lifecycle
+
     private void Awake()
     {
         ps = GetComponent<ParticleSystem>();
     }
+
     private void OnEnable()
     {
-        Invoke(nameof(ReturnToPool), ps.main.duration);
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        ps.Play(true);
+        StartCoroutine(WaitAndReturn());
     }
-    #endregion
-    #region Return
 
-    private void ReturnToPool()
+    private System.Collections.IEnumerator WaitAndReturn()
     {
+        yield return new WaitUntil(() => !ps.isPlaying);
         ParticlePool.Instance.ReturnParticle(gameObject);
     }
-
-    #endregion
 }

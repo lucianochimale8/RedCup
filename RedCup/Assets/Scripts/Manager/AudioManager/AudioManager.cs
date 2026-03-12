@@ -75,12 +75,16 @@ public class AudioManager : MonoBehaviour
         musicAudioSource.mute = !musicAudioSource.mute;
         PlayerPrefs.SetInt("MusicMuted", musicAudioSource.mute ? 1 : 0);
         PlayerPrefs.Save();
+
+        OnAudioStateChanged?.Invoke();
     }
     public void ToggleSFX()
     {
         sfxAudioSource.mute = !sfxAudioSource.mute;
         PlayerPrefs.SetInt("SFXMuted", sfxAudioSource.mute ? 1 : 0);
         PlayerPrefs.Save();
+
+        OnAudioStateChanged?.Invoke();
     }
     #endregion
 

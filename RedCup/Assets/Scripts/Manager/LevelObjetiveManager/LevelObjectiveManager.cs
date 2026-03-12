@@ -4,13 +4,13 @@ public class LevelObjectiveManager : MonoBehaviour
 {
     [Header("Objetivos del Nivel")]
     // Cuantos enemigos se requieren para completar el nivel
-    private int enemiesRequired;
+    [SerializeField] private int enemiesRequired;
     private int enemiesKilled;
     // total de Llaves requieridas
-    private int totalKeysRequired;
+    [SerializeField] private int totalKeysRequired;
     private int keysCollected;
     // Si el nivel se ha completado
-    private bool levelAlreadyCompleted;
+    [SerializeField] private bool levelAlreadyCompleted;
 
     public int EnemiesKilled => enemiesKilled;
     public int EnemiesRequired => enemiesRequired;
@@ -21,16 +21,18 @@ public class LevelObjectiveManager : MonoBehaviour
     #region Unity Lifecycle
     private void Awake()
     {
-        // Enemigos
+        enemiesKilled = 0;
+        keysCollected = 0;
+
         Spawner[] spawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
 
-        enemiesRequired = 0;
-
-        // Calcular total de enemigos
         foreach (var spawner in spawners)
         {
             enemiesRequired += spawner.TotalEnemiesToSpawn;
         }
+
+        AltarHealth[] altars = FindObjectsByType<AltarHealth>(FindObjectsSortMode.None);
+        totalKeysRequired = altars.Length;
     }
     private void OnEnable()
     {
@@ -47,31 +49,26 @@ public class LevelObjectiveManager : MonoBehaviour
     {
         Debug.Log("Enemigos requeridos: " + enemiesRequired);
         Debug.Log("Llaves requeridas: " + totalKeysRequired);
-        // iniciar UI
-        GameEvents.RaiseEnemiesUpdated(enemiesKilled, enemiesRequired);
-        GameEvents.RaiseKeysUpdated(keysCollected, totalKeysRequired);
     }
     #endregion
 
     #region Register Events
     private void RegisterEnemyKilled()
     {
-        Debug.Log("regristramos un enemigo muerto");
         enemiesKilled++;
         GameEvents.RaiseEnemiesUpdated(enemiesKilled, enemiesRequired);
         CheckCompletion();
     }
     private void RegisterKeyCollected()
     {
-        Debug.Log("haz obtenido una llave");
         keysCollected++;
-        Debug.Log("LLaves obtenidas: " + keysCollected);
         GameEvents.RaiseKeysUpdated(keysCollected, totalKeysRequired);
         CheckCompletion();
     }
     public void RegisterKeyRequirement()
     {
         totalKeysRequired++;
+        Debug.Log("Spawners activados: " + totalKeysRequired);
     }
     #endregion
 

@@ -3,6 +3,8 @@ using UnityEngine;
 public class LevelKey : MonoBehaviour
 {
     private bool collected;
+    [SerializeField] private AudioClip keySound;
+    [SerializeField] private float volume = 1f;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collected) return;
@@ -11,6 +13,7 @@ public class LevelKey : MonoBehaviour
         {
             collected = true;
             GameEvents.RaiseKeyCollected();
+            AudioManager.Instance.PlaySoundEffect(keySound,volume);
             Destroy(gameObject);
         }
     }

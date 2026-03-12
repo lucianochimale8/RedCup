@@ -17,7 +17,7 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        // el aim sigue al player
+        // posicion inicial del aim que seguira al jugador
         transform.position = playerTransform.position;
 
         // posicion del mouse en world space

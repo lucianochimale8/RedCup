@@ -4,7 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class GestorUI : MonoBehaviour
 {
+    public static GestorUI Instance { get; private set; }
     public PanelType PanelActual { get; private set; }
+
+    public static PanelType PanelMenuAlCargar = PanelType.MenuInicio;
 
     [System.Serializable]
     public class PanelEntry
@@ -17,11 +20,21 @@ public class GestorUI : MonoBehaviour
     [SerializeField] private List<PanelEntry> paneles;
 
     private Dictionary<PanelType, UIPanel> panelDict;
+
     public static string MENU_SCENE = "MenuUI";
     public static string MENU_WIN = "Win";
+    
     #region Unity Lifecycle
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         panelDict = new Dictionary<PanelType, UIPanel>();
 
         foreach (var entry in paneles)
@@ -37,10 +50,12 @@ public class GestorUI : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        GameEvents.OnPlayerDied += HandlePlayerDied;
     }
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -49,12 +64,13 @@ public class GestorUI : MonoBehaviour
 
         if (scene.name == MENU_SCENE)
         {
-            MostrarPanel(PanelType.MenuInicio);
+            MostrarPanel(PanelMenuAlCargar);
         }
         if (scene.name == MENU_WIN)
         {
             MostrarPanel(PanelType.Win);
         }
+        
     }
     public void Start()
     {
@@ -90,5 +106,9 @@ public class GestorUI : MonoBehaviour
     public bool HasPanel(PanelType type)
     {
         return panelDict.ContainsKey(type);
+    }
+    private void HandlePlayerDied()
+    {
+        MostrarPanel(PanelType.GameOver);
     }
 }

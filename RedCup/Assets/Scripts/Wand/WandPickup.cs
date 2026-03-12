@@ -24,7 +24,6 @@ public class WandPickup : MonoBehaviour
     /// </summary>
     private void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Se puede agarrar");
         
         if (col.CompareTag("Player"))
         {
@@ -38,7 +37,6 @@ public class WandPickup : MonoBehaviour
     /// </summary>
     private void OnTriggerExit2D(Collider2D col)
     {
-        Debug.Log("NO se puede agarrar");
         if (col.CompareTag("Player"))
         {
             canPick = false;

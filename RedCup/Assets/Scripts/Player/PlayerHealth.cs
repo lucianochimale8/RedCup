@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour , IDamageable
 {
@@ -10,19 +10,34 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     private bool isDead = false;
 
     [Header("Referencias")]
-    private Animator animator;
-    private PlayerMovement movement;
+    private PlayerAnimation playerAnimation;
+    private PlayerMovement playerMovement;
     private Rigidbody2D rb;
     private PlayerInput playerInput;
 
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip hurtClip, dieClip;
+    [Header("Volumen")]
+    [SerializeField] private float hurtVolume, dieVolume;
+    #region Unity Lifecycle
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        movement = GetComponent<PlayerMovement>();
+        playerAnimation = GetComponent<PlayerAnimation>();
+        playerMovement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
-    }   
-    #region Damage & Die
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnPlayerDied += Die;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnPlayerDied -= Die;
+    }
+    #endregion
+
+    #region Damage
     public void TakeDamage(int amount)
     {
 
@@ -32,25 +47,29 @@ public class PlayerHealth : MonoBehaviour , IDamageable
 
         GameEvents.RaisePlayerHit();
 
-        if (GameManager.Instance.Lives <= 1)
+        if (GameManager.Instance.Lives > 0)
         {
-            Die();
-        }
-        else
-        {
-            animator.SetTrigger("Hurt");
+            playerAnimation.PlayHurt();
+            AudioManager.Instance.PlaySoundEffect(hurtClip, hurtVolume);
             StartCoroutine(DamageCooldown());
         }
     }
+    private IEnumerator DamageCooldown()
+    {
+        yield return new WaitForSecondsRealtime(damageCooldown);
+        canTakeDamage = true;
+    }
+    #endregion
 
+    #region Die
     private void Die()
     {
         if (isDead) return;
 
         isDead = true;
 
-        if (movement != null)
-            movement.enabled = false;
+        if (playerMovement != null)
+            playerMovement.enabled = false;
 
         if (playerInput != null)
             playerInput.enabled = false;
@@ -58,15 +77,11 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
 
-        animator.SetTrigger("Die");
+        playerAnimation.PlayDie();
+
+        AudioManager.Instance.PlaySoundEffect(dieClip, dieVolume);
 
         Debug.Log("DIE()");
-    }
-
-    private IEnumerator DamageCooldown()
-    {
-        yield return new WaitForSeconds(damageCooldown);
-        canTakeDamage = true;
     }
     #endregion
 }

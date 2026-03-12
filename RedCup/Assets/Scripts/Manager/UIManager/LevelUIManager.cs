@@ -2,27 +2,21 @@ using UnityEngine;
 
 public class LevelUIManager : MonoBehaviour
 {
-    // Gestor
-    [SerializeField] private GestorUI gestorUI;
     #region Eventos
     private void OnEnable()
     {
         GameEvents.OnPlayerDied += OnGameOver;
-        GameEvents.OnLevelCompleted += ResumeGame;
-        
     }
     private void OnDisable()
     {
         GameEvents.OnPlayerDied -= OnGameOver;
-        GameEvents.OnLevelCompleted -= ResumeGame;
-        
     }
     #endregion
     #region Unity Lifecycle
     private void Start()
     {
-        if (gestorUI.HasPanel(PanelType.HUD))
-            gestorUI.MostrarPanel(PanelType.HUD);
+        if (GestorUI.Instance.HasPanel(PanelType.HUD))
+            GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
     private void Update()
     {
@@ -34,12 +28,11 @@ public class LevelUIManager : MonoBehaviour
             return;
 
         if (GameManager.Instance.CurrentState == GameState.Playing)
-        { 
+        {
             PauseGame();
             Debug.Log("Pausa");
-        }
-
-        else if (GameManager.Instance.CurrentState == GameState.Paused)
+        } else 
+            if (GameManager.Instance.CurrentState == GameState.Paused)
             ResumeGame();
     }
     #endregion
@@ -47,18 +40,18 @@ public class LevelUIManager : MonoBehaviour
     private void PauseGame()
     {
         GameManager.Instance.ChangeState(GameState.Paused);
-        gestorUI.MostrarPanel(PanelType.Pausa);
+        GestorUI.Instance.MostrarPanel(PanelType.Pausa);
     }
     public void ResumeGame()
     {
         GameManager.Instance.ChangeState(GameState.Playing);
-        gestorUI.MostrarPanel(PanelType.HUD);
+        GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
     private void OnGameOver()
     {  
         Debug.Log("GAME OVER MOSTRADO");
         GameManager.Instance.ChangeState(GameState.GameOver);
-        gestorUI.MostrarPanel(PanelType.GameOver);
+        GestorUI.Instance.MostrarPanel(PanelType.GameOver);
     }
     #endregion
 }

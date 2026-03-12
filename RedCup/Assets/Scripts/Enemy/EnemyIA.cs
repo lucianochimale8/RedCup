@@ -11,11 +11,15 @@ public class EnemyIA : MonoBehaviour
     [Header("Banderas")]
     private bool isFacingRight = false;
     private bool isStopped;
+    private bool isDead;
 
     #region Unity Lifecycle
-    private void Start()
+    private void Awake()
     {
-        playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        if (player != null)
+            playerTransform = player.transform;
+
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -24,16 +28,23 @@ public class EnemyIA : MonoBehaviour
         GameEvents.OnLevelStopped += StopMovement;
         GameEvents.OnLevelResumed += ResumeMovement;
     }
-
     private void OnDisable()
     {
         GameEvents.OnLevelStopped -= StopMovement;
         GameEvents.OnLevelResumed -= ResumeMovement;
     }
-
+    private void Start()
+    {
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+        {
+            StopMovement();
+        }
+    }
     private void Update()
     {
-        if(isStopped)
+        if (isDead) return;
+
+        if (isStopped)
         {
             animator.SetFloat("Speed",0f);
             return;
@@ -44,6 +55,14 @@ public class EnemyIA : MonoBehaviour
     // para control de fisicas FixedUpdate
     private void FixedUpdate()
     {
+        if (isDead) return;
+
+        if (isStopped)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        
         Follow();
     }
     #endregion
@@ -57,6 +76,14 @@ public class EnemyIA : MonoBehaviour
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
+        float distance = Vector2.Distance(rb.position, playerTransform.position);
+
+        if (distance < 0.5f)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         Vector2 playerDirection =
             ((Vector2)playerTransform.position - rb.position).normalized;
         
@@ -80,11 +107,19 @@ public class EnemyIA : MonoBehaviour
     public void StopMovement()
     {
         isStopped = true;
-        speed = 0f;
+        rb.linearVelocity = Vector2.zero;
     }
     public void ResumeMovement()
     {
+        if (isDead) return;
+
         isStopped = false;
     }
     #endregion
+    public void Die()
+    {
+        isDead = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
+    }
 }

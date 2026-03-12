@@ -8,15 +8,20 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject wandPickupPrefab;
     [Header("Punto del drop")]
     [SerializeField] private Transform dropPoint;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip dropWand;
+    [SerializeField] private float dropVolumen;
 
     #region Unity Lifecycle
     private void OnEnable()
     {
         GameEvents.OnWandStateChanged += HandleWandChanged;
+        GameEvents.OnPlayerDied += HandlePlayerDied;
     }
     private void OnDisable()
     {
         GameEvents.OnWandStateChanged -= HandleWandChanged;
+        GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
     private void Start()
     {
@@ -47,7 +52,10 @@ public class PlayerWeaponController : MonoBehaviour
         else
             wand.Unequip();
     }
-
+    private void HandlePlayerDied()
+    {
+        wand.gameObject.SetActive(false);
+    }
     #endregion
 
     #region Equip
@@ -77,6 +85,9 @@ public class PlayerWeaponController : MonoBehaviour
             dropPoint.position,
             Quaternion.identity
         );
+
+        AudioSource.PlayClipAtPoint(dropWand, dropPoint.position, dropVolumen);
+
         GameManager.Instance.SetWand(false);
     }
     #endregion

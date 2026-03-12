@@ -17,6 +17,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private float volumen;
+
 
     private Spawner spawner;
 
@@ -61,19 +65,20 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         isDead = true;
 
+        if(healthbar != null)
+            healthbar.gameObject.SetActive(false);
+
         enemyIA.StopMovement();
 
+        GetComponent<Collider2D>().enabled = false;
+        
         animator.SetTrigger("Die");
 
-        GetComponent<Collider2D>().enabled = false;
+        AudioManager.Instance.PlaySoundEffect(deathClip, volumen);
 
         GameEvents.RaiseEnemyKilled();
 
-        if (gameObject.CompareTag("EnemyAfk"))
-            gameObject.SetActive(false);
-
-        if (gameObject.CompareTag("Enemy"))
-            spawner.ReturnEnemyToPool(gameObject);
+        StartCoroutine(FadeOut());
     }
     private IEnumerator Blink()
     {
@@ -82,13 +87,36 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         spriteRenderer.color = Color.white;
     }
     #endregion
-    #region Reset del enemigo
 
+    #region Reset del enemigo
     public void ResetEnemy()
     {
         currentHealth = maxHealth;
         isDead = false;
     }
-
     #endregion
+    private IEnumerator FadeOut()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+       
+        float time = 1.5f;
+        float elapsed = 0;
+        
+        sr.color = Color.white;
+        Color color = sr.color;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Lerp(1f, 0f, elapsed / time);
+            sr.color = color;
+            yield return null;
+        }
+        StartCoroutine(RemoveBody());
+    }
+    private IEnumerator RemoveBody()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
 }

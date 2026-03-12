@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,12 +15,14 @@ public class GameManager : MonoBehaviour
     public int Lives => currentLives;
     // Estado del arma
     public bool HasWand { get; private set; }
+    [Header("Start With Wand")]
     // Para definir en que nivel ya empieza con el arma
     [SerializeField] private bool startWithWand;
     public GameState CurrentState { get; private set; }
 
-    #region Unity Lifecycle
+    private bool gameInitialized = false;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,12 +40,10 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
     private void OnEnable()
     {
         GameEvents.OnPlayerHit += HandlePlayerHit;
     }
-
     private void OnDisable()
     {
         GameEvents.OnPlayerHit -= HandlePlayerHit;
@@ -51,15 +52,17 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.OnPlayerHit -= HandlePlayerHit;
     }
-
     private void Start()
     {
-        ResetGame();
+        if (!gameInitialized)
+        {
+            ResetGame();
+            gameInitialized = true;
+        }
         ChangeState(GameState.Playing);
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        ResetGame();
         ChangeState(GameState.Playing);
     }
     #endregion
@@ -70,33 +73,53 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandlePlayerHit()
     {
+        currentLives--;
 
         Debug.Log("Jugador se quito una vida: " + currentLives);
 
-        currentLives--;
-
         GameEvents.RaiseLivesChanged(currentLives);
+
+        GameEvents.RaiseLevelStopped();
+
+        //ChangeState(GameState.Paused);
 
         if (currentLives <= 0)
         {
             currentLives = 0;
-            Debug.Log("PLAYER DIED EVENT");
-            GameEvents.RaisePlayerDied();
+            StartCoroutine(GameOverRoutine());
+            return;
         }
+
+        StartCoroutine(ResetRoundRoutine());
     }
     #endregion
 
     #region Restart
+    private IEnumerator ResetRoundRoutine()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     /// <summary>
     /// Resetear las estadisticas por nivel
     /// </summary>
     public void ResetGame()
     {
-        Time.timeScale = 1f;
-
         currentLives = startingLives;
 
         GameEvents.RaiseLivesChanged(currentLives);
+    }
+    #endregion
+
+    #region Game Over
+    private IEnumerator GameOverRoutine()
+    {
+        ChangeState(GameState.GameOver);
+        GameEvents.RaisePlayerDied();
+        yield return new WaitForSecondsRealtime(1.2f);
     }
     #endregion
 
@@ -107,29 +130,28 @@ public class GameManager : MonoBehaviour
         GameEvents.RaiseWandStateChanged(value);
     }
     #endregion
+
+    #region Change State
     public void ChangeState(GameState newState)
     {
-        bool isSameState = CurrentState == newState;
-
         CurrentState = newState;
 
         switch (newState)
         {
             case GameState.Playing:
                 Time.timeScale = 1f;
-                if (!isSameState)
-                    GameEvents.RaiseLevelResumed();
+                GameEvents.RaiseLevelResumed();
                 break;
 
             case GameState.Paused:
                 Time.timeScale = 0f;
-                if (!isSameState)
-                    GameEvents.RaiseLevelStopped();
+                GameEvents.RaiseLevelStopped();
                 break;
 
             case GameState.GameOver:
-                Time.timeScale = 0f;
+                AudioManager.Instance.PauseMusic();
                 break;
         }
     }
+    #endregion
 }

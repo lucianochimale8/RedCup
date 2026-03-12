@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &52196670 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8272654738931088297, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 6164400377900206632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!4 &117295909 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5651643854337636525, guid: 2a24b43563d7953438a3f9771f97f5b5, type: 3}
@@ -197,6 +208,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: sfxText
+      value: 
+      objectReference: {fileID: 2077316467}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: musicText
+      value: 
+      objectReference: {fileID: 52196670}
     - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
       propertyPath: musicVolumen
       value: 1
@@ -933,6 +952,17 @@ Transform:
   - {fileID: 2016205140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1336568318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6130736921268605193, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 6164400377900206632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2d4ec2ef8eddd4595c8b26418346ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1348570539
 GameObject:
   m_ObjectHideFlags: 0
@@ -47924,6 +47954,17 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &2077316467 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 308881369044679228, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 6164400377900206632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &386658912432593719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48702,6 +48743,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -214
       objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1336568318}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuPausa, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1228001828591063528, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 176.1
@@ -48713,6 +48782,10 @@ PrefabInstance:
     - target: {fileID: 2052947719291713018, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556785991337875997, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2668968115055969388, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_Name
@@ -48918,6 +48991,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6130736921268605193, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: sfxText
+      value: 
+      objectReference: {fileID: 2077316467}
+    - target: {fileID: 6130736921268605193, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: musicText
+      value: 
+      objectReference: {fileID: 52196670}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1336568318}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuPausa, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6945175355793698442, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_Type
       value: 0
@@ -48957,6 +49066,10 @@ PrefabInstance:
     - target: {fileID: 8202064914807686189, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: gestorUI
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596545209397197472, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

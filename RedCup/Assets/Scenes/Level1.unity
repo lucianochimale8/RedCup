@@ -19490,6 +19490,17 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &262516753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+  m_PrefabInstance: {fileID: 1140403587}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e343861a6269917438bcf989a880ab14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
 --- !u!1001 &270069249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19551,6 +19562,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 773d552959bfbf54281b2f01fa3ac279, type: 3}
+--- !u!114 &275307962 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8272654738931088297, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 1294575652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &646471097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22416,6 +22438,14 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: sfxText
+      value: 
+      objectReference: {fileID: 1621839971}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
+      propertyPath: musicText
+      value: 
+      objectReference: {fileID: 275307962}
+    - target: {fileID: 7430785514652811322, guid: 4871d274751e5e246b34925a6dd27414, type: 3}
       propertyPath: musicVolumen
       value: 1
       objectReference: {fileID: 0}
@@ -22605,6 +22635,34 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 262516753}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1150919765675462505, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1228001828591063528, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_SizeDelta.x
       value: 250
@@ -22737,6 +22795,38 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 262516753}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596545209397197472, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5019718382616479247, guid: 244221dc307682449885c9744873ade2, type: 3}
@@ -22800,6 +22890,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2fdfe679d793ab4283105662ad83395, type: 3}
+--- !u!114 &1621839971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 308881369044679228, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 1294575652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1747517804
 GameObject:
   m_ObjectHideFlags: 0

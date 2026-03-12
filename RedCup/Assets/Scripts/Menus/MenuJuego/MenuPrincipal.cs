@@ -53,6 +53,7 @@ public class MenuPrincipal : UIPanel
         {
             GameManager.Instance.ResetGame();
         }
+
         SceneManager.LoadScene(TUTORIAL_SCENE);
     }
     #endregion

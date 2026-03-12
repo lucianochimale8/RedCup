@@ -25,7 +25,7 @@ public class ParticlePool : MonoBehaviour
     }
     #endregion
 
-    #region Get
+    #region Getter
     public GameObject GetParticle(Vector3 position)
     {
         GameObject particle;

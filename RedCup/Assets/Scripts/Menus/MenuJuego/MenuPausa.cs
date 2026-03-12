@@ -1,12 +1,18 @@
+using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuPausa : UIPanel
 {
     [SerializeField] private Button btnReanudar;
     [SerializeField] private Button btnMenu;
+    [Header("Texts")]
+    [SerializeField] private TMP_Text musicText;
+    [SerializeField] private TMP_Text sfxText;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         btnReanudar.onClick.AddListener(Continuar);
@@ -16,12 +22,25 @@ public class MenuPausa : UIPanel
     public override void Mostrar()
     {
         gameObject.SetActive(true);
+        UpdateTexts();
     }
 
     public override void Ocultar()
     {
         gameObject.SetActive(false);
     }
+    private void OnEnable()
+    {
+        AudioManager.OnAudioStateChanged += UpdateTexts;
+    }
+
+    private void OnDisable()
+    {
+        AudioManager.OnAudioStateChanged -= UpdateTexts;
+    }
+    #endregion
+
+    #region Continuar
     /// <summary>
     /// Boton para Reanudar la partida
     /// </summary>
@@ -30,6 +49,9 @@ public class MenuPausa : UIPanel
         GameManager.Instance.ChangeState(GameState.Playing);
         GestorUI.Instance.MostrarPanel(PanelType.HUD);
     }
+    #endregion
+
+    #region Salir Al Menu
     /// <summary>
     /// Para salir al Menu Inicio
     /// </summary>
@@ -40,4 +62,23 @@ public class MenuPausa : UIPanel
         GestorUI.PanelMenuAlCargar = PanelType.MenuPrincipal;
         SceneManager.LoadScene(GestorUI.MENU_SCENE);
     }
+    #endregion
+
+    #region Audio Buttons
+    public void ToggleMusic()
+    {
+        AudioManager.Instance.ToggleMusic();
+        UpdateTexts();
+    }
+    public void ToggleSFX()
+    {
+        AudioManager.Instance.ToggleSFX();
+        UpdateTexts();
+    }
+    private void UpdateTexts()
+    {
+        musicText.text = AudioManager.Instance.IsMusicMuted() ? "OFF" : "ON";
+        sfxText.text = AudioManager.Instance.IsSFXMuted() ? "OFF" : "ON";
+    }
+    #endregion
 }

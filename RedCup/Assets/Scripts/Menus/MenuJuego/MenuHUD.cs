@@ -1,13 +1,30 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MenuHUD : UIPanel
 {
-    [Header("Textos")]
-    [SerializeField] private TMP_Text enemiesText;
-    [SerializeField] private TMP_Text keysText;
-    [SerializeField] private TMP_Text timerText;
+    [Header("UI Toolkit Element Names")]
+    [SerializeField] private string enemiesLabelName = "enemies-label";
+    [SerializeField] private string keysLabelName = "keys-label";
+    [SerializeField] private string timerLabelName = "timer-label";
 
+    private Label enemiesLabel;
+    private Label keysLabel;
+    private Label timerLabel;
+
+    // Método para vincular los elementos del UI Builder al script
+    public override void Inicializar(VisualElement root)
+    {
+        base.Inicializar(root);
+
+        if (container == null) return;
+
+        // Buscamos los Labels dentro del contenedor del HUD
+        enemiesLabel = container.Q<Label>(enemiesLabelName);
+        keysLabel = container.Q<Label>(keysLabelName);
+        timerLabel = container.Q<Label>(timerLabelName);
+    }
     #region Events
     private void OnEnable()
     {
@@ -38,18 +55,24 @@ public class MenuHUD : UIPanel
         if (TimeManager.Instance == null)
             return;
 
-        timerText.text = TimeManager.Instance.GetFormattedTime();
+        timerLabel.text = TimeManager.Instance.GetFormattedTime();
     }
     #endregion
     #region Mostrar & Ocultar
     public override void Mostrar()
     {
-        gameObject.SetActive(true);
+        if (container != null)
+        {
+            container.style.display = DisplayStyle.Flex;
+        }
     }
 
     public override void Ocultar()
     {
-        gameObject.SetActive(false);
+        if (container != null)
+        {
+            container.style.display = DisplayStyle.None;
+        }
     }
     #endregion
 
@@ -57,12 +80,18 @@ public class MenuHUD : UIPanel
     // Para actualizar los enemigos restantes
     private void UpdateEnemies(int current, int total)
     {
-        enemiesText.text = $": {current}/{total}";
+        if (enemiesLabel != null)
+        {
+            enemiesLabel.text = $": {current}/{total}";
+        }
     }
     // Para actualizar las llaves obtenidas
     private void UpdateKeys(int current, int total)
     {
-        keysText.text = $": {current}/{total}";
+        if (keysLabel != null)
+        {
+            keysLabel.text = $": {current}/{total}";
+        }
     }
     #endregion
 }

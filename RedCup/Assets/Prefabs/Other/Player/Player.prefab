@@ -384,6 +384,8 @@ MonoBehaviour:
   dropPoint: {fileID: 9192591442328588734}
   dropWand: {fileID: 8300000, guid: 9a2750c961172ca48b9216f5a7d6664f, type: 3}
   dropVolumen: 1
+  equipWand: {fileID: 8300000, guid: a067a01f7df4c0e4dab836df96500ba8, type: 3}
+  equipVolumen: 1
 --- !u!1 &9121720865821978135
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,67 +2,62 @@ using UnityEngine;
 
 public class EnemyIA : MonoBehaviour
 {
+    public enum AIState { Chasing, Stopped, Dead }
+
     [Header("Velocidad del enenmigo")]
     [SerializeField] private float speed;
-    [Header("Referencias")]
+
     private Transform playerTransform;
     private Animator animator;
     private Rigidbody2D rb;
-    [Header("Banderas")]
     private bool isFacingRight = false;
-    private bool isStopped;
-    private bool isDead;
+
+    private AIState currentState = AIState.Chasing;
+    public AIState CurrentState => currentState;
 
     #region Unity Lifecycle
     private void Awake()
     {
-        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
-        if (player != null)
-            playerTransform = player.transform;
-
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
     private void OnEnable()
     {
+        currentState = AIState.Chasing;
         GameEvents.OnLevelStopped += StopMovement;
         GameEvents.OnLevelResumed += ResumeMovement;
+
+        if (playerTransform == null)
+        {
+            PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+            if (player != null) playerTransform = player.transform;
+        }
     }
     private void OnDisable()
     {
         GameEvents.OnLevelStopped -= StopMovement;
         GameEvents.OnLevelResumed -= ResumeMovement;
     }
-    private void Start()
-    {
-        if (GameManager.Instance.CurrentState != GameState.Playing)
-        {
-            StopMovement();
-        }
-    }
     private void Update()
     {
-        if (isDead) return;
-
-        if (isStopped)
+        if (currentState != AIState.Chasing)
         {
-            animator.SetFloat("Speed",0f);
+            if (animator != null) animator.SetFloat("Speed", 0f);
             return;
         }
+
         Flip();
-        UpdateAnimation();
+        if (animator != null) animator.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
     // para control de fisicas FixedUpdate
     private void FixedUpdate()
     {
-        if (isDead) return;
-
-        if (isStopped)
+        if (currentState != AIState.Chasing)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
-        
+
         Follow();
     }
     #endregion
@@ -76,23 +71,23 @@ public class EnemyIA : MonoBehaviour
     #region Movimiento, Girar imagen, Parar movimiento
     private void Follow()
     {
-        float distance = Vector2.Distance(rb.position, playerTransform.position);
+        if (playerTransform == null) return;
 
+        float distance = Vector2.Distance(rb.position, playerTransform.position);
         if (distance < 0.5f)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        Vector2 playerDirection =
-            ((Vector2)playerTransform.position - rb.position).normalized;
-        
-        rb.linearVelocity = playerDirection * speed;
+        Vector2 direction = ((Vector2)playerTransform.position - rb.position).normalized;
+        rb.linearVelocity = direction * speed;
     }
     private void Flip()
     {
-        bool isPlayerRight = playerTransform.position.x < transform.position.x;
+        if (playerTransform == null) return;
 
+        bool isPlayerRight = playerTransform.position.x < transform.position.x;
         if ((isFacingRight && !isPlayerRight) || (!isFacingRight && isPlayerRight))
         {
             Vector3 scale = transform.localScale; // Variable referenciad de la escala
@@ -106,20 +101,23 @@ public class EnemyIA : MonoBehaviour
     #region Stop & Resume
     public void StopMovement()
     {
-        isStopped = true;
-        rb.linearVelocity = Vector2.zero;
+        if (currentState == AIState.Dead) return;
+        currentState = AIState.Stopped;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
     }
     public void ResumeMovement()
     {
-        if (isDead) return;
-
-        isStopped = false;
+        if (currentState == AIState.Dead) return;
+        currentState = AIState.Chasing;
     }
     #endregion
-    public void Die()
+    public void SetDead()
     {
-        isDead = true;
-        rb.linearVelocity = Vector2.zero;
-        rb.simulated = false;
+        currentState = AIState.Dead;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+        }
     }
 }

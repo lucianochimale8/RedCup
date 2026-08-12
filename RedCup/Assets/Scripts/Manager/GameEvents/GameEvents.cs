@@ -1,4 +1,4 @@
-using UnityEngine;
+
 using System;
 
 public static class GameEvents
@@ -44,23 +44,5 @@ public static class GameEvents
     public static void RaiseLevelCompleted() => OnLevelCompleted?.Invoke();
     public static void RaiseLevelStopped() => OnLevelStopped?.Invoke();
     public static void RaiseLevelResumed() => OnLevelResumed?.Invoke();
-    public static void ResetEvents()
-    {
-        OnPlayerHit = null;
-        OnLivesChanged = null;
-        OnPlayerDied = null;
-
-        OnEnemyKilled = null;
-        OnEnemiesUpdated = null;
-
-        OnKeyCollected = null;
-        OnKeysUpdated = null;
-
-        OnWandStateChanged = null;
-
-        OnLevelCompleted = null;
-        OnLevelStopped = null;
-        OnLevelResumed = null;
-    }
     #endregion
 }

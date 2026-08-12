@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public enum SpawnerState
+    {
+        Idle,
+        Spawning,
+        Paused,
+        Completed
+    }
+
     [Header("Enemigo")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform enemiesParent;
     [Header("Spawn Points")]
     [SerializeField] private Transform[] spawnPoints;
     [Header("Wave Settings")]
-    [SerializeField] private int enemiesPrewave, waves;
-    [SerializeField] private float timeBetweenSpawns, timeBetweenWaves;
+    [SerializeField] private int enemiesPrewave = 3;
+    [SerializeField] private int waves = 3;
+    [SerializeField] private float timeBetweenSpawns = 1f;
+    [SerializeField] private float timeBetweenWaves = 5f;
     [Header("Pool")]
     [SerializeField] private int initialPoolSize = 10;
 
     public int TotalEnemiesToSpawn => waves * enemiesPrewave;
 
-    private Queue<GameObject> pool = new Queue<GameObject>();
+    private SpawnerState currentState = SpawnerState.Idle;
+    public SpawnerState CurrentState => currentState;
 
-    private bool isStopped;
+    private Queue<GameObject> pool = new Queue<GameObject>();
 
     private void Awake()
     {
@@ -47,22 +58,33 @@ public class Spawner : MonoBehaviour
     }
     private IEnumerator Spawn()
     {
+        currentState = SpawnerState.Spawning;
+
         // este bucle for exterior hace esa accion de instanciar 3 enemigos se instancie por oleadas
         for (int i = 0; i < waves; i++)
         {
             // este bucle for interno, instancia 3 enemigos
             for (int j = 0; j < spawnPoints.Length; j++)
             {
-                while (isStopped)
+                while (currentState == SpawnerState.Paused)
+                {
                     yield return null;
+                }
+
                 Transform spawnPoint = spawnPoints[j];
 
                 GameObject enemy = GetEnemyFromPool();
                 enemy.transform.position = spawnPoint.position;
                 enemy.transform.SetParent(enemiesParent);
 
-                enemy.GetComponent<EnemyHealth>().SetSpawner(this);
+                EnemyHealth healthComponent = enemy.GetComponent<EnemyHealth>();
+                if (healthComponent != null)
+                {
+                    healthComponent.SetSpawner(this);
+                }
+
                 enemy.SetActive(true);
+
                 yield return new WaitForSeconds(timeBetweenSpawns);
             }
 
@@ -71,6 +93,8 @@ public class Spawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
+
+        currentState = SpawnerState.Completed;
     }
 
     private GameObject GetEnemyFromPool()
@@ -79,8 +103,8 @@ public class Spawner : MonoBehaviour
         {
             return pool.Dequeue();
         }
-        GameObject enemy = Instantiate(enemyPrefab, enemiesParent);
-        return enemy;
+
+        return Instantiate(enemyPrefab, enemiesParent);
     }
 
     public void ReturnEnemyToPool(GameObject enemy)
@@ -90,11 +114,17 @@ public class Spawner : MonoBehaviour
     }
     private void StopSpawner()
     {
-        isStopped = true;
+        if (currentState == SpawnerState.Spawning)
+        {
+            currentState = SpawnerState.Paused;
+        }
     }
 
     private void ResumeSpawner()
     {
-        isStopped = false;
+        if (currentState == SpawnerState.Paused)
+        {
+            currentState = SpawnerState.Spawning;
+        }
     }
 }

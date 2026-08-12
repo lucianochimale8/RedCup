@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    public enum WeaponState { Unequipped, Equipped }
+
     [Header("Arma")]
     [SerializeField] private Wand wand;
     [Header("GameObject Prefab")]
@@ -10,7 +12,12 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private Transform dropPoint;
     [Header("AudioClip")]
     [SerializeField] private AudioClip dropWand;
-    [SerializeField] private float dropVolumen;
+    [SerializeField] private float dropVolume = 0.8f;
+    [SerializeField] private AudioClip equipWand;
+    [SerializeField] private float equipVolume = 0.8f;
+
+    private WeaponState currentState = WeaponState.Unequipped;
+    public WeaponState CurrentState => currentState;
 
     #region Unity Lifecycle
     private void OnEnable()
@@ -32,28 +39,25 @@ public class PlayerWeaponController : MonoBehaviour
             HandleWandChanged(GameManager.Instance.HasWand);
         }
     }
-    private void Update()
-    {
-        if (GameManager.Instance == null)
-            return;
-
-        if (GameManager.Instance.HasWand && Input.GetKeyDown(KeyCode.G))
-        {
-            DropWand();
-        }
-    }
     #endregion
 
     #region Event Handling
     private void HandleWandChanged(bool hasWand)
     {
         if (hasWand)
+        {
+            currentState = WeaponState.Equipped;
             wand.Equip();
+        }
         else
+        {
+            currentState = WeaponState.Unequipped;
             wand.Unequip();
+        }
     }
     private void HandlePlayerDied()
     {
+        currentState = WeaponState.Unequipped;
         wand.gameObject.SetActive(false);
     }
     #endregion
@@ -61,11 +65,10 @@ public class PlayerWeaponController : MonoBehaviour
     #region Equip
     public void EquipWand()
     {
-        if (GameManager.Instance == null)
-            return;
+        if (GameManager.Instance == null || GameManager.Instance.HasWand) return;
 
-        if (GameManager.Instance.HasWand)
-            return;
+        if (AudioManager.Instance != null && equipWand != null)
+            AudioManager.Instance.PlaySoundEffect(equipWand, equipVolume);
 
         GameManager.Instance.SetWand(true);
     }
@@ -74,19 +77,15 @@ public class PlayerWeaponController : MonoBehaviour
     #region Drop
     public void DropWand()
     {
-        if (GameManager.Instance == null)
-            return;
+        if (GameManager.Instance == null || !GameManager.Instance.HasWand) return;
 
-        if (!GameManager.Instance.HasWand)
-            return;
+        if (wandPickupPrefab != null && dropPoint != null)
+        {
+            Instantiate(wandPickupPrefab, dropPoint.position, Quaternion.identity);
+        }
 
-        Instantiate(
-            wandPickupPrefab,
-            dropPoint.position,
-            Quaternion.identity
-        );
-
-        AudioSource.PlayClipAtPoint(dropWand, dropPoint.position, dropVolumen);
+        if (AudioManager.Instance != null && dropWand != null)
+            AudioManager.Instance.PlaySoundEffect(dropWand, dropVolume);
 
         GameManager.Instance.SetWand(false);
     }

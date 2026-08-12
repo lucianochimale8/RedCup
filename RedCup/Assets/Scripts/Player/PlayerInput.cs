@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
     public bool ShootPressed { get; private set; }
 
     public bool DropPressed { get; private set; }
+    public bool InteractPressed { get; private set; }
     private void Update()
     {
         // ejes verticales y horizontales
@@ -19,19 +20,13 @@ public class PlayerInput : MonoBehaviour
         MoveInput = new Vector2(x, y).normalized;
         // Shift para correr
         IsRunning = Input.GetKey(KeyCode.LeftShift);
-        // click derecho
-        if (Input.GetMouseButtonDown(1))
-            ShootPressed = true;
-        if (Input.GetKeyDown(KeyCode.G))
-            DropPressed = true;
+
+        if (Input.GetMouseButtonDown(1)) ShootPressed = true;
+        if (Input.GetKeyDown(KeyCode.G)) DropPressed = true;
+        if (Input.GetKeyDown(KeyCode.E)) InteractPressed = true;
 
     }
-    public void ResetShoot()
-    {
-        ShootPressed = false;
-    }
-    public void ResetDrop()
-    {
-        DropPressed = false;
-    }
+    public void ResetShoot() => ShootPressed = false;
+    public void ResetDrop() => DropPressed = false;
+    public void ResetInteract() => InteractPressed = false;
 }

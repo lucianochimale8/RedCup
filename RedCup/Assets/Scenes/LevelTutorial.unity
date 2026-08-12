@@ -48106,18 +48106,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
-      propertyPath: dropWand
-      value: 
-      objectReference: {fileID: 8300000, guid: 9a2750c961172ca48b9216f5a7d6664f, type: 3}
-    - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
-      propertyPath: dropPoint
-      value: 
-      objectReference: {fileID: 794521334}
-    - target: {fileID: 3807381358644260662, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
-      propertyPath: dropVolumen
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3807610730063845709, guid: 5f812c0d4c183724b842ee9765faa3b6, type: 3}
       propertyPath: m_SortingLayer
       value: 6
@@ -48694,7 +48682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1177815447027065293, guid: ac7e06836dfcfae4cb88de9462fa65c1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1657935198379784300, guid: ac7e06836dfcfae4cb88de9462fa65c1, type: 3}
       propertyPath: m_Name
@@ -48707,10 +48695,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1177815447027065293, guid: ac7e06836dfcfae4cb88de9462fa65c1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac7e06836dfcfae4cb88de9462fa65c1, type: 3}
 --- !u!1001 &5144496584689343228
 PrefabInstance:

@@ -3,22 +3,23 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour , IDamageable
 {
+    public enum HealthState { Alive, Vulnerable, Invulnerable, Dead }
+
     [Header("Damage Cooldown")]
     [SerializeField] private float damageCooldown = 0.5f;
 
-    private bool canTakeDamage = true;
-    private bool isDead = false;
+    [Header("AudioClip")]
+    [SerializeField] private AudioClip hurtClip, dieClip;
+    [SerializeField] private float hurtVolume, dieVolume;
 
-    [Header("Referencias")]
+    private HealthState currentState = HealthState.Alive;
+    public HealthState CurrentState => currentState;
+
     private PlayerAnimation playerAnimation;
     private PlayerMovement playerMovement;
     private Rigidbody2D rb;
     private PlayerInput playerInput;
-
-    [Header("AudioClip")]
-    [SerializeField] private AudioClip hurtClip, dieClip;
-    [Header("Volumen")]
-    [SerializeField] private float hurtVolume, dieVolume;
+    
     #region Unity Lifecycle
     private void Awake()
     {
@@ -27,61 +28,57 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
     }
-    private void OnEnable()
-    {
-        GameEvents.OnPlayerDied += Die;
-    }
-    private void OnDisable()
-    {
-        GameEvents.OnPlayerDied -= Die;
-    }
+    private void OnEnable() => GameEvents.OnPlayerDied += Die;
+    private void OnDisable() => GameEvents.OnPlayerDied -= Die;
     #endregion
 
     #region Damage
     public void TakeDamage(int amount)
     {
-
-        if (!canTakeDamage || isDead) return;
-
-        canTakeDamage = false;
+        if (currentState == HealthState.Invulnerable || currentState == HealthState.Dead)
+            return;
 
         GameEvents.RaisePlayerHit();
 
-        if (GameManager.Instance.Lives > 0)
+        if (GameManager.Instance != null && GameManager.Instance.Lives > 0)
         {
-            playerAnimation.PlayHurt();
-            AudioManager.Instance.PlaySoundEffect(hurtClip, hurtVolume);
-            StartCoroutine(DamageCooldown());
+            if (playerAnimation != null) playerAnimation.PlayHurt();
+            if (AudioManager.Instance != null && hurtClip != null)
+                AudioManager.Instance.PlaySoundEffect(hurtClip, hurtVolume);
+
+            StartCoroutine(DamageCooldownRoutine());
         }
     }
-    private IEnumerator DamageCooldown()
+    private IEnumerator DamageCooldownRoutine()
     {
+        currentState = HealthState.Invulnerable;
         yield return new WaitForSecondsRealtime(damageCooldown);
-        canTakeDamage = true;
+        if (currentState != HealthState.Dead)
+        {
+            currentState = HealthState.Alive;
+        }
     }
     #endregion
 
     #region Die
     private void Die()
     {
-        if (isDead) return;
+        if (currentState == HealthState.Dead) return;
 
-        isDead = true;
+        currentState = HealthState.Dead;
 
-        if (playerMovement != null)
-            playerMovement.enabled = false;
+        if (playerMovement != null) playerMovement.enabled = false;
+        if (playerInput != null) playerInput.enabled = false;
 
-        if (playerInput != null)
-            playerInput.enabled = false;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+        }
 
-        rb.linearVelocity = Vector2.zero;
-        rb.simulated = false;
-
-        playerAnimation.PlayDie();
-
-        AudioManager.Instance.PlaySoundEffect(dieClip, dieVolume);
-
-        Debug.Log("DIE()");
+        if (playerAnimation != null) playerAnimation.PlayDie();
+        if (AudioManager.Instance != null && dieClip != null)
+            AudioManager.Instance.PlaySoundEffect(dieClip, dieVolume);
     }
     #endregion
 }

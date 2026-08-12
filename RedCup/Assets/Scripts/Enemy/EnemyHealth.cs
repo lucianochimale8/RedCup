@@ -3,24 +3,26 @@ using System.Collections;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
+    public enum HealthState { Alive, Hurt, Dead }
+
     [Header("Vida Enemigo")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float hurtDuration = 0.2f;
 
     private int currentHealth;
-    private bool isDead = false;
+    private HealthState currentState = HealthState.Alive;
 
     [Header("Referencias")]
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private EnemyIA enemyIA;
+    private Collider2D enemyCollider;
 
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
     [Header("AudioClip")]
     [SerializeField] private AudioClip deathClip;
-    [SerializeField] private float volumen;
-
+    [SerializeField] private float volume;
 
     private Spawner spawner;
 
@@ -29,8 +31,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         enemyIA = GetComponent<EnemyIA>();
-
-        currentHealth = maxHealth;
+        enemyCollider = GetComponent<Collider2D>();
     }
 
     private void OnEnable()
@@ -45,10 +46,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     #region Tomar daño
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
+        if (currentState == HealthState.Dead) return;
 
         currentHealth -= damage;
-        healthbar.UpdateHealthBar(maxHealth, currentHealth);
+        if (healthbar != null) healthbar.UpdateHealthBar(maxHealth, currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -57,34 +58,32 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
 
         StopAllCoroutines();
-        StartCoroutine(Blink());
+        StartCoroutine(BlinkRoutine());
     }
     #endregion
     #region Die y Blink
     private void Die()
     {
-        isDead = true;
+        currentState = HealthState.Dead;
 
-        if(healthbar != null)
-            healthbar.gameObject.SetActive(false);
+        if (healthbar != null) healthbar.gameObject.SetActive(false);
+        if (enemyIA != null) enemyIA.SetDead();
+        if (enemyCollider != null) enemyCollider.enabled = false;
+        if (animator != null) animator.SetTrigger("Die");
 
-        enemyIA.StopMovement();
-
-        GetComponent<Collider2D>().enabled = false;
-        
-        animator.SetTrigger("Die");
-
-        AudioManager.Instance.PlaySoundEffect(deathClip, volumen);
+        if (AudioManager.Instance != null && deathClip != null)
+            AudioManager.Instance.PlaySoundEffect(deathClip, volume);
 
         GameEvents.RaiseEnemyKilled();
-
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeAndRecycleRoutine());
     }
-    private IEnumerator Blink()
+    private IEnumerator BlinkRoutine()
     {
-        spriteRenderer.color = Color.red;
+        currentState = HealthState.Hurt;
+        if (spriteRenderer != null) spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(hurtDuration);
-        spriteRenderer.color = Color.white;
+        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+        if (currentState != HealthState.Dead) currentState = HealthState.Alive;
     }
     #endregion
 
@@ -92,31 +91,36 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void ResetEnemy()
     {
         currentHealth = maxHealth;
-        isDead = false;
+        currentState = HealthState.Alive;
+        if (spriteRenderer != null)
+        {
+            Color c = spriteRenderer.color;
+            c.a = 1f;
+            spriteRenderer.color = c;
+        }
+        if (enemyCollider != null) enemyCollider.enabled = true;
+        if (healthbar != null) healthbar.gameObject.SetActive(true);
     }
     #endregion
-    private IEnumerator FadeOut()
+    private IEnumerator FadeAndRecycleRoutine()
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-       
         float time = 1.5f;
         float elapsed = 0;
-        
-        sr.color = Color.white;
-        Color color = sr.color;
+        Color color = spriteRenderer.color;
 
         while (elapsed < time)
         {
             elapsed += Time.deltaTime;
             color.a = Mathf.Lerp(1f, 0f, elapsed / time);
-            sr.color = color;
+            spriteRenderer.color = color;
             yield return null;
         }
-        StartCoroutine(RemoveBody());
-    }
-    private IEnumerator RemoveBody()
-    {
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (spawner != null)
+            spawner.ReturnEnemyToPool(gameObject);
+        else
+            Destroy(gameObject);
     }
 }

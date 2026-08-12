@@ -3,16 +3,30 @@ using UnityEngine.SceneManagement;
 
 public class ExitDoor : MonoBehaviour
 {
+    public enum DoorState
+    {
+        Locked,
+        Unlocked,
+        Transitioning
+    }
+
     [SerializeField] private LevelObjectiveManager objectiveManager;
+
+    private DoorState currentState = DoorState.Locked;
+    public DoorState CurrentState => currentState;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player"))
             return;
 
+        if (currentState == DoorState.Transitioning)
+            return;
+
         if (objectiveManager != null && objectiveManager.CanExitLevel())
         {
-            LoadNextScene();
+            SetState(DoorState.Unlocked);
+            ExecuteTransition();
         }
         else
         {
@@ -20,8 +34,10 @@ public class ExitDoor : MonoBehaviour
         }
     }
 
-    private void LoadNextScene()
+    private void ExecuteTransition()
     {
+        SetState(DoorState.Transitioning);
+
         Time.timeScale = 1f;
 
         int currentIndex = SceneManager.GetActiveScene().buildIndex;
@@ -35,5 +51,10 @@ public class ExitDoor : MonoBehaviour
         {
             Debug.Log("No hay más niveles configurados.");
         }
+    }
+
+    private void SetState(DoorState newState)
+    {
+        currentState = newState;
     }
 }

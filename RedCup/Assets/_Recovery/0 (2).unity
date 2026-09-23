@@ -196,6 +196,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c69bbcfe434fd0043ae7375189868f24, type: 3}
+--- !u!114 &443458170 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7182699468598783144, guid: 244221dc307682449885c9744873ade2, type: 3}
+  m_PrefabInstance: {fileID: 6164400377900206632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
 --- !u!1001 &475925553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48773,6 +48784,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 579693645839985658, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_Name
+      value: UID_HUD
+      objectReference: {fileID: 0}
     - target: {fileID: 589116488209724534, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_SizeDelta.x
       value: 316
@@ -48827,7 +48842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2556785991337875997, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2668968115055969388, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_Name
@@ -48977,6 +48992,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7191090323583165188, guid: 25a4c794dd1e4a642a8967f9c05a728a, type: 3}
+    - target: {fileID: 4537354142003039390, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: uiDocument
+      value: 
+      objectReference: {fileID: 443458170}
     - target: {fileID: 4681984641383632201, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -49041,6 +49060,10 @@ PrefabInstance:
       propertyPath: musicText
       value: 
       objectReference: {fileID: 52196670}
+    - target: {fileID: 6796232073898723038, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: containerName
+      value: HUDContainer
+      objectReference: {fileID: 0}
     - target: {fileID: 6878461528333892645, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -49077,6 +49100,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8616506795262398896, guid: 921dd331c0dedcf45abe9224b1524cac, type: 3}
+    - target: {fileID: 7182699468598783144, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: d0250079083f2e74885389ed6c43983b, type: 3}
     - target: {fileID: 7196153752462470814, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -49105,11 +49132,19 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7526216700068083589, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: uiDocument
+      value: 
+      objectReference: {fileID: 443458170}
     - target: {fileID: 8202064914807686189, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: gestorUI
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8596545209397197472, guid: 244221dc307682449885c9744873ade2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135616614860792878, guid: 244221dc307682449885c9744873ade2, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

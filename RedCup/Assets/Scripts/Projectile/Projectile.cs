@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public enum ProjectileState { Inactive, Active }
+
     [Header("Movimiento")]
     [SerializeField] private float speed = 10f;
     [Header("Tiempo de vida")]
     [SerializeField] private float lifeTime = 2f;
     [Header("Daño")]
     [SerializeField] private int damage = 1;
-    [Header("Referencias")]
+    
     private Rigidbody2D rb;
-    [Header("Timer")]
     private float timer;
+
+    private ProjectileState currentState = ProjectileState.Inactive;
+    public ProjectileState CurrentState => currentState;
+
     #region Unity Lifecycle
     private void Awake()
     {
@@ -19,12 +24,14 @@ public class Projectile : MonoBehaviour
     }
     private void OnEnable()
     {
+        currentState = ProjectileState.Active;
         timer = lifeTime;
     }
     private void Update()
     {
-        timer -= Time.deltaTime;
+        if (currentState != ProjectileState.Active) return;
 
+        timer -= Time.deltaTime;
         if (timer <= 0)
         {
             SpawnImpact();
@@ -36,15 +43,17 @@ public class Projectile : MonoBehaviour
     #region Inicializar
     public void Initialize(Vector2 direction)
     {
-        rb.linearVelocity = direction.normalized * speed;
+        if (rb != null)
+            rb.linearVelocity = direction.normalized * speed;
     }
     #endregion
 
     #region Colision
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (currentState != ProjectileState.Active) return;
 
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
@@ -58,7 +67,14 @@ public class Projectile : MonoBehaviour
     #region Disable
     private void DisableProjectile()
     {
-        rb.linearVelocity = Vector2.zero;
+        currentState = ProjectileState.Inactive;
+
+        if (ParticlePool.Instance != null)
+            ParticlePool.Instance.GetParticle(transform.position);
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+
         gameObject.SetActive(false);
     }
     #endregion

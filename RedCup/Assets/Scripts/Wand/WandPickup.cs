@@ -2,18 +2,11 @@ using UnityEngine;
 
 public class WandPickup : MonoBehaviour
 {
-    /// <summary>
-    /// Referencia al weapon controller del jugador
-    /// </summary>
+    public enum PickupState { Idle, PlayerInRange, Collected }
+
     private PlayerWeaponController playerWeapon;
-    /// <summary>
-    /// Referencia al Player Interact UI
-    /// </summary>
     private PlayerInteractUI interactUI;
-    /// <summary>
-    /// Bandera para saber si agarro el arma
-    /// </summary>
-    private bool canPick;
+    private PickupState currentState = PickupState.Idle;
 
     private void Awake()
     {
@@ -24,10 +17,11 @@ public class WandPickup : MonoBehaviour
     /// </summary>
     private void OnTriggerEnter2D(Collider2D col)
     {
-        
+        if (currentState == PickupState.Collected) return;
+
         if (col.CompareTag("Player"))
         {
-            canPick = true;
+            currentState = PickupState.PlayerInRange;
             interactUI?.Show();
             playerWeapon = col.GetComponentInParent<PlayerWeaponController>();
         }     
@@ -37,9 +31,11 @@ public class WandPickup : MonoBehaviour
     /// </summary>
     private void OnTriggerExit2D(Collider2D col)
     {
+        if (currentState == PickupState.Collected) return;
+
         if (col.CompareTag("Player"))
         {
-            canPick = false;
+            currentState = PickupState.Idle;
             interactUI?.Hide();
             playerWeapon = null;
         }
@@ -50,8 +46,9 @@ public class WandPickup : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (canPick && Input.GetKeyDown(KeyCode.E))
+        if (currentState == PickupState.PlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
+            currentState = PickupState.Collected;
             playerWeapon?.EquipWand();
             Destroy(gameObject);
         }

@@ -5,10 +5,8 @@ public class PlayerAim : MonoBehaviour
     [Header("Aim")]
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float aimSpeed = 10f;
-    [Header("Camera")]
+    
     private Camera cam;
-    [Header("Posicion del mouse")]
-    private Vector2 mousePos;
 
     private void Start()
     {
@@ -17,11 +15,12 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
+        if (playerTransform == null || cam == null) return;
         // posicion inicial del aim que seguira al jugador
         transform.position = playerTransform.position;
 
         // posicion del mouse en world space
-        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 
         // direccion hacia el mouse
         Vector2 direction = mousePos - (Vector2)transform.position;

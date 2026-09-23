@@ -3,6 +3,13 @@ using System.Collections;
 
 public class AltarHealth : MonoBehaviour , IDamageable
 {
+    public enum AltarState
+    {
+        Idle,
+        Hurt,
+        Dead
+    }
+
     [Header("Vida Altar")]
     [SerializeField] private int maxHealth = 10;
     private int currentHealth;
@@ -13,14 +20,14 @@ public class AltarHealth : MonoBehaviour , IDamageable
     [Header("UI")]
     [SerializeField] private Healthbar healthbar;
 
-    [Header("Referencias")]
-    private SpriteRenderer spriteRenderer;
-
     [Header("AudioClip")]
     [SerializeField] private AudioClip altarHurt;
     [SerializeField] private float altarVolumen;
 
-    private bool isDead;
+    private AltarState currentState = AltarState.Idle;
+    public AltarState CurrentState => currentState;
+
+    private SpriteRenderer spriteRenderer;
 
     #region Unity Lifecycle
     private void Awake()
@@ -33,14 +40,20 @@ public class AltarHealth : MonoBehaviour , IDamageable
     #region Take Damage
     public void TakeDamage(int amount)
     {
-        if (isDead) return;
+        if (currentState == AltarState.Dead)
+            return;
 
         currentHealth -= amount;
         
         if (healthbar != null)
+        {
             healthbar.UpdateHealthBar(maxHealth, currentHealth);
+        }
 
-        AudioManager.Instance.PlaySoundEffect(altarHurt, altarVolumen);
+        if (AudioManager.Instance != null && altarHurt != null)
+        {
+            AudioManager.Instance.PlaySoundEffect(altarHurt, altarVolumen);
+        }
 
         if (currentHealth <= 0)
         {
@@ -56,13 +69,13 @@ public class AltarHealth : MonoBehaviour , IDamageable
     #region Die
     private void Die()
     {
-        isDead = true;
+        currentState = AltarState.Dead;
 
         if (dropPrefab != null)
         {
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
         }
-        //Destroy(transform.parent.gameObject);
+
         Destroy(gameObject);
     }
     #endregion
@@ -70,9 +83,20 @@ public class AltarHealth : MonoBehaviour , IDamageable
     #region Blink
     private IEnumerator Blink()
     {
-        spriteRenderer.color = Color.red;
+        currentState = AltarState.Hurt;
+
+        if (spriteRenderer != null)
+            spriteRenderer.color = Color.red;
+
         yield return new WaitForSeconds(0.5f);
-        spriteRenderer.color = Color.white;
+
+        if (spriteRenderer != null)
+            spriteRenderer.color = Color.white;
+
+        if (currentState != AltarState.Dead)
+        {
+            currentState = AltarState.Idle;
+        }
     }
     #endregion
 }

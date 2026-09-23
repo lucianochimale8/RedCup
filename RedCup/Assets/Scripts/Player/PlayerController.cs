@@ -3,20 +3,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum PlayerState { Playing, Disabled }
+
     [Header("Referencias")]
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
-    private Rigidbody2D rb;
+    
     [Header("Command")]
-    private ICommand currentCommand;
-    private ICommand shootCommand;
-    private ICommand dropCommand;
+    private MoveCommand moveCommand;
+    private RunCommand runCommand;
+    private ShootCommand shootCommand;
+    private DropWeaponCommand dropCommand;
+
     [Header("Weapon")]
     [SerializeField] private Wand wand;
     [SerializeField] private PlayerWeaponController weaponController;
-    // bloqueo de movimiento
-    private bool canMove = true;
+
+    private PlayerState currentState = PlayerState.Playing;
+    public PlayerState CurrentState => currentState;
 
     #region Unity Lifecycle
     private void Awake()
@@ -24,95 +29,65 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
-        rb = GetComponent<Rigidbody2D>();
 
+        moveCommand = new MoveCommand(playerMovement, Vector2.zero);
+        runCommand = new RunCommand(playerMovement, Vector2.zero);
         shootCommand = new ShootCommand(wand);
         dropCommand = new DropWeaponCommand(weaponController);
     }
-    private void OnEnable()
-    {
-        GameEvents.OnPlayerHit += StopPlayer;
-    }
-    private void OnDisable()
-    {
-        GameEvents.OnPlayerHit -= StopPlayer;
-    }
+    private void OnEnable() => GameEvents.OnPlayerHit += DisableControl;
+    private void OnDisable() => GameEvents.OnPlayerHit -= DisableControl;
     private void Update()
     {
-        if (GameManager.Instance.CurrentState != GameState.Playing)
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameState.Playing)
         {
-            rb.linearVelocity = Vector2.zero;
+            SetState(PlayerState.Disabled);
             return;
         }
 
-        if (!canMove)
+        if (currentState == PlayerState.Disabled)
         {
-            rb.linearVelocity = Vector2.zero;
+            playerMovement.Stop();
             return;
         }
 
         // Logica de animacion
         playerAnimation.UpdateAnimation(playerInput.MoveInput, playerInput.IsRunning);
-        Movimiento();
-        Disparo();
-        Drop();
+        
+        ProcesarDisparo();
+        ProcesarDrop();
     }
     private void FixedUpdate()
     {
-        if (GameManager.Instance.CurrentState != GameState.Playing)
-        {
-            rb.linearVelocity = Vector2.zero;
-            return; 
-        }
+        if (currentState == PlayerState.Disabled) return;
 
-        if (!canMove)
-        {
-            Debug.Log("no me puedo mover");
-            currentCommand = null;
-            return;
-        }
-
-        if(canMove)
-            currentCommand?.Execute();
-    }
-    #endregion
-
-    #region Movimiento
-    private void Movimiento()
-    {
-        // movimiento
-        Vector2 moveInput = playerInput.MoveInput;
+        Vector2 input = playerInput.MoveInput;
 
         if (playerInput.IsRunning)
         {
-            currentCommand = new RunCommand(playerMovement, moveInput);
+            runCommand.SetInput(input);
+            runCommand.Execute();
         }
         else
         {
-            currentCommand = new MoveCommand(playerMovement, moveInput);
+            moveCommand.SetInput(input);
+            moveCommand.Execute();
         }
     }
     #endregion
 
-    #region Disparo
-    private void Disparo()
+    private void ProcesarDisparo()
     {
-        if (!playerInput.ShootPressed)
-            return;
+        if (!playerInput.ShootPressed) return;
 
-        if (!GameManager.Instance.HasWand)
+        if (GameManager.Instance != null && GameManager.Instance.HasWand)
         {
-            playerInput.ResetShoot();
-            return;
+            shootCommand.Execute();
         }
-
-        shootCommand.Execute();
         playerInput.ResetShoot();
     }
-    #endregion
 
-    #region Drop
-    private void Drop()
+    private void ProcesarDrop()
     {
         if (playerInput.DropPressed)
         {
@@ -120,16 +95,15 @@ public class PlayerController : MonoBehaviour
             playerInput.ResetDrop();
         }
     }
-    #endregion
 
-    #region Stop
-    private void StopPlayer()
+    private void DisableControl()
     {
-        canMove = false;
-
-        rb.linearVelocity = Vector2.zero;
-
-        currentCommand = null;
+        SetState(PlayerState.Disabled);
+        playerMovement.Stop();
     }
-    #endregion
+
+    public void SetState(PlayerState newState)
+    {
+        currentState = newState;
+    }
 }

@@ -4,11 +4,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Velocidad")]
     [SerializeField] private float moveSpeed = 5f;
-    [Header("Referencias")]
+
+    
     private Rigidbody2D rb;
     private bool isFacingRight = true;
-    [Header("MovementStrategy")]
-    public IMovementStrategy movementStrategy;
+    public IMovementStrategy movementStrategy { get; private set; }
 
     #region Unity Lifecycle
     private void Awake()
@@ -49,4 +49,8 @@ public class PlayerMovement : MonoBehaviour
         movementStrategy = newStrategy;
     }
     #endregion
+    public void Stop()
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
 }

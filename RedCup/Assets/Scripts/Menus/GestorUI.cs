@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GestorUI : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GestorUI : MonoBehaviour
         public PanelType type;
         public UIPanel panel;
     }
+
+    [Header("UI Toolkit References")]
+    [SerializeField] private UIDocument uiDocument;
 
     [Header("Paneles registrados")]
     [SerializeField] private List<PanelEntry> paneles;
@@ -35,17 +39,10 @@ public class GestorUI : MonoBehaviour
 
         Instance = this;
 
-        panelDict = new Dictionary<PanelType, UIPanel>();
+        if (uiDocument == null)
+            uiDocument = GetComponent<UIDocument>();
 
-        foreach (var entry in paneles)
-        {
-            if (entry.panel == null)
-            {
-                Debug.LogError("Panel no asignado: " + entry.type);
-                continue;
-            }
-            panelDict[entry.type] = entry.panel;
-        }
+        InicializarPaneles();
     }
     private void OnEnable()
     {
@@ -57,8 +54,35 @@ public class GestorUI : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
         GameEvents.OnPlayerDied -= HandlePlayerDied;
     }
+    private void InicializarPaneles()
+    {
+        panelDict = new Dictionary<PanelType, UIPanel>();
+
+        if (uiDocument == null || uiDocument.rootVisualElement == null)
+        {
+            Debug.LogError("No se encontró el UIDocument o el rootVisualElement.");
+            return;
+        }
+
+        VisualElement root = uiDocument.rootVisualElement;
+
+        foreach (var entry in paneles)
+        {
+            if (entry.panel == null)
+            {
+                Debug.LogError("Panel no asignado: " + entry.type);
+                continue;
+            }
+
+            // Conectamos cada UIPanel al root de UI Toolkit
+            entry.panel.Inicializar(root);
+            panelDict[entry.type] = entry.panel;
+        }
+    }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        InicializarPaneles();
+
         foreach (var panel in panelDict.Values)
             panel.Ocultar();
 
